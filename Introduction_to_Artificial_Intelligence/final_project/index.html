@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>臺灣現存大專院校未來退場機率預測｜專題展示</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --brand-primary: #2563eb;
+      --brand-primary-dark: #1d4ed8;
+      --brand-secondary: #38bdf8;
+      --brand-accent: #06b6d4;
+      --brand-dark: #0f172a;
+      --brand-muted: #64748b;
+      --card-radius: 24px;
+      --section-padding: 6rem;
+      --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Noto Sans TC", "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: #0f172a;
+      scroll-behavior: smooth;
+      background-color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--brand-primary), var(--brand-secondary));
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, var(--brand-primary-dark), var(--brand-accent));
+    }
+
+    /* Navbar */
+    .navbar {
+      backdrop-filter: blur(20px);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)) !important;
+      box-shadow: 0 4px 30px rgba(102, 126, 234, 0.3);
+      transition: var(--transition-smooth);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar.scrolled {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.98), rgba(118, 75, 162, 0.98)) !important;
+      box-shadow: 0 8px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 1.3rem;
+      transition: var(--transition-smooth);
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .navbar-brand::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      transition: var(--transition-smooth);
+      border-radius: 999px;
+    }
+
+    .navbar-brand:hover::before {
+      width: 100%;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      color: #fbbf24 !important;
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+    }
+
+    .nav-link {
+      font-weight: 500;
+      margin-left: 0.5rem;
+      position: relative;
+      transition: var(--transition-smooth);
+      padding: 0.5rem 1rem !important;
+      border-radius: 12px;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      opacity: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      opacity: 1;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      transition: var(--transition-smooth);
+      transform: translateX(-50%);
+      border-radius: 999px;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 60%;
+    }
+
+    .nav-link:hover {
+      color: #fbbf24 !important;
+      transform: translateY(-2px);
+    }
+
+    .nav-link.active {
+      color: #fbbf24 !important;
+      font-weight: 600;
+    }
+
+    /* Navbar toggler enhancement */
+    .navbar-toggler {
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 0.5rem;
+      transition: var(--transition-smooth);
+    }
+
+    .navbar-toggler:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: rotate(90deg);
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.5);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      padding-top: 7rem;
+      padding-bottom: 5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      color: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,.15), transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(56,189,248,.2), transparent 40%),
+        radial-gradient(circle at 50% 100%, rgba(251,191,36,.15), transparent 45%);
+      opacity: 1;
+      pointer-events: none;
+      animation: pulse-bg 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse-bg {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(to top, #f8fafc, transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      color: #ffffff;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: float 3s ease-in-out infinite;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 0.7;
+        transform: scale(1.2);
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.7;
+      font-weight: 400;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-pill {
+      border-radius: 999px;
+      padding: 0.75rem 1.8rem;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      border: 2px solid transparent;
+    }
+
+    .btn-pill::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-pill:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-pill:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-primary.btn-pill {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border: none;
+      color: #1f2937;
+      font-weight: 700;
+    }
+
+    .btn-primary.btn-pill:hover {
+      box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5);
+    }
+
+    .btn-outline-light.btn-pill {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      color: #ffffff;
+    }
+
+    .btn-outline-light.btn-pill:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #fff;
+    }
+
+    .btn-outline-info.btn-pill {
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      color: #ffffff;
+    }
+
+    .btn-outline-info.btn-pill:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #ffffff;
+    }
+
+    .hero-metrics-card {
+      border-radius: var(--card-radius);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      color: #0f172a;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+      transition: var(--transition-smooth);
+    }
+
+    .hero-metrics-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 80px rgba(102, 126, 234, 0.4);
+      border-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .metric-number {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    /* Sections */
+    section {
+      padding-block: var(--section-padding);
+      position: relative;
+    }
+
+    .section-title {
+      font-weight: 900;
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--brand-dark), var(--brand-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-lead {
+      color: var(--brand-muted);
+      max-width: 680px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .section-divider {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #38bdf8, #06b6d4);
+      border-radius: 999px;
+      margin-top: 1.5rem;
+      margin-bottom: 3rem;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .card-soft {
+      border-radius: var(--card-radius);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      transition: var(--transition-smooth);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-soft::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+      transition: left 0.7s;
+    }
+
+    .card-soft:hover::before {
+      left: 100%;
+    }
+
+    .card-soft:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(37, 99, 235, 0.15);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .card-soft {
+        border-radius: 18px;
+      }
+
+      .card-soft:hover {
+        transform: translateY(-4px);
+      }
+    }
+
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      color: #1d4ed8;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      transition: var(--transition-smooth);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+    }
+
+    .tag-pill:hover {
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Media blocks */
+    .ratio {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--card-radius);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      transition: var(--transition-smooth);
+    }
+
+    .ratio:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .ratio iframe {
+      border-radius: var(--card-radius);
+      border: 2px solid rgba(148, 163, 184, 0.3);
+      background-color: #020617;
+    }
+
+    @media (max-width: 768px) {
+      .ratio {
+        border-radius: 16px;
+      }
+
+      .ratio iframe {
+        border-radius: 16px;
+      }
+
+      .ratio:hover {
+        transform: scale(1);
+      }
+    }
+
+    /* Enhanced content styling */
+    section p {
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    section ul li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    /* Decorative elements */
+    .bg-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.03;
+      background-image: 
+        linear-gradient(30deg, #2563eb 12%, transparent 12.5%, transparent 87%, #2563eb 87.5%, #2563eb),
+        linear-gradient(150deg, #2563eb 12%, transparent 12.5%, transparent 87%, #2563eb 87.5%, #2563eb);
+      background-size: 80px 140px;
+      pointer-events: none;
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, #020617, #0f172a);
+      color: #9ca3af;
+      padding-block: 3rem;
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--brand-secondary), transparent);
+    }
+
+    footer p {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Scroll to top button */
+    .scroll-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-smooth);
+      box-shadow: 0 5px 20px rgba(37, 99, 235, 0.4);
+      z-index: 1000;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.6);
+    }
+
+    /* Loading animation */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 991px) {
+      .navbar-collapse {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+      }
+
+      .nav-link {
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --section-padding: 3.5rem;
+      }
+
+      .hero {
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+        min-height: auto;
+      }
+
+      .hero-title {
+        font-size: 1.8rem;
+        line-height: 1.3;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .hero-badge {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.8rem;
+      }
+
+      .btn-pill {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.9rem;
+        width: 100%;
+      }
+
+      .d-flex.gap-3 {
+        gap: 0.75rem !important;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .section-lead {
+        font-size: 0.95rem;
+      }
+
+      .metric-number {
+        font-size: 1.5rem;
+      }
+
+      .metric-label {
+        font-size: 0.8rem;
+      }
+
+      .hero-metrics-card {
+        margin-top: 2rem;
+      }
+
+      .tag-pill {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.8rem;
+      }
+
+      section p {
+        font-size: 0.95rem;
+      }
+
+      .card-body {
+        padding: 1.5rem !important;
+      }
+
+      .scroll-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero {
+        padding-top: 4.5rem;
+      }
+
+      .hero-title {
+        font-size: 1.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .section-title {
+        font-size: 1.4rem;
+      }
+
+      .section-lead {
+        font-size: 0.9rem;
+      }
+
+      .navbar-brand {
+        font-size: 1.1rem;
+      }
+
+      .metric-number {
+        font-size: 1.3rem;
+      }
+
+      .metric-label {
+        font-size: 0.75rem;
+      }
+
+      .hero-metrics-card .row {
+        row-gap: 1.5rem !important;
+      }
+
+      footer {
+        padding-block: 2rem;
+        font-size: 0.85rem;
+      }
+
+      .scroll-top {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        right: 15px;
+      }
+
+      .scroll-top svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    /* Landscape mobile optimization */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .hero {
+        min-height: auto;
+        padding-top: 4rem;
+        padding-bottom: 2rem;
+      }
+
+      section {
+        padding-block: 3rem;
+      }
+    }
+
+    /* Tablet specific */
+    @media (min-width: 768px) and (max-width: 991px) {
+      .hero-title {
+        font-size: 2.2rem;
+      }
+
+      .section-title {
+        font-size: 1.9rem;
+      }
+
+      .container {
+        max-width: 720px;
+      }
+    }
+
+    /* Large desktop */
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 1280px;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* Touch device optimization */
+    @media (hover: none) and (pointer: coarse) {
+      .btn-pill:active {
+        transform: scale(0.95);
+      }
+
+      .card-soft:active {
+        transform: translateY(-4px);
+      }
+
+      .nav-link:active {
+        transform: scale(0.95);
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .navbar,
+      .scroll-top,
+      .loading-overlay {
+        display: none !important;
+      }
+
+      .hero {
+        background: #667eea;
+        page-break-after: always;
+      }
+
+      section {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Hover effects for interactive elements */
+    .interactive-card {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .interactive-card::after {
+      content: '→';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      opacity: 0;
+      transition: var(--transition-smooth);
+      color: var(--brand-primary);
+    }
+
+    .interactive-card:hover::after {
+      opacity: 1;
+      transform: translateX(5px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <div class="scroll-top" id="scrollTop">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#home">臺灣現存大專院校未來退場機率預測</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link" href="#intro">專題介紹</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#video">專題影片</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#slides">專題簡報</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#github">GitHub</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header id="home" class="hero">
+    <div class="container hero-content">
+      <div class="row align-items-center gy-4 gy-lg-5">
+        <div class="col-lg-7" data-aos="fade-right" data-aos-duration="1000">
+          <div class="hero-badge mb-4">
+            <span class="pulse-dot"></span>
+            高教退場風險預警模型
+          </div>
+          <h1 class="hero-title">
+            臺灣現存大專院校<br />
+            未來退場機率預測
+          </h1>
+          <p class="hero-subtitle mb-5">
+            基於 106~112 年臺灣私立大專院校的招生與財務資料，建構隨機森林分類模型，
+            評估每間現存的學校是否具有退場風險。
+          </p>
+          <div class="d-flex flex-column flex-sm-row flex-wrap gap-3">
+            <a href="#video" class="btn btn-primary btn-pill">
+              ▶ 觀看介紹影片
+            </a>
+            <a href="#slides" class="btn btn-outline-light btn-pill">
+              查看簡報與方法
+            </a>
+            <a
+              href="https://github.com/你的帳號/你的專題repo"
+              target="_blank"
+              class="btn btn-outline-info btn-pill"
+            >
+              GitHub 原始碼
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-5" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+          <div class="card hero-metrics-card shadow-lg border-0">
+            <div class="card-body p-4">
+              <h6 class="mb-4 text-uppercase fw-bold" style="letter-spacing:0.1em;font-size:0.8rem;color:#667eea;">
+                📊 Model Performance
+              </h6>
+              <div class="row gy-4">
+                <div class="col-6" data-aos="zoom-in" data-aos-delay="300">
+                  <div class="metric-number">86%</div>
+                  <div class="metric-label">Test Accuracy<br />（真實不平衡資料）</div>
+                </div>
+                <div class="col-6" data-aos="zoom-in" data-aos-delay="400">
+                  <div class="metric-number">0.67</div>
+                  <div class="metric-label">退場學校召回率<br />（Recall – Class 1）</div>
+                </div>
+                <div class="col-6" data-aos="zoom-in" data-aos-delay="500">
+                  <div class="metric-number">140</div>
+                  <div class="metric-label">涵蓋校數<br />（大專院校樣本）</div>
+                </div>
+                <div class="col-6" data-aos="zoom-in" data-aos-delay="600">
+                  <div class="metric-number">2017–2023</div>
+                  <div class="metric-label">資料期間</div>
+                </div>
+              </div>
+              <hr class="border-secondary-subtle my-4" />
+              <p class="mb-0" style="font-size: 0.85rem; color:#64748b;line-height:1.6;">
+                ⚠️ 本模型定位為「退場風險預警工具」，預測結果需搭配教育部公開資訊、
+                校務評鑑與財務報表綜合判斷，並非正式決策依據。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Intro -->
+  <section id="intro">
+    <div class="bg-pattern"></div>
+    <div class="container">
+      <div class="row align-items-start gy-4 gy-lg-5">
+        <div class="col-lg-7" data-aos="fade-up">
+          <h2 class="section-title">專題緣起與研究目標</h2>
+          <p class="section-lead">
+            少子化已成為現在的社會議題，大專院校招生名額數供過於求，教育部預測114學年度大一新生人數將跌破20萬人接下來，
+            117學年逢虎年效應，人數將減至17.3萬人低點，對於大專院校而言，這是對於他們永續發展的嚴峻挑戰，
+            未來將會有越來越多學校面臨轉型、整併或是退場的危機，甚至有教團評估未來恐有40所大學面臨退場。身為學生，
+            學校與我們息息相關，因此我們想要透過本次研究預測臺灣現存大專院校未來退場機率為何。
+          </p>
+          <div class="section-divider"></div>
+          <p>
+            我們整合招生人數、註冊率、財務比率等指標，透過
+            <strong>Random Forest</strong> 搭配下採樣處理類別極度不平衡問題，並以多次隨機切分與交叉驗證檢驗模型穩定性。
+          </p>
+          <p>
+            在測試集上，模型整體準確率約為 <strong>86%</strong>，對退場學校的召回率約為 <strong>67%</strong>，顯示具有一定的預警能力，
+            但仍可能漏報或誤報，因此強調「輔助決策」而非「取代決策」。
+          </p>
+        </div>
+        <div class="col-lg-5" data-aos="fade-up" data-aos-delay="200">
+          <div class="card card-soft shadow-sm mb-4">
+            <div class="card-body p-4">
+              <h6 class="fw-bold mb-3" style="font-size:1.1rem;">🛠️ 使用技術與工具</h6>
+              <div class="mb-4">
+                <span class="tag-pill">Python</span>
+                <span class="tag-pill">pandas</span>
+                <span class="tag-pill">scikit-learn</span>
+                <span class="tag-pill">numpy</span>
+                <span class="tag-pill">Random Forest</span>
+                <span class="tag-pill">Google Colab</span>
+              </div>
+              <h6 class="fw-bold mb-3" style="font-size:1.1rem;">📚 資料來源</h6>
+              <ul class="mb-4" style="font-size: 0.95rem;">
+                <li>教育部 - 大專校院校務資訊公開平台</li>
+                <li>中央研究院 - 人文社會科學中心</li>
+                <li>各校校務財務資訊專區</li>
+              </ul>
+              <h6 class="fw-bold mb-3" style="font-size:1.1rem;">⚖️ 簡要免責聲明</h6>
+              <p class="mb-0" style="font-size: 0.9rem; color:var(--brand-muted);line-height:1.6;">
+                模型預測基於歷史資料與有限指標，僅供學術研究與政策討論參考，
+                不構成任何官方、法律或投資決策之唯一依據。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video -->
+  <section id="video" style="background:#f1f5f9;">
+    <div class="bg-pattern"></div>
+    <div class="container">
+      <div data-aos="fade-up">
+        <h2 class="section-title">🎬 專題介紹影片</h2>
+        <p class="section-lead">
+          影片說明本研究的動機、資料處理流程、模型設計與結果解讀。
+        </p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10" data-aos="zoom-in" data-aos-delay="200">
+          <div class="ratio ratio-16x9 mb-3">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/3aTvzaLG1mE?si=9zebGBC235lfaZqY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <p class="text-muted text-center" style="font-size:0.9rem;">
+            💡 如果無法正常播放，請前往 <a href="https://www.youtube.com/watch?v=3aTvzaLG1mE">YouTube</a> 觀看。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slides -->
+  <section id="slides">
+    <div class="bg-pattern"></div>
+    <div class="container">
+      <div data-aos="fade-up">
+        <h2 class="section-title">📊 簡報內容與研究架構</h2>
+        <p class="section-lead">
+          完整簡報包含研究動機、相關文獻、資料前處理、模型設計、實驗結果與未來工作，
+          下方提供線上瀏覽版本，方便審查與分享。
+        </p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-11" data-aos="zoom-in" data-aos-delay="200">
+          <div class="ratio ratio-16x9">
+            <iframe
+              src="https://docs.google.com/presentation/d/e/2PACX-1vTp5dMhBQKaag9roKJWOrkLSqaAVPiGkWgCiDv-PUPwaN7I6-klzZgv1ylz84PINlqP3cnqBwtEHQAL/pubembed?start=false&loop=true&delayms=3000"
+              frameborder="0"
+              allowfullscreen="true"
+              mozallowfullscreen="true"
+              webkitallowfullscreen="true"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GitHub -->
+  <section id="github" style="background:#f1f5f9;">
+    <div class="bg-pattern"></div>
+    <div class="container">
+      <div data-aos="fade-up">
+        <h2 class="section-title">💻 原始碼與重現實驗</h2>
+        <p class="section-lead">
+          若想重現本研究結果、調整特徵組合或比較其他模型（例如 XGBoost、Logistic Regression），
+          歡迎參考 GitHub 儲存庫中的程式碼與說明文件。
+        </p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="row align-items-center gy-4 gy-lg-5">
+        <div class="col-lg-7" data-aos="fade-right">
+          <p style="font-size:1.05rem;line-height:1.8;">
+            Repository 內提供資料前處理、模型訓練、評估指標計算與部分視覺化程式碼，並附上
+            <code>requirements.txt</code> 或環境設定說明，方便在本機或雲端環境中執行。
+          </p>
+          <p style="font-size:1.05rem;line-height:1.8;">
+            若你有興趣延伸為 <strong>Web API</strong>、<strong>Dashboard</strong> 或整合更多教育資料，也可以在此基礎上進行二次開發。
+          </p>
+          <a
+            href="https://github.com/你的帳號/你的專題repo"
+            target="_blank"
+            class="btn btn-dark btn-pill mt-3"
+          >
+            <svg width="20" height="20" fill="currentColor" class="me-2" style="vertical-align:text-bottom;" viewBox="0 0 16 16">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            前往 GitHub 儲存庫
+          </a>
+        </div>
+        <div class="col-lg-5" data-aos="fade-left">
+          <div class="card card-soft shadow-sm">
+            <div class="card-body p-4">
+              <h6 class="fw-bold mb-3" style="font-size:1.1rem;">📁 Repo 內容概覽</h6>
+              <ul class="mb-0" style="font-size: 0.95rem;line-height:2;">
+                <li><code>/data</code> — 匿名化後的示意資料（如可公開）</li>
+                <li><code>/notebooks</code> — 探索式分析與實驗記錄</li>
+                <li><code>/src</code> — 主要模型與前處理程式碼</li>
+                <li><code>metrics_report</code> — Accuracy、Precision、Recall 等輸出</li>
+                <li><code>README.md</code> — 執行步驟與環境說明</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <div class="container">
+      <p class="mb-2" style="font-size:1rem;font-weight:600;color:#cbd5e1;">
+        © 2025 臺灣現存大專院校未來退場機率預測｜TAICA_人工智慧導論 學期專題
+      </p>
+      <p class="mb-0" style="font-size:0.9rem;">
+        本網站內容僅供學術研究與教學展示之用，預測結果不構成任何官方或投資決策建議。
+      </p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- AOS Animation -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <!-- Custom JS -->
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      offset: 100
+    });
+
+    // Loading overlay
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.querySelector('.loading-overlay').classList.add('hidden');
+      }, 500);
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById('scrollTop');
+    
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+
+    scrollTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 80;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu if open
+          const navbarCollapse = document.querySelector('.navbar-collapse');
+          if (navbarCollapse.classList.contains('show')) {
+            navbarCollapse.classList.remove('show');
+          }
+        }
+      });
+    });
+
+    // Active nav link on scroll
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('section, header');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= (sectionTop - 100)) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Detect mobile and add class
+    function detectMobile() {
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        document.body.classList.add('mobile-view');
+      } else {
+        document.body.classList.remove('mobile-view');
+      }
+    }
+
+    // Run on load and resize
+    detectMobile();
+    window.addEventListener('resize', detectMobile);
+
+    // Prevent zoom on iOS
+    document.addEventListener('touchmove', function(event) {
+      if (event.scale !== 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+
+    // Optimize animations for mobile
+    if (window.innerWidth <= 768) {
+      AOS.init({
+        duration: 600,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 50,
+        disable: 'mobile'
+      });
+    }
+
+    // Metric counter animation
+    function animateCounter(element, target) {
+      let current = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          element.textContent = target;
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.floor(current);
+        }
+      }, 30);
+    }
+
+    // Trigger counter animation when metrics card is visible
+    const metricsCard = document.querySelector('.hero-metrics-card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const numbers = entry.target.querySelectorAll('.metric-number');
+          // Numbers are already formatted in HTML, so we don't animate them
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    
+    if (metricsCard) {
+      observer.observe(metricsCard);
+    }
+  </script>
+</body>
+</html>
