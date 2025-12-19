@@ -101,7 +101,7 @@
 我們預測經平衡處理後的隨機森林模型的準確率可能會下降，但召回率可能會顯著上升，模型會更注重於退場學校，我們也可以利用隨機森林的特徵重要性中得知影響退場的關鍵因素，最後我們會得到每間學校的退場機率，並且可以根據機率來排名哪些學校處於高風險，輸出的結果為 0 ~ 1之間的小數，我們可能將數值轉換成百分比的形式，或是以數值區間來標示低度風險、中度風險及高度風險。
 
 ## 實驗結果
-最終我們將 112 年的財政類資料已及 113 年的其他所需資料 [university_data_test.csv](https://drive.google.com/file/d/1mWUKdGfs2Nkdl5hOlrkLQ88EVoSwKL_3/view?usp=sharing) (大專校院校務資訊公開平台上的最新資料)投入預測，並將結果輸出到 [113_data_prediction_results.csv](https://drive.google.com/file/d/1Ucm54mfTHZVXDKT2iAYyXd6uNO1te5UK/view?usp=sharing) 檔案中，其中退場機率為高度風險的區間為 0.70~1.00；中度風險的區間為 0.40~0.69；低度風險的機率為 0.00~0.39。最終得到以下結果。
+最終我們將 112 年的財政類資料已及 113 年的其他所需資料 [university_data_test.csv](https://drive.google.com/file/d/1mWUKdGfs2Nkdl5hOlrkLQ88EVoSwKL_3/view?usp=sharing) (大專校院校務資訊公開平台上的最新資料)投入預測，並將結果輸出到 [113_data_prediction_results.csv](https://drive.google.com/file/d/1Ucm54mfTHZVXDKT2iAYyXd6uNO1te5UK/view?usp=sharing) 檔案中，其中退場機率為高度風險的區間為 0.70\~1.00；中度風險的區間為 0.40\~0.69；低度風險的機率為 0.00\~0.39。最終得到以下結果。
 
 * 高度風險大專院校 : 
     | 學校名稱 | 退場機率 |
