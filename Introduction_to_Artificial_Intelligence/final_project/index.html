@@ -40,6 +40,13 @@
       box-sizing: border-box;
     }
 
+    html {
+      overflow-x: hidden;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      height: 100%;
+    }
+
     body {
       font-family: "Noto Sans TC", "Inter", system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", sans-serif;
@@ -47,6 +54,11 @@
       scroll-behavior: smooth;
       background-color: #f8fafc;
       overflow-x: hidden;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      min-height: 100%;
+      touch-action: pan-y;
     }
 
     /* Scrollbar Styling */
@@ -192,6 +204,7 @@
       color: #ffffff;
       position: relative;
       overflow: hidden;
+      touch-action: pan-y;
     }
 
     .hero::before {
@@ -386,6 +399,7 @@
     section {
       padding-block: var(--section-padding);
       position: relative;
+      touch-action: pan-y;
     }
 
     .section-title {
@@ -653,6 +667,15 @@
         --section-padding: 3.5rem;
       }
 
+      html, body {
+        overflow-x: hidden;
+        overflow-y: scroll !important;
+        -webkit-overflow-scrolling: touch !important;
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+      }
+
       .hero {
         padding-top: 5rem;
         padding-bottom: 3rem;
@@ -824,6 +847,16 @@
 
     /* Touch device optimization */
     @media (hover: none) and (pointer: coarse) {
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html, body {
+        overflow-y: scroll !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-y: none;
+      }
+
       .btn-pill:active {
         transform: scale(0.95);
       }
@@ -936,12 +969,12 @@
             高教退場風險預警模型
           </div>
           <h1 class="hero-title">
-            臺灣現存大專院校<br />
-            未來退場機率預測
+            臺灣大專院校退場風險<br />
+            預測與視覺化專題
           </h1>
           <p class="hero-subtitle mb-5">
-            基於 106~112 年臺灣私立大專院校的招生與財務資料，建構隨機森林分類模型，
-            評估每間現存的學校是否具有退場風險。
+            基於 2017–2022 年臺灣私立大專院校的招生與財務資料，建構隨機森林分類模型，
+            評估學校是否具有退場風險。
           </p>
           <div class="d-flex flex-column flex-sm-row flex-wrap gap-3">
             <a href="#video" class="btn btn-primary btn-pill">
@@ -951,7 +984,7 @@
               查看簡報與方法
             </a>
             <a
-              href="https://github.com/你的帳號/你的專題repo"
+              href="https://github.com/taitaiwu/python/tree/main/Introduction_to_Artificial_Intelligence/final_project"
               target="_blank"
               class="btn btn-outline-info btn-pill"
             >
@@ -980,7 +1013,7 @@
                   <div class="metric-label">涵蓋校數<br />（大專院校樣本）</div>
                 </div>
                 <div class="col-6" data-aos="zoom-in" data-aos-delay="600">
-                  <div class="metric-number">2017–2023</div>
+                  <div class="metric-number">2017–2022</div>
                   <div class="metric-label">資料期間</div>
                 </div>
               </div>
@@ -1004,18 +1037,20 @@
         <div class="col-lg-7" data-aos="fade-up">
           <h2 class="section-title">專題緣起與研究目標</h2>
           <p class="section-lead">
-            少子化已成為現在的社會議題，大專院校招生名額數供過於求，教育部預測114學年度大一新生人數將跌破20萬人接下來，
-            117學年逢虎年效應，人數將減至17.3萬人低點，對於大專院校而言，這是對於他們永續發展的嚴峻挑戰，
-            未來將會有越來越多學校面臨轉型、整併或是退場的危機，甚至有教團評估未來恐有40所大學面臨退場。身為學生，
-            學校與我們息息相關，因此我們想要透過本次研究預測臺灣現存大專院校未來退場機率為何。
+            近年來，臺灣因少子化以致學生數下降，根據新聞報導，
+            2028年教團預估有40所大專院校恐面臨退場危機，
+            因此我們想要透過一些開放平台資料來預測全台140間大專院校
+            (扣除兩間空中大學及九間宗教研修學院)未來退場的機率。
           </p>
           <div class="section-divider"></div>
           <p>
             我們整合招生人數、註冊率、財務比率等指標，透過
-            <strong>Random Forest</strong> 搭配下採樣處理類別極度不平衡問題，並以多次隨機切分與交叉驗證檢驗模型穩定性。
+            <strong>Random Forest</strong> 搭配下採樣處理類別極度不平衡問題，
+            並以多次隨機切分與交叉驗證檢驗模型穩定性。
           </p>
           <p>
-            在測試集上，模型整體準確率約為 <strong>86%</strong>，對退場學校的召回率約為 <strong>67%</strong>，顯示具有一定的預警能力，
+            在測試集上，模型整體準確率約為 <strong>86%</strong>，對退場學校的召回率約為 
+            <strong>67%</strong>，顯示具有一定的預警能力，
             但仍可能漏報或誤報，因此強調「輔助決策」而非「取代決策」。
           </p>
         </div>
@@ -1026,15 +1061,15 @@
               <div class="mb-4">
                 <span class="tag-pill">Python</span>
                 <span class="tag-pill">pandas</span>
-                <span class="tag-pill">scikit-learn</span>
                 <span class="tag-pill">numpy</span>
+                <span class="tag-pill">scikit-learn</span>
                 <span class="tag-pill">Random Forest</span>
-                <span class="tag-pill">Google Colab</span>
+                <span class="tag-pill">Colab</span>
               </div>
               <h6 class="fw-bold mb-3" style="font-size:1.1rem;">📚 資料來源</h6>
               <ul class="mb-4" style="font-size: 0.95rem;">
-                <li>教育部 - 大專校院校務資訊公開平台</li>
-                <li>中央研究院 - 人文社會科學中心</li>
+                <li>教育部-大專校院校務資訊公開平台</li>
+                <li>中研院-人文社會研究中心</li>
                 <li>各校校務財務資訊專區</li>
               </ul>
               <h6 class="fw-bold mb-3" style="font-size:1.1rem;">⚖️ 簡要免責聲明</h6>
@@ -1063,10 +1098,15 @@
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10" data-aos="zoom-in" data-aos-delay="200">
           <div class="ratio ratio-16x9 mb-3">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/3aTvzaLG1mE?si=9zebGBC235lfaZqY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe
+              src="https://youtu.be/3aTvzaLG1mE?si=gJwaFDnpOxV4vKdO"
+              title="臺灣大專院校退場風險預測模型 專題介紹影片"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
           </div>
           <p class="text-muted text-center" style="font-size:0.9rem;">
-            💡 如果無法正常播放，請前往 <a href="https://www.youtube.com/watch?v=3aTvzaLG1mE">YouTube</a> 觀看。
+            💡 如果無法正常播放，請直接前往 <a href="https://youtu.be/3aTvzaLG1mE?si=gJwaFDnpOxV4vKdO">YouTube</a> 觀看。
           </p>
         </div>
       </div>
@@ -1089,7 +1129,7 @@
         <div class="col-12 col-lg-11" data-aos="zoom-in" data-aos-delay="200">
           <div class="ratio ratio-16x9">
             <iframe
-              src="https://docs.google.com/presentation/d/e/2PACX-1vTp5dMhBQKaag9roKJWOrkLSqaAVPiGkWgCiDv-PUPwaN7I6-klzZgv1ylz84PINlqP3cnqBwtEHQAL/pubembed?start=false&loop=true&delayms=3000"
+              src="https://docs.google.com/presentation/d/e/2PACX-1vTp5dMhBQKaag9roKJWOrkLSqaAVPiGkWgCiDv-PUPwaN7I6-klzZgv1ylz84PINlqP3cnqBwtEHQAL/pub?start=false&loop=false&delayms=3000"
               frameborder="0"
               allowfullscreen="true"
               mozallowfullscreen="true"
@@ -1133,20 +1173,7 @@
             前往 GitHub 儲存庫
           </a>
         </div>
-        <div class="col-lg-5" data-aos="fade-left">
-          <div class="card card-soft shadow-sm">
-            <div class="card-body p-4">
-              <h6 class="fw-bold mb-3" style="font-size:1.1rem;">📁 Repo 內容概覽</h6>
-              <ul class="mb-0" style="font-size: 0.95rem;line-height:2;">
-                <li><code>/data</code> — 匿名化後的示意資料（如可公開）</li>
-                <li><code>/notebooks</code> — 探索式分析與實驗記錄</li>
-                <li><code>/src</code> — 主要模型與前處理程式碼</li>
-                <li><code>metrics_report</code> — Accuracy、Precision、Recall 等輸出</li>
-                <li><code>README.md</code> — 執行步驟與環境說明</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   </section>
@@ -1155,7 +1182,7 @@
   <footer class="text-center">
     <div class="container">
       <p class="mb-2" style="font-size:1rem;font-weight:600;color:#cbd5e1;">
-        © 2025 臺灣現存大專院校未來退場機率預測｜TAICA_人工智慧導論 學期專題
+        © 2025 臺灣大專院校退場風險預測模型｜學期專題
       </p>
       <p class="mb-0" style="font-size:0.9rem;">
         本網站內容僅供學術研究與教學展示之用，預測結果不構成任何官方或投資決策建議。
@@ -1172,12 +1199,19 @@
   <!-- Custom JS -->
   <script>
     // Initialize AOS
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true,
-      offset: 100
-    });
+    if (window.innerWidth > 768) {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+      });
+    } else {
+      // Disable AOS on mobile to avoid scroll issues
+      AOS.init({
+        disable: true
+      });
+    }
 
     // Loading overlay
     window.addEventListener('load', function() {
@@ -1270,24 +1304,6 @@
     // Run on load and resize
     detectMobile();
     window.addEventListener('resize', detectMobile);
-
-    // Prevent zoom on iOS
-    document.addEventListener('touchmove', function(event) {
-      if (event.scale !== 1) {
-        event.preventDefault();
-      }
-    }, { passive: false });
-
-    // Optimize animations for mobile
-    if (window.innerWidth <= 768) {
-      AOS.init({
-        duration: 600,
-        easing: 'ease-in-out',
-        once: true,
-        offset: 50,
-        disable: 'mobile'
-      });
-    }
 
     // Metric counter animation
     function animateCounter(element, target) {
