@@ -972,8 +972,8 @@
             高教退場風險預警模型
           </div>
           <h1 class="hero-title">
-            臺灣大專院校退場風險<br />
-            預測與視覺化專題
+            臺灣現存大專院校未來退場機率預測<br />
+            專題展示
           </h1>
           <p class="hero-subtitle mb-5">
             基於 2017–2022 年臺灣私立大專院校的招生與財務資料，建構隨機森林分類模型，
@@ -1105,10 +1105,10 @@
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10" data-aos="zoom-in" data-aos-delay="200">
           <div class="ratio ratio-16x9 mb-3">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/3aTvzaLG1mE?si=KFQLFygV71YWeITh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/Jq2C0u_bHxE?si=3peG1rd2sWz1NVRP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </div>
           <p class="text-muted text-center" style="font-size:0.9rem;">
-            💡 如果無法正常播放，請直接前往 <a href="https://youtu.be/3aTvzaLG1mE?si=gJwaFDnpOxV4vKdO">YouTube</a> 觀看。
+            💡 如果無法正常播放，請直接前往 <a href="https://youtu.be/Jq2C0u_bHxE">YouTube</a> 觀看。
           </p>
         </div>
       </div>
@@ -1130,7 +1130,7 @@
       <div class="row justify-content-center">
         <div class="col-12 col-lg-11" data-aos="zoom-in" data-aos-delay="200">
           <div class="ratio ratio-16x9">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTp5dMhBQKaag9roKJWOrkLSqaAVPiGkWgCiDv-PUPwaN7I6-klzZgv1ylz84PINlqP3cnqBwtEHQAL/pubembed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vScRALQRtEfhTlzjbfMQtFosbqsryitttWmPaS0j9f4Hrw5Zs1RfiTpLw9XpO5mdkUwkhLHAnqYqyQe/pubembed?start=false&loop=true&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
           </div>
         </div>
       </div>
@@ -1290,7 +1290,7 @@
       <div data-aos="fade-up">
         <h2 class="section-title">💻 原始碼與重現實驗</h2>
         <p class="section-lead">
-          若想重現本研究結果、調整特徵組合或比較其他模型（例如 XGBoost、Logistic Regression），
+          若想重現本研究結果、調整特徵組合或比較其他模型，
           歡迎參考 GitHub 儲存庫中的程式碼與說明文件。
         </p>
         <div class="section-divider"></div>
@@ -1298,14 +1298,13 @@
       <div class="row align-items-center gy-4 gy-lg-5">
         <div class="col-lg-7" data-aos="fade-right">
           <p style="font-size:1.05rem;line-height:1.8;">
-            Repository 內提供資料前處理、模型訓練、評估指標計算與部分視覺化程式碼，並附上
-            <code>requirements.txt</code> 或環境設定說明，方便在本機或雲端環境中執行。
+            Repository 內提供資料前處理、模型訓練、評估指標計算與部分視覺化程式碼，方便在本機或雲端環境中執行。
           </p>
           <p style="font-size:1.05rem;line-height:1.8;">
             若你有興趣延伸為 <strong>Web API</strong>、<strong>Dashboard</strong> 或整合更多教育資料，也可以在此基礎上進行二次開發。
           </p>
           <a
-            href="https://github.com/taitaiwu/python/tree/main/Introduction_to_Artificial_Intelligence/final_project"
+            href="https://github.com/taitaiwu/python/tree/main/Introduction_to_Artificial_Intelligence%26Mechine_Learning/final_project"
             target="_blank"
             class="btn btn-dark btn-pill mt-3"
           >
@@ -1320,10 +1319,11 @@
             <div class="card-body p-4">
               <h6 class="fw-bold mb-3" style="font-size:1.1rem;">📁 Repo 內容概覽</h6>
               <ul class="mb-0" style="font-size: 0.95rem;line-height:2;">
-                <li><code>/data</code> — 匿名化後的示意資料（如可公開）</li>
-                <li><code>/notebooks</code> — 探索式分析與實驗記錄</li>
-                <li><code>/src</code> — 主要模型與前處理程式碼</li>
-                <li><code>metrics_report</code> — Accuracy、Precision、Recall 等輸出</li>
+                <li><code>Predicting_the_Probability_of_University_Closure_in_Taiwan.ipynb</code> — 程式原始碼</li>
+                <li><code>university_data.csv</code> — 訓練集</li>
+                <li><code>university_data_test.csv</code> — 測試集</li>
+                <li><code>臺灣現存大專院校未來退場機率預測(文件).pdf</code> — 書面報告檔案</li>
+                <li><code>臺灣現存大專院校未來退場機率預測(簡報).pdf</code> — 簡報檔案</li>
                 <li><code>README.md</code> — 執行步驟與環境說明</li>
               </ul>
             </div>
@@ -1337,7 +1337,7 @@
   <footer class="text-center">
     <div class="container">
       <p class="mb-2" style="font-size:1rem;font-weight:600;color:#cbd5e1;">
-        © 2025 臺灣大專院校退場風險預測模型｜學期專題
+        © 2025~2026 臺灣大專院校退場風險預測模型｜學期專題
       </p>
       <p class="mb-0" style="font-size:0.9rem;">
         本網站內容僅供學術研究與教學展示之用，預測結果不構成任何官方或投資決策建議。
