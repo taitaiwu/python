@@ -1,4 +1,4 @@
-# Homework1: Final Project Proposal
+# Homework1: 期末專案計畫
 
 > 目標：以組為單位，規劃並繳交Final project內容，以CVPR格式寫成一到兩頁的提案報告(以英文撰寫為佳)。
 
