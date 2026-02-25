@@ -1,6 +1,6 @@
 # Python 程式存檔
 
-###  現代程式語言(Modern Program Language)
+###  [現代程式語言](/Modern_Programing_Language)(Modern Program Language) 
 1. 授課老師 : 李錫捷
 2. 修課時間 : 113學年度第一學期
 3. 上課用書 : [Python初學特訓班(第六版)](https://www.gotop.com.tw/books/BookDetails.aspx?Types=v&bn=ACL071000)
