@@ -19,6 +19,16 @@
 
 ---
 
+### 計算機演算法(Computer Algorithms)
+1. 授課老師 : 丁德榮
+2. 修課時間 : 114學年度第一學期
+3. 上課用書 : [Introduction to the Design and Analysis of Algorithms: a strategic approach](https://www.tenlong.com.tw/products/9780071085762)、[Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/)
+4. 主要內容 : 平時作業
+5. 檔案介紹 : 平時作業五次練習
+6. 檔案類型 : .py
+
+---
+
 ###  人工智慧導論(Introduction to Artificial Intelligence)
 > TAICA 臺灣大專院校人工智慧學程聯盟
 1. 授課老師 : 朱威達
@@ -26,7 +36,7 @@
 3. 上課用書 : [課程網頁](https://mmcv.csie.ncku.edu.tw/~wtchu/courses/2025f_AI/index.html)、[課堂影片](https://youtube.com/playlist?list=PLSwYd_vsn-YuOTjvLOUA7ybRg1WWwe7P6&si=60szSj1JKhYqeHoF)
 4. 主要內容 : 課堂作業、期末專案
 5. 檔案介紹 : local search 與 SVM 練習、期末專案
-6. 檔案類型 : .py
+6. 檔案類型 : .py、.pdf
 
 ---
 
@@ -36,4 +46,4 @@
 3. 上課用書 : 教授自編
 4. 主要內容 : 課堂作業、期末專案
 5. 檔案介紹 : 平時作業練習與期末專案
-6. 檔案類型 : .py
+6. 檔案類型 : .py、.pdf
