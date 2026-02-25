@@ -10,7 +10,7 @@
 
 ---
 
-### ITS-Python 證照班
+### [ITS-Python 證照班](/ITS_Python)
 1. 修課時間 : 113學年度第一學期
 2. 上課用書 : 講師自編
 3. 主要內容 : 上課筆記. 
@@ -19,7 +19,7 @@
 
 ---
 
-### 計算機演算法(Computer Algorithms)
+### [計算機演算法](/Computer_Algorithms)(Computer Algorithms)
 1. 授課老師 : 丁德榮
 2. 修課時間 : 114學年度第一學期
 3. 上課用書 : [Introduction to the Design and Analysis of Algorithms: a strategic approach](https://www.tenlong.com.tw/products/9780071085762)、[Introduction to Algorithms](https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/)
@@ -29,7 +29,7 @@
 
 ---
 
-###  人工智慧導論(Introduction to Artificial Intelligence)
+###  [人工智慧導論](/Introduction_to_Artificial_Intelligence&Mechine_Learning)(Introduction to Artificial Intelligence)
 > TAICA 臺灣大專院校人工智慧學程聯盟
 
 1. 授課老師 : 朱威達
@@ -41,7 +41,7 @@
 
 ---
 
-### 機器學習(Machine Learning)
+### [機器學習](Introduction_to_Artificial_Intelligence&Mechine_Learning)(Machine Learning)
 1. 授課老師 : 施明毅
 2. 修課時間 : 114學年度第一學期
 3. 上課用書 : 教授自編
