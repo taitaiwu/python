@@ -562,7 +562,7 @@
 <section id="actor">
   <div class="section-tag">Actor-Level Analysis</div>
   <h2 class="section-title">行動者（Actor）視角分析</h2>
-  <p class="section-desc">以熟識度問卷建立有向圖，計算四項中心性指標，辨識系上社會網路的關鍵橋樑 Actor。</p>
+  <p class="section-desc">以熟識度問卷建立有向圖，計算四項中心性指標與結構洞指標，並交叉比對個人活動參與量與結構位置，辨識系上社會網路的關鍵橋樑 Actor。</p>
 
   <h3 class="sub-header">核心橋樑 Actor</h3>
   <div class="bridge-grid">
@@ -618,6 +618,55 @@
   <div id="rank-closeness" class="rank-list"></div>
   <div id="rank-betweenness" class="rank-list"></div>
   <div id="rank-eigenvector" class="rank-list"></div>
+
+  <h3 class="sub-header" style="margin-top:2.5rem">結構洞指標——驗證橋樑角色</h3>
+  <p style="color:var(--muted); font-size:0.98rem; margin-bottom:1.5rem; line-height:1.8">
+    除了中心性排名，再以 <strong style="color:var(--text)">Constraint（結構洞限制度，越低越能跨接群體）</strong> 與 <strong style="color:var(--text)">Effective Size（有效網路規模，越高代表非冗餘聯繫越多）</strong> 兩項 Burt 結構洞指標交叉驗證。
+  </p>
+  <div class="bridge-grid">
+    <div class="bridge-card gold">
+      <div class="bridge-name" style="color:var(--gold); font-size:1.1rem">張庭瑜</div>
+      <div class="bridge-subtitle">兩項結構洞指標皆排名第一</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">Constraint（全體平均 0.1165）</span><span class="bridge-stat-val" style="color:var(--gold)">0.0931（第 1）</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">Effective Size（全體平均 8.71）</span><span class="bridge-stat-val" style="color:var(--gold)">17.16（第 1）</span></div>
+      </div>
+    </div>
+    <div class="bridge-card">
+      <div class="bridge-name" style="color:var(--cyan); font-size:1.1rem">薛智升 ／ 李翊豪 ／ 羅亦軒</div>
+      <div class="bridge-subtitle">Constraint 排名分別為第 3、4、6</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">薛智升</span><span class="bridge-stat-val">0.0959 ／ 15.59</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">李翊豪</span><span class="bridge-stat-val">0.0977 ／ 14.81</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">羅亦軒</span><span class="bridge-stat-val">0.0988 ／ 13.43</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">🧩</div>
+      <div class="finding-text"><strong>結構洞指標與中心性排名高度吻合</strong>——五位核心橋樑 Actor（張庭瑜、薛智升、李翊豪、羅亦軒、江仁甫）的 Constraint 排名均落在全體 45 人前 8 名，證實其橋樑角色不只來自連結「數量」多，更來自人脈網絡彼此重疊度低、真正跨接了不同群體。</div>
+    </div>
+  </div>
+
+  <h3 class="sub-header" style="margin-top:2.5rem">個人活動參與量與結構位置交叉分析</h3>
+  <div class="event-cards">
+    <div class="event-card"><div class="ename">45 人平均參與</div><div class="ecount" style="color:var(--cyan)">3.67</div><div class="elabel">項活動（滿分 8 項）</div></div>
+    <div class="event-card"><div class="ename">社交型活動平均</div><div class="ecount" style="color:var(--purple)">3.24</div><div class="elabel">項（系學會/迎新/地理營/探索營/系羽）</div></div>
+    <div class="event-card"><div class="ename">運動型活動平均</div><div class="ecount" style="color:var(--muted)">0.42</div><div class="elabel">項（男排/女排/系環）</div></div>
+    <div class="event-card"><div class="ename">核心成員（34人）平均</div><div class="ecount" style="color:var(--green)">4.03</div><div class="elabel">項活動 ── 高於整體平均</div></div>
+    <div class="event-card"><div class="ename">邊緣成員（11人）平均</div><div class="ecount" style="color:var(--red)">2.55</div><div class="elabel">項活動 ── 無人超過 4 項</div></div>
+  </div>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">📈</div>
+      <div class="finding-text"><strong>「多重活動參與者更易成為網路核心」獲得數據驗證</strong>——K-core 核心成員平均參與 4.03 項活動，邊緣成員僅 2.55 項，且邊緣成員中無人參與超過 4 項活動，活動參與量與結構位置（核心 vs. 邊緣）呈現明顯正向關聯。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔵</div>
+      <div class="finding-text"><strong>學生的活動軌跡明顯偏向社交型叢集</strong>——社交型活動平均參與 3.24 項，運動型活動平均僅 0.42 項，與 2.3 節「活動形成兩大叢集」的發現相互呼應：多數學生透過重疊度高的社交型活動建立廣泛人際連結。</div>
+    </div>
+  </div>
 
   <h3 class="sub-header" style="margin-top:2.5rem">雙層網路（熟識問卷 vs. 活動共參與）</h3>
   <div class="multiplex-grid">
