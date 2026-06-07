@@ -624,32 +624,36 @@
     <div class="mp-card">
       <div class="mp-val mp-1">1</div>
       <div class="mp-meaning">雙重確認</div>
-      <div class="mp-desc">有共同活動 <strong>且</strong> 熟識確認<br>活動有效促進熟識</div>
+      <div class="mp-desc">有共同活動 <strong>且</strong> 熟識確認<br>有向圖 55.5%／無向圖 46.8%</div>
     </div>
     <div class="mp-card">
       <div class="mp-val mp-2">2</div>
       <div class="mp-meaning">非活動熟識</div>
-      <div class="mp-desc">無共同活動，但互相熟識<br>透過其他管道建立關係（極少）</div>
+      <div class="mp-desc">無共同活動，但互相熟識<br>僅 0.1%，透過其他管道建立關係（極少）</div>
     </div>
     <div class="mp-card">
       <div class="mp-val mp-3">3</div>
       <div class="mp-meaning">假性接觸</div>
-      <div class="mp-desc">有共同活動，但<strong>不</strong>互相熟識<br>大型活動中常見</div>
+      <div class="mp-desc">有共同活動，但<strong>不</strong>互相熟識<br>有向圖 44.2%／無向圖 52.9%，大型活動中常見</div>
     </div>
     <div class="mp-card">
       <div class="mp-val mp-4">4</div>
       <div class="mp-meaning">完全無交集</div>
-      <div class="mp-desc">無活動、不熟識<br>主要集中在蔡宗佑一列</div>
+      <div class="mp-desc">無活動、不熟識<br>僅 0.2%，主要集中在蔡宗佑一列</div>
     </div>
   </div>
   <div class="finding-list">
     <div class="finding">
       <div class="finding-icon">✅</div>
-      <div class="finding-text"><strong>活動共參與是熟識的重要前提</strong>——大多數情況下，「值 1」（雙重確認）佔多數，說明活動確實是建立人際關係的主要管道。</div>
+      <div class="finding-text"><strong>活動共參與是熟識的重要前提</strong>——以「有向圖」（單方認定即算熟識）統計，45 人共 1,980 組配對中有 <strong>55.5%</strong> 屬於「值 1」（共同參與且熟識），說明活動確實是建立人際關係的主要管道。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔁</div>
+      <div class="finding-text"><strong>改用「雙方互相認定」的無向圖標準後，熟識轉化率由 55.6% 降至 46.9%</strong>——約有 9 個百分點的「單向認知落差」（一方記得對方、對方卻未必有同樣印象），顯示要形成真正雙向確認的熟識關係，門檻比單方認知更高。</div>
     </div>
     <div class="finding">
       <div class="finding-icon">⚠️</div>
-      <div class="finding-text"><strong>大型活動熟識轉化效率較低（值 3 普遍）</strong>——系學會（93 人）、迎新（83 人）中存在大量共同參與但不熟識的情況，活動規模越大，人均互動機會越少。</div>
+      <div class="finding-text"><strong>大型活動熟識轉化效率較低（值 3 普遍）</strong>——系學會（93 人）、迎新（83 人）中存在大量共同參與但不熟識的情況；改採無向圖標準後「值 3」比例由 44.2% 上升至 52.9%，更凸顯活動規模越大、人均互動機會越少的現象。</div>
     </div>
     <div class="finding">
       <div class="finding-icon">🌐</div>
@@ -830,6 +834,10 @@ const Graph = ForceGraph3D()(document.getElementById('graph'))
     Graph.centerAt(node.x, node.y, 1000);
     Graph.zoom(4, 2000);
   });
+
+// 拉開節點間距：加大彼此排斥力、加長連結距離
+Graph.d3Force('charge').strength(-180);
+Graph.d3Force('link').distance(80);
 
 window.addEventListener('resize', () => {
   const wrap = document.getElementById('graph-wrap');
