@@ -268,6 +268,12 @@
     .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
 
+    /* ── RESPONSIVE: NAV SQUEEZE (901px – 1240px) ─────────────────── */
+    @media (max-width: 1240px) and (min-width: 901px) {
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: 0.83rem; }
+    }
+
     /* ── RESPONSIVE: TABLET (≤ 900px) ─────────────────────────────── */
     @media (max-width: 900px) {
       /* Nav: hamburger */
@@ -406,7 +412,9 @@
     <a href="#event" onclick="closeNav()">活動分析</a>
     <a href="#actor" onclick="closeNav()">Actor 分析</a>
     <a href="#kcore" onclick="closeNav()">K-Core</a>
+    <a href="#comparison" onclick="closeNav()">時間切分比較</a>
     <a href="#conclusion" onclick="closeNav()">結論</a>
+    <a href="#source" onclick="closeNav()">原始碼與檔案</a>
   </div>
   <button class="nav-toggle" id="navToggle" aria-label="選單" onclick="toggleNav()">
     <span></span><span></span><span></span>
@@ -742,6 +750,85 @@
 
 <div class="divider"></div>
 
+<!-- TIME-SPLIT COMPARISON -->
+<section id="comparison">
+  <div class="section-tag">Robustness Check ｜ complete_data.csv vs. train_data.csv</div>
+  <h2 class="section-title">補充分析：依舉辦時間切分活動資料的比較</h2>
+  <p class="section-desc">
+    <code style="color:var(--cyan)">complete_final_project.ipynb</code> 改用 <code style="color:var(--cyan)">complete_data.csv</code> 重新進行同一套分析——將原本橫跨 115、116 兩個學年度、卻被合併計算的 4 項活動（系學會、迎新、探索營、系環）依「實際舉辦的學年度」拆分為獨立欄位（8 項活動 → 13 項活動），並修正 1 筆參與資料誤植（張毓庭．地理營：0 → 1）。以下整理改用時間切分資料後，各項分析結果出現的變化與不變之處。
+  </p>
+
+  <h3 class="sub-header">活動欄位拆分對照</h3>
+  <div class="event-cards">
+    <div class="event-card">
+      <div class="ename">系學會</div>
+      <div class="ecount" style="color:var(--cyan); font-size:1.5rem">93 人 → 115：49 ／ 116：45</div>
+      <div class="elabel">合併計算的「系學會」其實是兩屆幹部世代的疊加</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">迎新</div>
+      <div class="ecount" style="color:var(--cyan); font-size:1.5rem">83 人 → 115：53 ／ 116：49</div>
+      <div class="elabel">兩個年度迎新的參與者組成並非同一批人</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">探索營</div>
+      <div class="ecount" style="color:var(--purple); font-size:1.5rem">18 人 → 二屆：14 ／ 三屆：12</div>
+      <div class="elabel">不同屆別招募對象明顯不同</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">系環</div>
+      <div class="ecount" style="color:var(--purple); font-size:1.5rem">21 人 → 6 屆：7 ／ 7 屆：19</div>
+      <div class="elabel">兩屆規模差異最大，第 7 屆明顯擴編</div>
+    </div>
+  </div>
+
+  <h3 class="sub-header">關鍵發現：時間切分揭露了什麼</h3>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">🧬</div>
+      <div class="finding-text"><strong>「世代斷裂」首度被量化——直接呼應研究主題的「傳承結構」</strong>：合併資料時看不出來的世代差異，在拆分後現形——跨學年活動的成員重合度（如 115系學會 × 116系學會 = 0.27、115系學會 × 116迎新 = 0.31）明顯低於同學年活動間的重合度（如 116系學會 × 116迎新 = 0.47、115系學會 × 115迎新 = 0.52）。這代表系上社群並非鐵板一塊的整體，而是隨屆別更替形成具有世代落差的子群體。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🏸</div>
+      <div class="finding-text"><strong>系羽社團出現「世代更替」訊號</strong>：作為跨學年常態運作的社團，系羽與 116（較新世代）活動的 Jaccard 重合度（116迎新 0.44、116系學會 0.31）明顯高於與 115（較舊世代）活動的重合度（115迎新 0.21、115系學會 0.25），顯示其現有成員組成正逐漸被新生世代取代——具體呈現了「傳承」過程中的世代交棒現象。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔍</div>
+      <div class="finding-text"><strong>合併資料高估了「共同參與」關係——約 286 對學生其實從未同場</strong>：在合併版資料中，45 人共 1,980 組配對裡有 99.7%（1,974 對）被判定為「曾共同參與活動」；但用時間切分資料重新檢視，僅 85.3%（1,688 對）真正在同一場次共處過。其餘約 286 對（14.4 個百分點）其實分屬不同學年的同名活動，從未真正同場，是合併計算造成的「假性共同參與」。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">📈</div>
+      <div class="finding-text"><strong>校正偏誤後，「活動促進熟識」的證據不降反升</strong>：扣除假性共同參與重新計算「對照矩陣」，活動 → 熟識的轉化率由有向圖 55.6%／無向圖 46.9%，提升為 <strong style="color:var(--green)">61.6%／52.4%</strong>。換言之，原始合併資料其實低估了活動對熟識的促進效果——一旦只計入「真正同場參與」的紀錄，共同參與和熟識之間的關聯性反而更為緊密，更有力地支持本研究「共同參與活動可促進熟識」的核心假設。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔒</div>
+      <div class="finding-text"><strong>Actor 中心性、結構洞、Clique、K-Core 完全不受影響</strong>：度／接近／介數／特徵向量中心性、Constraint、Effective Size、團（clique）與 K-core（21-core，34 人）等指標均直接建立在 <code style="color:var(--cyan)">familiarity_questionnaire.csv</code>（熟識度問卷）之上，與活動資料檔案無關，因此切分前後數值完全一致（僅有 10⁻¹³ 等級的浮點捨入差異）。<strong>張庭瑜</strong>仍是無可爭議的核心橋樑 Actor，研究結論的 Actor 視角部分維持穩固。</div>
+    </div>
+  </div>
+
+  <h3 class="sub-header" style="margin-top:2.5rem">雙層網路對照矩陣：切分前 vs. 切分後</h3>
+  <p style="color:var(--muted); font-size:0.95rem; margin-bottom:1rem">有向圖（單方認定即算熟識）統計，45 人 × 45 人、扣除對角線共 1,980 組配對：</p>
+  <p style="color:var(--cyan); font-size:0.92rem; font-weight:700; margin-bottom:0.6rem">切分前（train_data，合併計算）</p>
+  <div class="multiplex-grid">
+    <div class="mp-card"><div class="mp-val mp-1">1</div><div class="mp-meaning">雙重確認</div><div class="mp-desc">55.5%</div></div>
+    <div class="mp-card"><div class="mp-val mp-2">2</div><div class="mp-meaning">非活動熟識</div><div class="mp-desc">0.1%</div></div>
+    <div class="mp-card"><div class="mp-val mp-3">3</div><div class="mp-meaning">假性接觸</div><div class="mp-desc">44.3%</div></div>
+    <div class="mp-card"><div class="mp-val mp-4">4</div><div class="mp-meaning">完全無交集</div><div class="mp-desc">0.2%</div></div>
+  </div>
+  <p style="color:var(--green); font-size:0.92rem; font-weight:700; margin-bottom:0.6rem">切分後（complete_data，依時間還原）</p>
+  <div class="multiplex-grid">
+    <div class="mp-card"><div class="mp-val mp-1">1</div><div class="mp-meaning">雙重確認</div><div class="mp-desc" style="color:var(--green); font-weight:700">52.5%</div></div>
+    <div class="mp-card"><div class="mp-val mp-2">2</div><div class="mp-meaning">非活動熟識</div><div class="mp-desc">3.0%</div></div>
+    <div class="mp-card"><div class="mp-val mp-3">3</div><div class="mp-meaning">假性接觸</div><div class="mp-desc" style="color:var(--green); font-weight:700">32.7%</div></div>
+    <div class="mp-card"><div class="mp-val mp-4">4</div><div class="mp-meaning">完全無交集</div><div class="mp-desc">11.8%</div></div>
+  </div>
+  <p style="color:var(--muted); font-size:0.95rem; margin-top:1rem; line-height:1.85">
+    乍看之下「值 1」比例似乎下降（55.5% → 52.5%），但這是因為原本被誤判為「曾共同參與」的配對（值 2、值 4 合計由 0.3% 暴增至 14.7%）被還原成「真正未同場」；在母數縮小、雜訊去除之後，<strong style="color:var(--text)">熟識轉化率（值 1 ÷（值 1 ＋ 值 3））反而從 55.6% 上升至 61.6%</strong>，顯示「真共同參與」對熟識的解釋力比合併資料呈現的更強。
+  </p>
+</section>
+
+<div class="divider"></div>
+
 <!-- CONCLUSION -->
 <section id="conclusion">
   <div class="section-tag">Findings & Conclusions</div>
@@ -776,6 +863,65 @@
   <div class="card" style="margin-top:1.5rem">
     <h3>對未來的啟示</h3>
     <p style="font-size:0.88rem; color:var(--muted); margin-top:0.5rem">本研究建議系學會在規劃活動時，特別關注<strong>小型互動型活動</strong>（如探索營、地理營）的舉辦頻率——相較於大型活動，這類活動更能有效促進深度熟識，進而強化系上社會網路的凝聚力與傳承延續性。在橋樑 Actor 畢業後，如何維持既有的跨群體連結，是系上值得思考的傳承挑戰。</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOURCE & FILES -->
+<section id="source">
+  <div class="section-tag">Source Code & Files</div>
+  <h2 class="section-title">原始碼與檔案說明</h2>
+  <p class="section-desc">本研究的完整程式碼、原始資料與分析報告皆公開於 GitHub，歡迎查閱、下載並重現整個分析流程。</p>
+
+  <a href="https://github.com/taitaiwu/python/tree/main/Social_Network_Analysis_and_Geographic_Applications/final_project"
+     target="_blank" rel="noopener"
+     style="display:inline-flex; align-items:center; gap:0.7rem; padding:0.9rem 1.7rem; border:1px solid var(--border); border-radius:10px; color:var(--text); text-decoration:none; font-weight:700; font-size:1rem; background:var(--bg2); margin-bottom:2.6rem; transition:border-color 0.2s, box-shadow 0.2s;"
+     onmouseover="this.style.borderColor='rgba(0,212,255,0.4)'; this.style.boxShadow='0 0 20px rgba(0,212,255,0.08)'"
+     onmouseout="this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+    <span style="font-size:1.35rem">🐙</span>
+    在 GitHub 上查看完整原始碼與資料
+    <span style="color:var(--cyan)">→</span>
+  </a>
+
+  <h3 class="sub-header">資料夾檔案說明</h3>
+  <div class="event-cards">
+    <div class="event-card">
+      <div class="ename">📓 final_project.ipynb</div>
+      <div class="elabel">主分析 Notebook——讀取 <code style="color:var(--cyan)">train_data.csv</code> 與兩份熟識度問卷，執行 Event／Actor 雙視角完整分析流程，為本報告第一～五節的依據。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📓 complete_final_project.ipynb</div>
+      <div class="elabel">補充分析 Notebook——程式碼與主分析完全相同，僅改用依時間切分的 <code style="color:var(--cyan)">complete_data.csv</code>，用以檢驗主分析結論的穩健性，結果見第六節「時間切分比較」。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📊 train_data.csv</div>
+      <div class="elabel">活動參與資料（合併版）——45 人 × 8 項活動的 0/1 矩陣，系學會、迎新、探索營、系環等橫跨學年度的活動被合併為單一欄位。為主分析的輸入資料。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📊 complete_data.csv</div>
+      <div class="elabel">活動參與資料（時間切分版）——將系學會、迎新、探索營、系環依「實際舉辦學年度」拆分為 13 個欄位，並修正 1 筆參與資料誤植。為補充分析的輸入資料。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📋 familiarity_questionnaire.csv</div>
+      <div class="elabel">熟識度問卷（有向）——45 × 45 友誼網路，單方認定即算熟識，是中心性、結構洞、clique、雙層網路比對等分析的核心輸入。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📋 undirected_familiarity_questionnaire.csv</div>
+      <div class="elabel">熟識度問卷（無向）——將熟識度問卷轉為無向圖標準（雙方須互相認定才算熟識），用於 K-core 分析及更嚴格標準的對照比較。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">🌐 index.html</div>
+      <div class="elabel">本網頁——互動式分析報告，包含 3D 社會網路圖、Event／Actor 視角分析卡片、K-core 結構與時間切分比較等視覺化內容。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📄 README.md</div>
+      <div class="elabel">完整文字版分析報告（Markdown），整理自兩份 Notebook 的執行結果，內容與本網頁對應。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📑 final_project_proposal.pdf</div>
+      <div class="elabel">期末專題研究計畫書——提案階段文件，說明研究動機、方法與預期成果。</div>
+    </div>
   </div>
 </section>
 
