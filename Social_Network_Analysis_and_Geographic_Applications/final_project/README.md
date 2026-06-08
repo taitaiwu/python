@@ -1,7 +1,7 @@
 # 連結地理系的橋樑：探討團體活動參與對地理系學生人際網路影響與傳承結構
 
 > 社會網路分析與地理應用 期末專題分析報告  
-> 地理四 S1143022 蔡家晨 / 地理四 S1143042 吳侑謙 / 地理三 S1243038 張庭瑜 / 資工三 S1254059 吳佳泰
+> 地理四 S1143022 蔡家晨 / 地理四 S1143042 吳侑謙 / 地理三 S1243038 張庭瑜 / 資工三 S1254059 吳佳泰  
 > 網頁展示：[LINK](https://taitaiwu.github.io/python/Social_Network_Analysis_and_Geographic_Applications/final_project/)
 
 ---
