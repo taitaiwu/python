@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>連結地理系的橋樑</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c18;
+      --bg2: #0e1528;
+      --bg3: #131929;
+      --cyan: #00d4ff;
+      --purple: #7c3aed;
+      --gold: #fbbf24;
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #edf2f7;
+      --muted: #a8b8cc;
+      --border: rgba(255,255,255,0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Noto Sans TC', 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.75;
+      font-size: 1rem;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 62px;
+      background: rgba(8,12,24,0.9); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-size: 1rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--cyan); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 90px 2rem 5rem;
+      background: radial-gradient(ellipse at 50% 60%, rgba(0,212,255,0.09) 0%, transparent 65%),
+                  radial-gradient(ellipse at 80% 20%, rgba(124,58,237,0.10) 0%, transparent 55%),
+                  var(--bg);
+    }
+    .hero-tag {
+      display: inline-block; padding: 0.45rem 1.3rem;
+      border: 1px solid rgba(0,212,255,0.45); border-radius: 999px;
+      color: var(--cyan); font-size: 0.92rem; letter-spacing: 0.08em; margin-bottom: 1.8rem;
+    }
+    .hero-title { font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 900; line-height: 1.2; margin-bottom: 1.1rem; }
+    .hero-title span { color: var(--cyan); }
+    .hero-sub { font-size: 1.2rem; color: var(--muted); margin-bottom: 2.8rem; max-width: 600px; line-height: 1.8; }
+    .hero-team { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; margin-bottom: 3.2rem; }
+    .hero-team span {
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.45rem 1rem; font-size: 0.95rem; color: var(--muted);
+    }
+    .hero-stats { display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2.8rem; font-weight: 900; color: var(--cyan); line-height: 1; }
+    .stat-label { font-size: 0.92rem; color: var(--muted); margin-top: 0.4rem; }
+    .scroll-hint { margin-top: 4rem; color: var(--muted); font-size: 0.92rem; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+    /* SECTIONS */
+    section { padding: 5.5rem 2.5rem; max-width: 1140px; margin: 0 auto; }
+    .section-tag { font-size: 0.82rem; letter-spacing: 0.18em; color: var(--cyan); text-transform: uppercase; margin-bottom: 0.7rem; font-weight: 600; }
+    .section-title { font-size: clamp(1.7rem, 3.2vw, 2.5rem); font-weight: 800; margin-bottom: 1rem; }
+    .section-title::after { content: ''; display: block; width: 3rem; height: 3px; background: linear-gradient(90deg, var(--cyan), var(--purple)); border-radius: 2px; margin-top: 0.6rem; }
+    .section-desc { color: var(--muted); max-width: 720px; margin-bottom: 2.8rem; font-size: 1.05rem; line-height: 1.85; }
+    .divider { width: 100%; height: 1px; background: var(--border); margin: 0; }
+
+    /* OVERVIEW */
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+    @media(max-width:700px){ .overview-grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { border-color: rgba(0,212,255,0.25); box-shadow: 0 0 24px rgba(0,212,255,0.06); }
+    .card h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+    .card p, .card ul { font-size: 0.98rem; color: var(--muted); line-height: 1.8; }
+    .card ul { padding-left: 1.3rem; }
+    .card li { margin-bottom: 0.5rem; }
+    .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 5px; font-size: 0.8rem; font-weight: 700; }
+    .badge-cyan { background: rgba(0,212,255,0.15); color: var(--cyan); }
+    .badge-purple { background: rgba(124,58,237,0.2); color: #a78bfa; }
+    .badge-gold { background: rgba(251,191,36,0.15); color: var(--gold); }
+    .badge-green { background: rgba(16,185,129,0.15); color: var(--green); }
+    .badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
+
+    /* NETWORK SECTION */
+    #network-section {
+      width: 100%; max-width: 100%; padding: 0;
+      background: #000;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .network-header { max-width: 1140px; margin: 0 auto; padding: 3.5rem 2.5rem 1.8rem; }
+    .network-header h2 { font-size: 1.9rem; font-weight: 800; }
+    .network-header p { color: var(--muted); font-size: 1rem; margin-top: 0.6rem; line-height: 1.75; }
+    #graph-wrap { position: relative; width: 100%; height: 72vh; min-height: 520px; }
+    #graph { width: 100%; height: 100%; }
+    .graph-legend {
+      position: absolute; top: 1.2rem; right: 1.2rem; z-index: 10;
+      background: rgba(8,12,24,0.88); backdrop-filter: blur(10px);
+      border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.4rem;
+      font-size: 0.92rem;
+    }
+    .graph-legend h4 { color: var(--text); margin-bottom: 0.8rem; font-size: 0.96rem; font-weight: 700; }
+    .legend-item { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; color: var(--muted); }
+    .legend-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .graph-hint {
+      position: absolute; bottom: 1.2rem; left: 1.2rem;
+      color: var(--muted); font-size: 0.88rem;
+      background: rgba(8,12,24,0.75); border-radius: 8px; padding: 0.5rem 0.9rem;
+    }
+    .node-info-panel {
+      position: absolute; top: 1.2rem; left: 1.2rem; z-index: 10;
+      background: rgba(8,12,24,0.92); backdrop-filter: blur(10px);
+      border: 1px solid var(--cyan); border-radius: 12px; padding: 1.2rem 1.4rem;
+      font-size: 0.95rem; min-width: 210px; display: none;
+    }
+    .node-info-panel.active { display: block; }
+    .node-info-panel h4 { color: var(--cyan); font-size: 1.15rem; font-weight: 800; margin-bottom: 0.8rem; }
+    .node-info-row { display: flex; justify-content: space-between; gap: 1.2rem; padding: 0.3rem 0; border-bottom: 1px solid var(--border); }
+    .node-info-row:last-child { border-bottom: none; }
+    .node-info-label { color: var(--muted); }
+    .node-info-val { color: var(--text); font-weight: 700; }
+
+    /* EVENT */
+    .heatmap-wrap { overflow-x: auto; margin-bottom: 2.5rem; border-radius: 10px; }
+    .heatmap { border-collapse: collapse; font-size: 0.95rem; width: 100%; }
+    .heatmap th { padding: 0.7rem 0.9rem; text-align: center; color: var(--muted); font-weight: 700; white-space: nowrap; border: 1px solid var(--border); font-size: 0.9rem; }
+    .heatmap td { padding: 0.65rem 0.9rem; text-align: center; border: 1px solid var(--border); font-weight: 700; transition: transform 0.15s; cursor: default; font-size: 0.95rem; }
+    .heatmap td:hover { transform: scale(1.18); z-index: 1; position: relative; border-radius: 4px; }
+    .heatmap .row-label { text-align: left; color: var(--muted); white-space: nowrap; font-weight: 600; font-size: 0.95rem; }
+    .event-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; margin-bottom: 2.5rem; }
+    .event-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.3rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .event-card:hover { border-color: rgba(0,212,255,0.25); box-shadow: 0 0 20px rgba(0,212,255,0.05); }
+    .event-card .ename { font-weight: 700; font-size: 1.08rem; margin-bottom: 0.5rem; }
+    .event-card .ecount { font-size: 2.1rem; font-weight: 900; line-height: 1.1; }
+    .event-card .elabel { font-size: 0.88rem; color: var(--muted); margin-top: 0.2rem; }
+    .finding-list { display: flex; flex-direction: column; gap: 1rem; }
+    .finding {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+    .finding:hover { border-color: rgba(0,212,255,0.2); }
+    .finding-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .finding-text { font-size: 0.99rem; color: var(--muted); line-height: 1.8; }
+    .finding-text strong { color: var(--text); font-weight: 700; }
+
+    /* SUB-HEADERS */
+    .sub-header { font-size: 1.05rem; font-weight: 700; color: var(--muted); margin-bottom: 1.2rem; margin-top: 0.5rem; }
+
+    /* ACTOR */
+    .rank-tabs { display: flex; gap: 0.6rem; margin-bottom: 1.6rem; flex-wrap: wrap; }
+    .rank-tab {
+      padding: 0.55rem 1.2rem; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .rank-tab.active { background: var(--cyan); color: #000; border-color: var(--cyan); font-weight: 700; }
+    .rank-tab:hover:not(.active) { border-color: rgba(0,212,255,0.3); color: var(--text); }
+    .rank-list { display: none; }
+    .rank-list.active { display: flex; flex-direction: column; gap: 0.6rem; }
+    .rank-item {
+      display: flex; align-items: center; gap: 1.2rem;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1.2rem;
+      transition: border-color 0.2s;
+    }
+    .rank-item:hover { border-color: rgba(0,212,255,0.3); }
+    .rank-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.88rem; font-weight: 800; flex-shrink: 0; }
+    .rank-top1 { background: var(--gold); color: #000; }
+    .rank-top3 { background: rgba(251,191,36,0.2); color: var(--gold); }
+    .rank-top5 { background: rgba(16,185,129,0.15); color: var(--green); }
+    .rank-other { background: rgba(255,255,255,0.06); color: var(--muted); }
+    .rank-name { font-weight: 700; font-size: 1.05rem; min-width: 70px; }
+    .rank-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 7px; overflow: hidden; }
+    .rank-bar { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+    .rank-val { font-size: 0.92rem; color: var(--muted); min-width: 58px; text-align: right; font-weight: 600; }
+
+    /* BRIDGE ACTORS */
+    .bridge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.2rem; margin-bottom: 2.8rem; }
+    .bridge-card {
+      background: var(--bg2); border: 1px solid rgba(0,212,255,0.22); border-radius: 14px; padding: 1.5rem;
+      transition: box-shadow 0.2s;
+    }
+    .bridge-card:hover { box-shadow: 0 0 28px rgba(0,212,255,0.08); }
+    .bridge-card.gold { border-color: rgba(251,191,36,0.45); }
+    .bridge-card.gold:hover { box-shadow: 0 0 28px rgba(251,191,36,0.1); }
+    .bridge-name { font-size: 1.25rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .bridge-subtitle { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.9rem; }
+    .bridge-stats { display: flex; flex-direction: column; gap: 0.45rem; }
+    .bridge-stat { display: flex; justify-content: space-between; font-size: 0.93rem; padding: 0.2rem 0; border-bottom: 1px solid var(--border); }
+    .bridge-stat:last-child { border-bottom: none; }
+    .bridge-stat-label { color: var(--muted); }
+    .bridge-stat-val { font-weight: 700; }
+
+    /* KCORE */
+    .kcore-hero {
+      text-align: center; padding: 2.5rem 2rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 18px; margin-bottom: 2.5rem;
+    }
+    .kcore-num { font-size: 5rem; font-weight: 900; color: var(--cyan); line-height: 1; }
+    .kcore-label { color: var(--muted); font-size: 1rem; margin-top: 0.5rem; font-weight: 600; }
+    .kcore-desc { font-size: 1rem; color: var(--muted); max-width: 600px; margin: 1rem auto 0; line-height: 1.8; }
+    .kcore-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+    @media(max-width:600px){ .kcore-grid { grid-template-columns: 1fr; } }
+    .member-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .member-chip { padding: 0.35rem 0.85rem; border-radius: 999px; font-size: 0.92rem; font-weight: 600; }
+    .member-core { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    .member-bridge { background: rgba(251,191,36,0.15); color: var(--gold); border: 1px solid rgba(251,191,36,0.3); }
+    .member-outer { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+
+    /* GRAPH TABS */
+    .graph-tabs {
+      max-width: 1140px; margin: 0 auto;
+      padding: 1rem 2.5rem 0;
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .gtab {
+      padding: 0.48rem 1.1rem; border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .gtab.active { background: var(--cyan); color: #000; border-color: var(--cyan); }
+    .gtab:hover:not(.active) { border-color: rgba(0,212,255,0.3); color: var(--text); }
+    .graph-meta {
+      max-width: 1140px; margin: 0 auto;
+      padding: 0.45rem 2.5rem 0;
+      font-size: 0.86rem; color: var(--muted);
+    }
+    @media(max-width:640px){
+      .graph-tabs { padding: 0.8rem 1.4rem 0; }
+      .graph-meta { padding: 0.35rem 1.4rem 0; font-size: 0.8rem; }
+      .gtab { font-size: 0.82rem; padding: 0.38rem 0.8rem; }
+    }
+
+    /* CONCLUSION */
+    .conclusion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; margin-bottom: 2.8rem; }
+    .conc-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .conc-card:hover { border-color: rgba(0,212,255,0.2); }
+    .conc-card h4 { font-size: 0.9rem; color: var(--cyan); margin-bottom: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; }
+    .conc-card p { font-size: 0.98rem; color: var(--muted); line-height: 1.8; }
+    .conc-card p strong { color: var(--text); font-weight: 700; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 2.5rem; text-align: center; color: var(--muted); font-size: 0.95rem; max-width: 1140px; margin: 0 auto; line-height: 1.9; }
+
+    /* MULTIPLEX */
+    .multiplex-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2.5rem; }
+    @media(max-width:700px){ .multiplex-grid { grid-template-columns: 1fr 1fr; } }
+    .mp-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.3rem; text-align: center;
+      transition: border-color 0.2s;
+    }
+    .mp-card:hover { border-color: rgba(0,212,255,0.2); }
+    .mp-val { font-size: 1rem; font-weight: 900; width: 38px; height: 38px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.7rem; }
+    .mp-1 { background: rgba(16,185,129,0.25); color: var(--green); }
+    .mp-2 { background: rgba(251,191,36,0.2); color: var(--gold); }
+    .mp-3 { background: rgba(239,68,68,0.15); color: #f87171; }
+    .mp-4 { background: rgba(148,163,184,0.1); color: var(--muted); }
+    .mp-meaning { font-size: 0.98rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text); }
+    .mp-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+
+    /* ── HAMBURGER ──────────────────────────────────────────────────── */
+    .nav-toggle {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 8px; z-index: 1001;
+    }
+    .nav-toggle span {
+      display: block; width: 24px; height: 2px;
+      background: var(--muted); border-radius: 2px; transition: all 0.25s ease;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--cyan); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--cyan); }
+
+    /* ── RESPONSIVE: NAV SQUEEZE (901px – 1240px) ─────────────────── */
+    @media (max-width: 1240px) and (min-width: 901px) {
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: 0.83rem; }
+    }
+
+    /* ── RESPONSIVE: TABLET (≤ 900px) ─────────────────────────────── */
+    @media (max-width: 900px) {
+      /* Nav: hamburger */
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none; flex-direction: column;
+        position: absolute; top: 62px; left: 0; right: 0;
+        background: rgba(8,12,24,0.97); backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border); padding: 0.5rem 0;
+        gap: 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a {
+        padding: 1rem 2rem; font-size: 1.05rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links a:last-child { border-bottom: none; }
+      .nav-links a:hover { background: rgba(0,212,255,0.05); }
+
+      section { padding: 4.5rem 1.8rem; }
+      .network-header { padding: 2.8rem 1.8rem 1.4rem; }
+      .network-header h2 { font-size: 1.6rem; }
+      #graph-wrap { height: 62vh; }
+
+      .overview-grid { grid-template-columns: 1fr; }
+      .bridge-grid { grid-template-columns: 1fr 1fr; }
+      .multiplex-grid { grid-template-columns: 1fr 1fr; }
+
+      .hero-stats { gap: 2rem; }
+      .stat-num { font-size: 2.4rem; }
+    }
+
+    /* ── RESPONSIVE: MOBILE LANDSCAPE (≤ 640px) ───────────────────── */
+    @media (max-width: 640px) {
+      nav { height: 56px; padding: 0 1.4rem; }
+      .nav-links { top: 56px; }
+      .nav-logo { font-size: 0.9rem; }
+
+      #hero { padding: 76px 1.4rem 3.5rem; }
+      .hero-tag { font-size: 0.82rem; padding: 0.38rem 1rem; margin-bottom: 1.4rem; }
+      .hero-title { margin-bottom: 0.9rem; }
+      .hero-sub { font-size: 1.05rem; margin-bottom: 2rem; }
+      .hero-team span { font-size: 0.88rem; padding: 0.38rem 0.85rem; }
+      .hero-team { margin-bottom: 2.5rem; }
+      .hero-stats { gap: 1.6rem; }
+      .stat-num { font-size: 2.1rem; }
+      .stat-label { font-size: 0.85rem; }
+
+      section { padding: 3.8rem 1.4rem; }
+      .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+      .section-desc { font-size: 0.97rem; margin-bottom: 2rem; }
+      .sub-header { font-size: 1rem; }
+
+      .overview-grid, .kcore-grid, .bridge-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .conclusion-grid { grid-template-columns: 1fr; gap: 1.1rem; }
+      .event-cards { grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+      .card { padding: 1.5rem; }
+      .card h3 { font-size: 1rem; }
+      .card p, .card ul { font-size: 0.93rem; }
+
+      .finding { padding: 1rem 1.2rem; gap: 0.8rem; }
+      .finding-icon { font-size: 1.3rem; }
+      .finding-text { font-size: 0.94rem; }
+
+      .rank-tab { padding: 0.48rem 0.9rem; font-size: 0.88rem; }
+      .rank-item { gap: 0.9rem; padding: 0.8rem 1rem; }
+      .rank-name { font-size: 1rem; min-width: 58px; }
+      .rank-val { min-width: 50px; font-size: 0.86rem; }
+
+      .bridge-card { padding: 1.3rem; }
+      .bridge-name { font-size: 1.15rem; }
+      .bridge-stat { font-size: 0.88rem; }
+
+      .kcore-hero { padding: 2rem 1.5rem; }
+      .kcore-num { font-size: 4rem; }
+      .kcore-desc { font-size: 0.94rem; }
+      .member-chip { font-size: 0.86rem; padding: 0.28rem 0.72rem; }
+
+      .conc-card { padding: 1.3rem; }
+      .conc-card h4 { font-size: 0.84rem; }
+      .conc-card p { font-size: 0.93rem; }
+
+      .mp-card { padding: 1.1rem 0.9rem; }
+      .mp-meaning { font-size: 0.92rem; }
+      .mp-desc { font-size: 0.82rem; }
+
+      .network-header { padding: 2rem 1.4rem 1rem; }
+      .network-header h2 { font-size: 1.35rem; }
+      .network-header p { font-size: 0.93rem; }
+      #graph-wrap { height: 58vh; min-height: 360px; }
+      .graph-legend { padding: 0.8rem 1rem; font-size: 0.82rem; }
+      .graph-legend h4 { font-size: 0.86rem; }
+      .legend-dot { width: 9px; height: 9px; }
+      .graph-hint { font-size: 0.78rem; padding: 0.4rem 0.7rem; }
+      .node-info-panel { min-width: 180px; font-size: 0.88rem; }
+      .node-info-panel h4 { font-size: 1.05rem; }
+
+      .heatmap th { padding: 0.5rem 0.5rem; font-size: 0.8rem; }
+      .heatmap td { padding: 0.5rem 0.5rem; font-size: 0.85rem; }
+
+      footer { font-size: 0.88rem; padding: 2rem 1.4rem; }
+    }
+
+    /* ── RESPONSIVE: MOBILE PORTRAIT (≤ 420px) ────────────────────── */
+    @media (max-width: 420px) {
+      #hero { padding: 72px 1.1rem 3rem; }
+      .hero-team span { font-size: 0.82rem; padding: 0.32rem 0.7rem; }
+      .stat-num { font-size: 1.9rem; }
+      .hero-stats { gap: 1.2rem; }
+
+      section { padding: 3.2rem 1.1rem; }
+      .event-cards { grid-template-columns: 1fr; }
+      .multiplex-grid { grid-template-columns: 1fr 1fr; }
+
+      .rank-bar-wrap { display: none; }
+      .rank-item { gap: 0.7rem; }
+      .rank-name { min-width: auto; }
+
+      .graph-legend { display: none; }
+      .node-info-panel { min-width: 160px; padding: 1rem 1.1rem; }
+
+      .kcore-num { font-size: 3.4rem; }
+      .bridge-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo">連結地理系的橋樑</div>
+  <div class="nav-links" id="navLinks">
+    <a href="#overview" onclick="closeNav()">研究概覽</a>
+    <a href="#network-section" onclick="closeNav()">3D 網路圖</a>
+    <a href="#event" onclick="closeNav()">活動分析</a>
+    <a href="#actor" onclick="closeNav()">Actor 分析</a>
+    <a href="#kcore" onclick="closeNav()">K-Core</a>
+    <a href="#comparison" onclick="closeNav()">時間切分比較</a>
+    <a href="#conclusion" onclick="closeNav()">結論</a>
+    <a href="#source" onclick="closeNav()">原始碼與檔案</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="選單" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-tag">社會網路分析與地理應用｜期末專題</div>
+  <h1 class="hero-title">連結地理系的<span>橋樑</span></h1>
+  <p class="hero-sub">探討團體活動參與對地理系學生<br>人際網路影響與傳承結構</p>
+  <div class="hero-team">
+    <span>地理四 S1143022 蔡家晨</span>
+    <span>地理四 S1143042 吳侑謙</span>
+    <span>地理三 S1243038 張庭瑜</span>
+    <span>資工三 S1254059 吳佳泰</span>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">45</div><div class="stat-label">受訪學生人數</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">系上團體活動</div></div>
+    <div class="stat"><div class="stat-num">34</div><div class="stat-label">K-Core 核心成員</div></div>
+    <div class="stat"><div class="stat-num">21</div><div class="stat-label">最大 K-Core 值</div></div>
+  </div>
+  <div class="scroll-hint">▼ 向下捲動探索分析結果</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-tag">Research Overview</div>
+  <h2 class="section-title">研究概覽</h2>
+  <p class="section-desc">從 Event（活動）與 Actor（學生）雙重視角，結合隸屬網路與熟識度問卷，解析系上人際網路的橋樑結構。</p>
+  <div class="overview-grid">
+    <div class="card">
+      <h3><span class="badge badge-cyan">EVENT</span> 活動視角</h3>
+      <ul>
+        <li>蒐集大二至大四學生參與依時間切分後 12 項系上活動的 0/1 矩陣</li>
+        <li>Two-mode → One-mode 轉換，建立活動間鄰近矩陣</li>
+        <li>以 <strong>Jaccard 係數</strong>正規化成員重合度</li>
+        <li>辨識具橋樑性質的活動與活動叢集</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="badge badge-purple">ACTOR</span> 學生視角</h3>
+      <ul>
+        <li>透過熟識度問卷建立有向的友誼網路（DiGraph）</li>
+        <li>計算四項中心性：Degree / Closeness / Betweenness / Eigenvector</li>
+        <li>以 <strong>K-Core</strong> 分析找出核心群體</li>
+        <li>雙層網路比對：活動共參與 vs. 實際熟識</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="badge badge-gold">BRIDGE</span> 核心問題</h3>
+      <ul>
+        <li>哪個 Event 具備橋樑性質，連結不同群體？</li>
+        <li>哪個 Actor 扮演跨群體的關鍵橋樑角色？</li>
+        <li>共同參與活動是否真的促進了熟識？</li>
+        <li>誰是維持系上社群穩定的重要節點？</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="badge badge-green">DATA</span> 資料來源</h3>
+      <ul>
+        <li><code style="color:var(--cyan)">complete_data.csv</code>：學生 × 活動參與矩陣（依舉辦時間切分為 12 項活動欄位）</li>
+        <li><code>familiarity_questionnaire.csv</code>：45 × 45 熟識度問卷</li>
+        <li>由系學會長提供活動資料，輔以問卷調查補充</li>
+        <li>熟識定義：共處同空間會閒聊、見到會開口打招呼</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 3D NETWORK -->
+<div id="network-section">
+  <div class="network-header">
+    <div class="section-tag">Interactive Visualization</div>
+    <h2>熟識度 3D 社會網路圖</h2>
+    <p>節點大小反映度中心性；金色＝核心橋樑 Actor，綠色＝K-Core 成員，紅色＝邊緣節點。點擊節點可查看詳細中心性數值。</p>
+  </div>
+  <div class="graph-tabs">
+    <button class="gtab active" onclick="switchGraph('all',this)">全體 45 人</button>
+    <button class="gtab" onclick="switchGraph('s115',this)">115 系學會</button>
+    <button class="gtab" onclick="switchGraph('geo',this)">地理營</button>
+    <button class="gtab" onclick="switchGraph('w115',this)">115 迎新</button>
+    <button class="gtab" onclick="switchGraph('s116',this)">116 系學會</button>
+    <button class="gtab" onclick="switchGraph('w116',this)">116 迎新</button>
+  </div>
+  <div class="graph-meta" id="graphMeta">全體 45 位學生熟識網路 ｜ Max K-Core: 21 ｜ 點擊節點查看中心性</div>
+
+  <div id="graph-wrap">
+    <div id="graph"></div>
+    <div class="graph-legend">
+      <h4>圖例</h4>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div> 核心橋樑 Actor（Top 5）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> K-Core 成員（21-core）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> 邊緣節點（未入 K-Core）</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.4)"></div> 連結（熟識關係）</div>
+    </div>
+    <div class="graph-hint">拖曳旋轉 · 滾輪縮放 · 點擊節點查看資訊</div>
+    <div class="node-info-panel" id="nodeInfo">
+      <h4 id="ni-name"></h4>
+      <div class="node-info-row"><span class="node-info-label">度中心性</span><span class="node-info-val" id="ni-deg"></span></div>
+      <div class="node-info-row"><span class="node-info-label">接近中心性</span><span class="node-info-val" id="ni-cls"></span></div>
+      <div class="node-info-row"><span class="node-info-label">介數中心性</span><span class="node-info-val" id="ni-btw"></span></div>
+      <div class="node-info-row"><span class="node-info-label">特徵向量中心性</span><span class="node-info-val" id="ni-eig"></span></div>
+      <div class="node-info-row"><span class="node-info-label">K-Core 狀態</span><span class="node-info-val" id="ni-kcore"></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- EVENT ANALYSIS -->
+<section id="event">
+  <div class="section-tag">Event-Level Analysis</div>
+  <h2 class="section-title">活動（Event）視角分析</h2>
+  <p class="section-desc">透過 Two-mode 矩陣轉換，分析各活動的規模與活動之間的成員重合程度。</p>
+
+  <h3 class="sub-header">活動參與規模（依舉辦學年度／梯次切分後共 12 項）</h3>
+  <div class="event-cards">
+    <div class="event-card"><div class="ename">115 迎新</div><div class="ecount" style="color:var(--cyan)">53</div><div class="elabel">人參與 — 115 學年度</div></div>
+    <div class="event-card"><div class="ename">系羽</div><div class="ecount" style="color:var(--cyan)">52</div><div class="elabel">人參與 — 跨學年常態社團</div></div>
+    <div class="event-card"><div class="ename">115 系學會</div><div class="ecount" style="color:var(--cyan)">49</div><div class="elabel">人參與 — 115 學年度</div></div>
+    <div class="event-card"><div class="ename">地理營</div><div class="ecount" style="color:var(--cyan)">49</div><div class="elabel">人參與 — 跨學年招生</div></div>
+    <div class="event-card"><div class="ename">116 迎新</div><div class="ecount" style="color:var(--cyan)">49</div><div class="elabel">人參與 — 116 學年度</div></div>
+    <div class="event-card"><div class="ename">116 系學會</div><div class="ecount" style="color:var(--cyan)">45</div><div class="elabel">人參與 — 116 學年度</div></div>
+    <div class="event-card"><div class="ename">系環 7</div><div class="ecount" style="color:var(--purple)">19</div><div class="elabel">人參與 — 第 7 屆（明顯擴編）</div></div>
+    <div class="event-card"><div class="ename">男排</div><div class="ecount" style="color:var(--muted)">12</div><div class="elabel">人參與 — 封閉小圈</div></div>
+    <div class="event-card"><div class="ename">探索營 3</div><div class="ecount" style="color:var(--muted)">12</div><div class="elabel">人參與 — 第 3 屆</div></div>
+    <div class="event-card"><div class="ename">女排</div><div class="ecount" style="color:var(--red)">11</div><div class="elabel">人參與 — 封閉小圈</div></div>
+    <div class="event-card"><div class="ename">探索營 2</div><div class="ecount" style="color:var(--red)">8</div><div class="elabel">人參與 — 第 2 屆</div></div>
+    <div class="event-card"><div class="ename">系環 6</div><div class="ecount" style="color:var(--red)">7</div><div class="elabel">人參與 — 第 6 屆（規模最小）</div></div>
+  </div>
+  <p style="color:var(--muted); font-size:0.92rem; margin-top:1rem; line-height:1.8">
+    依「實際舉辦的學年度／梯次」拆分後可清楚看到：原本「系學會＝93 人」「迎新＝83 人」的單一大型活動，其實是<strong style="color:var(--text)">兩個世代各自約 45～53 人規模的活動疊加而成</strong>；地理營與系羽則是少數橫跨世代、規模穩定維持在 49～52 人的「常態型」活動，男排、女排與系環各梯次規模最小（7～19 人），維持原本封閉小圈的樣態。
+  </p>
+
+  <h3 class="sub-header" style="margin-top:2rem">Jaccard 成員重合度矩陣</h3>
+  <div class="rank-tabs" style="margin-bottom:1rem">
+    <button class="rank-tab jtab active" onclick="switchJaccard('merged',this)">合併版（8 項活動）</button>
+    <button class="rank-tab jtab" onclick="switchJaccard('split',this)">時間切分版（12 項活動）</button>
+  </div>
+  <div class="heatmap-wrap">
+    <table class="heatmap" id="jaccard-table"></table>
+  </div>
+
+  <h3 class="sub-header">關鍵發現</h3>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">🧬</div>
+      <div class="finding-text"><strong>「迎新 → 系學會」人才管道存在於每個世代，但幾乎不跨世代延伸</strong>——115系學會 × 115迎新（0.52）、116系學會 × 116迎新（0.47）皆呈現高重合，但 115迎新 × 116迎新僅 0.24。合併資料中看似最強的「系學會 × 迎新 = 0.59」橋樑關係，拆解後其實是兩條世代管道各自獨立疊加而成。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🌉</div>
+      <div class="finding-text"><strong>地理營才是貨真價實的跨世代橋樑活動</strong>——它是唯一能同時與兩個世代的系學會、迎新都維持中高度重合（115系學會 0.40／115迎新 0.40／116系學會 0.29／116迎新 0.31）的活動；其餘活動的重合度都明顯偏向某一世代。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">⛳</div>
+      <div class="finding-text"><strong>結構洞由 1 組增加為 2 組（男排 × 女排、男排 × 探索營2 皆為 0.00）</strong>——時間切分後才發現，合併資料中與男排尚有 0.11 重合的「探索營」，其實是「探索營第 2 屆」與男排完全無交集；顯示合併計算可能因把不同梯次混在一起而掩蓋掉原本存在的結構洞。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔗</div>
+      <div class="finding-text"><strong>活動可重新分為五個世代導向叢集</strong>——115 世代核心叢集（115系學會、115迎新）、116 世代核心叢集（116系學會、116迎新、系羽）、跨世代橋樑（地理營）、梯次型活動（探索營2/3、系環6/7）與封閉運動小圈（男排、女排）。「世代」才是劃分子群體的主軸，活動類型（社交／運動）反而是次要因素。</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ACTOR ANALYSIS -->
+<section id="actor">
+  <div class="section-tag">Actor-Level Analysis</div>
+  <h2 class="section-title">行動者（Actor）視角分析</h2>
+  <p class="section-desc">以熟識度問卷建立有向圖，計算四項中心性指標與結構洞指標，並交叉比對個人活動參與量與結構位置，辨識系上社會網路的關鍵橋樑 Actor。</p>
+
+  <h3 class="sub-header">核心橋樑 Actor</h3>
+  <div class="bridge-grid">
+    <div class="bridge-card gold">
+      <div class="bridge-name" style="color:var(--gold)">成員28 ★</div>
+      <div class="bridge-subtitle">四項中心性全部第一</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">度中心性</span><span class="bridge-stat-val" style="color:var(--gold)">1.955</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">接近中心性</span><span class="bridge-stat-val" style="color:var(--gold)">0.957</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">介數中心性</span><span class="bridge-stat-val" style="color:var(--gold)">0.0511</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">特徵向量</span><span class="bridge-stat-val" style="color:var(--gold)">0.236</span></div>
+      </div>
+    </div>
+    <div class="bridge-card">
+      <div class="bridge-name" style="color:var(--cyan)">成員01</div>
+      <div class="bridge-subtitle">綜合排名第二</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">度中心性</span><span class="bridge-stat-val">1.614</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">接近中心性</span><span class="bridge-stat-val">0.815</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">介數中心性</span><span class="bridge-stat-val">0.0290</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">特徵向量</span><span class="bridge-stat-val">0.196</span></div>
+      </div>
+    </div>
+    <div class="bridge-card">
+      <div class="bridge-name" style="color:var(--cyan)">成員14</div>
+      <div class="bridge-subtitle">接近 &amp; 特徵向量突出</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">度中心性</span><span class="bridge-stat-val">1.523</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">接近中心性</span><span class="bridge-stat-val">0.846</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">介數中心性</span><span class="bridge-stat-val">0.0187</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">特徵向量</span><span class="bridge-stat-val">0.216</span></div>
+      </div>
+    </div>
+    <div class="bridge-card">
+      <div class="bridge-name" style="color:var(--cyan)">成員10</div>
+      <div class="bridge-subtitle">弱連帶橋樑（低度高介數）</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">度中心性</span><span class="bridge-stat-val" style="color:#f87171">0.614（排名 43）</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">介數中心性</span><span class="bridge-stat-val" style="color:var(--green)">0.0181（排名 9）</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">K-Core 狀態</span><span class="bridge-stat-val" style="color:#f87171">未入核心</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-header">四項中心性排名 Top 10</h3>
+  <div class="rank-tabs">
+    <button class="rank-tab active" onclick="showRank('degree')">度中心性</button>
+    <button class="rank-tab" onclick="showRank('closeness')">接近中心性</button>
+    <button class="rank-tab" onclick="showRank('betweenness')">介數中心性</button>
+    <button class="rank-tab" onclick="showRank('eigenvector')">特徵向量中心性</button>
+  </div>
+  <div id="rank-degree" class="rank-list active"></div>
+  <div id="rank-closeness" class="rank-list"></div>
+  <div id="rank-betweenness" class="rank-list"></div>
+  <div id="rank-eigenvector" class="rank-list"></div>
+
+  <h3 class="sub-header" style="margin-top:2.5rem">結構洞指標——驗證橋樑角色</h3>
+  <p style="color:var(--muted); font-size:0.98rem; margin-bottom:1.5rem; line-height:1.8">
+    除了中心性排名，再以 <strong style="color:var(--text)">Constraint（結構洞限制度，越低越能跨接群體）</strong> 與 <strong style="color:var(--text)">Effective Size（有效網路規模，越高代表非冗餘聯繫越多）</strong> 兩項 Burt 結構洞指標交叉驗證。
+  </p>
+  <div class="bridge-grid">
+    <div class="bridge-card gold">
+      <div class="bridge-name" style="color:var(--gold); font-size:1.1rem">成員28</div>
+      <div class="bridge-subtitle">兩項結構洞指標皆排名第一</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">Constraint（全體平均 0.1165）</span><span class="bridge-stat-val" style="color:var(--gold)">0.0931（第 1）</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">Effective Size（全體平均 8.71）</span><span class="bridge-stat-val" style="color:var(--gold)">17.16（第 1）</span></div>
+      </div>
+    </div>
+    <div class="bridge-card">
+      <div class="bridge-name" style="color:var(--cyan); font-size:1.1rem">成員01 ／ 成員18 ／ 成員14</div>
+      <div class="bridge-subtitle">Constraint 排名分別為第 3、4、6</div>
+      <div class="bridge-stats">
+        <div class="bridge-stat"><span class="bridge-stat-label">成員01</span><span class="bridge-stat-val">0.0959 ／ 15.59</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">成員18</span><span class="bridge-stat-val">0.0977 ／ 14.81</span></div>
+        <div class="bridge-stat"><span class="bridge-stat-label">成員14</span><span class="bridge-stat-val">0.0988 ／ 13.43</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">🧩</div>
+      <div class="finding-text"><strong>結構洞指標與中心性排名高度吻合</strong>——五位核心橋樑 Actor（成員28、成員01、成員18、成員14、成員19）的 Constraint 排名均落在全體 45 人前 8 名，證實其橋樑角色不只來自連結「數量」多，更來自人脈網絡彼此重疊度低、真正跨接了不同群體。</div>
+    </div>
+  </div>
+
+  <h3 class="sub-header" style="margin-top:2.5rem">個人活動參與量與結構位置交叉分析</h3>
+  <div class="event-cards">
+    <div class="event-card"><div class="ename">45 人平均參與</div><div class="ecount" style="color:var(--cyan)">4.04</div><div class="elabel">項活動（滿分 12 項）</div></div>
+    <div class="event-card"><div class="ename">社交型活動平均</div><div class="ecount" style="color:var(--purple)">3.56</div><div class="elabel">項（系學會/迎新/地理營/探索營/系羽，共 8 項）</div></div>
+    <div class="event-card"><div class="ename">運動型活動平均</div><div class="ecount" style="color:var(--muted)">0.49</div><div class="elabel">項（男排/女排/系環6/7，共 4 項）</div></div>
+    <div class="event-card"><div class="ename">核心成員（34人）平均</div><div class="ecount" style="color:var(--green)">4.65</div><div class="elabel">項活動 ── 高於整體平均</div></div>
+    <div class="event-card"><div class="ename">邊緣成員（11人）平均</div><div class="ecount" style="color:var(--red)">2.18</div><div class="elabel">項活動 ── 落差較合併資料更顯著</div></div>
+  </div>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">📈</div>
+      <div class="finding-text"><strong>「多重活動參與者更易成為網路核心」的關聯在校正後資料中更顯著</strong>——K-core 核心成員平均參與 4.65 項活動，邊緣成員僅 2.18 項，落差（2.47 項）甚至比合併資料呈現的（4.03 vs. 2.55＝1.48 項）更明顯，進一步驗證並強化了這項假設。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔵</div>
+      <div class="finding-text"><strong>學生的活動軌跡明顯偏向社交型叢集</strong>——社交型活動平均參與 3.56 項，運動型活動平均僅 0.49 項，與「活動分群」的發現相互呼應：多數學生透過重疊度高的社交型活動建立廣泛人際連結。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🧩</div>
+      <div class="finding-text"><strong>「成員45異例」：低活動參與，卻高度鑲嵌於核心人際網絡</strong>——時間切分後，成員45的活動參與數由合併資料的 2 項降為僅 1 項（地理營），是參與最少的 5 人之一；但他同時是中心性與結構洞排名前段班的「重要節點（橋樑）」，且仍在 K-core 核心圈內。這顯示他的人脈很可能主要來自活動以外的私下管道（如班級、宿舍），是時間切分資料才得以凸顯的特殊樣態。</div>
+    </div>
+  </div>
+
+  <h3 class="sub-header" style="margin-top:2.5rem">雙層網路（熟識問卷 vs. 活動共參與）</h3>
+  <div class="multiplex-grid">
+    <div class="mp-card">
+      <div class="mp-val mp-1">1</div>
+      <div class="mp-meaning">雙重確認</div>
+      <div class="mp-desc">有共同活動 <strong>且</strong> 熟識確認<br>有向圖 55.5%／無向圖 46.8%</div>
+    </div>
+    <div class="mp-card">
+      <div class="mp-val mp-2">2</div>
+      <div class="mp-meaning">非活動熟識</div>
+      <div class="mp-desc">無共同活動，但互相熟識<br>僅 0.1%，透過其他管道建立關係（極少）</div>
+    </div>
+    <div class="mp-card">
+      <div class="mp-val mp-3">3</div>
+      <div class="mp-meaning">假性接觸</div>
+      <div class="mp-desc">有共同活動，但<strong>不</strong>互相熟識<br>有向圖 44.2%／無向圖 52.9%，大型活動中常見</div>
+    </div>
+    <div class="mp-card">
+      <div class="mp-val mp-4">4</div>
+      <div class="mp-meaning">完全無交集</div>
+      <div class="mp-desc">無活動、不熟識<br>僅 0.2%，主要集中在成員一列</div>
+    </div>
+  </div>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">✅</div>
+      <div class="finding-text"><strong>活動共參與是熟識的重要前提</strong>——以「有向圖」（單方認定即算熟識）統計，45 人共 1,980 組配對中有 <strong>55.5%</strong> 屬於「值 1」（共同參與且熟識），說明活動確實是建立人際關係的主要管道。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔁</div>
+      <div class="finding-text"><strong>改用「雙方互相認定」的無向圖標準後，熟識轉化率由 55.6% 降至 46.9%</strong>——約有 9 個百分點的「單向認知落差」（一方記得對方、對方卻未必有同樣印象），顯示要形成真正雙向確認的熟識關係，門檻比單方認知更高。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">⚠️</div>
+      <div class="finding-text"><strong>大型活動熟識轉化效率較低（值 3 普遍）</strong>——系學會（93 人）、迎新（83 人）中存在大量共同參與但不熟識的情況；改採無向圖標準後「值 3」比例由 44.2% 上升至 52.9%，更凸顯活動規模越大、人均互動機會越少的現象。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🌐</div>
+      <div class="finding-text"><strong>成員10具「弱連帶橋樑」特性</strong>——度中心性排名第 43，但介數中心性排名第 9，代表其雖認識的人不多，所處位置卻連結兩個原本缺乏交集的群體。</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- KCORE -->
+<section id="kcore">
+  <div class="section-tag">Group Structure</div>
+  <h2 class="section-title">K-Core 群體結構分析</h2>
+  <p class="section-desc">找出地理系社會網路中最緊密的核心群體，以及相對邊緣的成員。</p>
+  <div class="kcore-hero">
+    <div class="kcore-num">21-Core</div>
+    <div class="kcore-label" style="margin-bottom:0.8rem">最大 K-Core 值</div>
+    <div class="kcore-desc">
+      34 / 45 位學生（<strong style="color:var(--cyan)">75.6%</strong>）進入最大核心，這些學生彼此之間至少有 21 個共同相互熟識的朋友，形成高度緊密的社交核心。
+    </div>
+  </div>
+  <div class="kcore-grid">
+    <div class="card">
+      <h3><span class="badge badge-green">34 人</span> 進入 21-Core 的成員</h3>
+      <div class="member-grid" style="margin-top:0.8rem" id="core-members"></div>
+    </div>
+    <div class="card">
+      <h3><span class="badge badge-red">11 人</span> 未進入核心的邊緣成員</h3>
+      <div class="member-grid" style="margin-top:0.8rem" id="outer-members"></div>
+      <p style="margin-top:1.2rem; font-size:0.97rem; color:var(--muted); line-height:1.8">
+        注意：成員07與成員10均未進入核心，印證了成員10的「弱連帶橋樑」特性。<strong>成員13</strong>為整個網路中最孤立的節點（四項中心性均墊底）。
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIME-SPLIT COMPARISON -->
+<section id="comparison">
+  <div class="section-tag">Robustness Check ｜ complete_data.csv vs. train_data.csv</div>
+  <h2 class="section-title">補充分析：依舉辦時間切分活動資料的比較</h2>
+  <p class="section-desc">
+    <code style="color:var(--cyan)">complete_final_project.ipynb</code> 改用 <code style="color:var(--cyan)">complete_data.csv</code> 重新進行同一套分析——將原本橫跨 115、116 兩個學年度、卻被合併計算的 4 項活動（系學會、迎新、探索營、系環）依「實際舉辦的學年度」拆分為獨立欄位（8 項活動 → 13 項活動），並修正 1 筆參與資料誤植（張毓庭．地理營：0 → 1）。以下整理改用時間切分資料後，各項分析結果出現的變化與不變之處。
+  </p>
+
+  <h3 class="sub-header">活動欄位拆分對照</h3>
+  <div class="event-cards">
+    <div class="event-card">
+      <div class="ename">系學會</div>
+      <div class="ecount" style="color:var(--cyan); font-size:1.5rem">93 人 → 115：49 ／ 116：45</div>
+      <div class="elabel">合併計算的「系學會」其實是兩屆幹部世代的疊加</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">迎新</div>
+      <div class="ecount" style="color:var(--cyan); font-size:1.5rem">83 人 → 115：53 ／ 116：49</div>
+      <div class="elabel">兩個年度迎新的參與者組成並非同一批人</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">探索營</div>
+      <div class="ecount" style="color:var(--purple); font-size:1.5rem">18 人 → 二屆：14 ／ 三屆：12</div>
+      <div class="elabel">不同屆別招募對象明顯不同</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">系環</div>
+      <div class="ecount" style="color:var(--purple); font-size:1.5rem">21 人 → 6 屆：7 ／ 7 屆：19</div>
+      <div class="elabel">兩屆規模差異最大，第 7 屆明顯擴編</div>
+    </div>
+  </div>
+
+  <h3 class="sub-header">關鍵發現：時間切分揭露了什麼</h3>
+  <div class="finding-list">
+    <div class="finding">
+      <div class="finding-icon">🧬</div>
+      <div class="finding-text"><strong>「世代斷裂」首度被量化——直接呼應研究主題的「傳承結構」</strong>：合併資料時看不出來的世代差異，在拆分後現形——跨學年活動的成員重合度（如 115系學會 × 116系學會 = 0.27、115系學會 × 116迎新 = 0.31）明顯低於同學年活動間的重合度（如 116系學會 × 116迎新 = 0.47、115系學會 × 115迎新 = 0.52）。這代表系上社群並非鐵板一塊的整體，而是隨屆別更替形成具有世代落差的子群體。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🏸</div>
+      <div class="finding-text"><strong>系羽社團出現「世代更替」訊號</strong>：作為跨學年常態運作的社團，系羽與 116（較新世代）活動的 Jaccard 重合度（116迎新 0.44、116系學會 0.31）明顯高於與 115（較舊世代）活動的重合度（115迎新 0.21、115系學會 0.25），顯示其現有成員組成正逐漸被新生世代取代——具體呈現了「傳承」過程中的世代交棒現象。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔍</div>
+      <div class="finding-text"><strong>合併資料高估了「共同參與」關係——約 286 對學生其實從未同場</strong>：在合併版資料中，45 人共 1,980 組配對裡有 99.7%（1,974 對）被判定為「曾共同參與活動」；但用時間切分資料重新檢視，僅 85.3%（1,688 對）真正在同一場次共處過。其餘約 286 對（14.4 個百分點）其實分屬不同學年的同名活動，從未真正同場，是合併計算造成的「假性共同參與」。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">📈</div>
+      <div class="finding-text"><strong>校正偏誤後，「活動促進熟識」的證據不降反升</strong>：扣除假性共同參與重新計算「對照矩陣」，活動 → 熟識的轉化率由有向圖 55.6%／無向圖 46.9%，提升為 <strong style="color:var(--green)">61.6%／52.4%</strong>。換言之，原始合併資料其實低估了活動對熟識的促進效果——一旦只計入「真正同場參與」的紀錄，共同參與和熟識之間的關聯性反而更為緊密，更有力地支持本研究「共同參與活動可促進熟識」的核心假設。</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🔒</div>
+      <div class="finding-text"><strong>Actor 中心性、結構洞、Clique、K-Core 完全不受影響</strong>：度／接近／介數／特徵向量中心性、Constraint、Effective Size、團（clique）與 K-core（21-core，34 人）等指標均直接建立在 <code style="color:var(--cyan)">familiarity_questionnaire.csv</code>（熟識度問卷）之上，與活動資料檔案無關，因此切分前後數值完全一致（僅有 10⁻¹³ 等級的浮點捨入差異）。<strong>張庭瑜</strong>仍是無可爭議的核心橋樑 Actor，研究結論的 Actor 視角部分維持穩固。</div>
+    </div>
+  </div>
+
+  <h3 class="sub-header" style="margin-top:2.5rem">雙層網路對照矩陣：切分前 vs. 切分後</h3>
+  <p style="color:var(--muted); font-size:0.95rem; margin-bottom:1rem">有向圖（單方認定即算熟識）統計，45 人 × 45 人、扣除對角線共 1,980 組配對：</p>
+  <p style="color:var(--cyan); font-size:0.92rem; font-weight:700; margin-bottom:0.6rem">切分前（train_data，合併計算）</p>
+  <div class="multiplex-grid">
+    <div class="mp-card"><div class="mp-val mp-1">1</div><div class="mp-meaning">雙重確認</div><div class="mp-desc">55.5%</div></div>
+    <div class="mp-card"><div class="mp-val mp-2">2</div><div class="mp-meaning">非活動熟識</div><div class="mp-desc">0.1%</div></div>
+    <div class="mp-card"><div class="mp-val mp-3">3</div><div class="mp-meaning">假性接觸</div><div class="mp-desc">44.3%</div></div>
+    <div class="mp-card"><div class="mp-val mp-4">4</div><div class="mp-meaning">完全無交集</div><div class="mp-desc">0.2%</div></div>
+  </div>
+  <p style="color:var(--green); font-size:0.92rem; font-weight:700; margin-bottom:0.6rem">切分後（complete_data，依時間還原）</p>
+  <div class="multiplex-grid">
+    <div class="mp-card"><div class="mp-val mp-1">1</div><div class="mp-meaning">雙重確認</div><div class="mp-desc" style="color:var(--green); font-weight:700">52.5%</div></div>
+    <div class="mp-card"><div class="mp-val mp-2">2</div><div class="mp-meaning">非活動熟識</div><div class="mp-desc">3.0%</div></div>
+    <div class="mp-card"><div class="mp-val mp-3">3</div><div class="mp-meaning">假性接觸</div><div class="mp-desc" style="color:var(--green); font-weight:700">32.7%</div></div>
+    <div class="mp-card"><div class="mp-val mp-4">4</div><div class="mp-meaning">完全無交集</div><div class="mp-desc">11.8%</div></div>
+  </div>
+  <p style="color:var(--muted); font-size:0.95rem; margin-top:1rem; line-height:1.85">
+    乍看之下「值 1」比例似乎下降（55.5% → 52.5%），但這是因為原本被誤判為「曾共同參與」的配對（值 2、值 4 合計由 0.3% 暴增至 14.7%）被還原成「真正未同場」；在母數縮小、雜訊去除之後，<strong style="color:var(--text)">熟識轉化率（值 1 ÷（值 1 ＋ 值 3））反而從 55.6% 上升至 61.6%</strong>，顯示「真共同參與」對熟識的解釋力比合併資料呈現的更強。
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONCLUSION -->
+<section id="conclusion">
+  <div class="section-tag">Findings & Conclusions</div>
+  <h2 class="section-title">研究總結</h2>
+  <p class="section-desc">整合 Event 與 Actor 雙重視角的分析結果，回應研究發問。</p>
+  <div class="conclusion-grid">
+    <div class="conc-card">
+      <h4>核心橋樑 Event</h4>
+      <p><strong>迎新</strong>是最具橋樑性質的活動（平均 Jaccard 最高），同時連結系學會、地理營、系羽三大活動群，是跨群體接觸的關鍵平台。</p>
+    </div>
+    <div class="conc-card">
+      <h4>完整結構洞</h4>
+      <p>男排 × 女排的 Jaccard 係數為 <strong>0.00</strong>，是系上活動網路唯一的完整結構洞。如能有人同時參與兩者，將發揮極強的橋樑效果。</p>
+    </div>
+    <div class="conc-card">
+      <h4>核心橋樑 Actor</h4>
+      <p><strong>成員28</strong>在所有四項中心性指標中均位列第一，是系上社會網路無可爭議的核心支柱，對系上傳承延續具關鍵影響。</p>
+    </div>
+    <div class="conc-card">
+      <h4>弱連帶橋樑</h4>
+      <p><strong>成員10</strong>是典型的 Weak Tie Bridge——雖然直接認識的人不多（度中心性排 43），但介數中心性排名第 9，橫跨兩個不同群體之間。</p>
+    </div>
+    <div class="conc-card">
+      <h4>活動 → 熟識的效率</h4>
+      <p>共同參與活動是熟識的<strong>必要但非充分條件</strong>。小型高互動活動（地理營、探索營）熟識轉化率遠高於大型儀式性活動。</p>
+    </div>
+    <div class="conc-card">
+      <h4>核心群體凝聚度</h4>
+      <p>75.6% 的學生屬於 21-Core 緊密核心，顯示系上社群整體凝聚度相當高。建議後續關注未進入核心的 11 位邊緣學生的融入狀況。</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <h3>對未來的啟示</h3>
+    <p style="font-size:0.88rem; color:var(--muted); margin-top:0.5rem">本研究建議系學會在規劃活動時，特別關注<strong>小型互動型活動</strong>（如探索營、地理營）的舉辦頻率——相較於大型活動，這類活動更能有效促進深度熟識，進而強化系上社會網路的凝聚力與傳承延續性。在橋樑 Actor 畢業後，如何維持既有的跨群體連結，是系上值得思考的傳承挑戰。</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOURCE & FILES -->
+<section id="source">
+  <div class="section-tag">Source Code & Files</div>
+  <h2 class="section-title">原始碼與檔案說明</h2>
+  <p class="section-desc">本研究的完整程式碼、原始資料與分析報告皆公開於 GitHub，歡迎查閱、下載並重現整個分析流程。</p>
+
+  <a href="https://github.com/taitaiwu/python/tree/main/Social_Network_Analysis_and_Geographic_Applications/final_project"
+     target="_blank" rel="noopener"
+     style="display:inline-flex; align-items:center; gap:0.7rem; padding:0.9rem 1.7rem; border:1px solid var(--border); border-radius:10px; color:var(--text); text-decoration:none; font-weight:700; font-size:1rem; background:var(--bg2); margin-bottom:2.6rem; transition:border-color 0.2s, box-shadow 0.2s;"
+     onmouseover="this.style.borderColor='rgba(0,212,255,0.4)'; this.style.boxShadow='0 0 20px rgba(0,212,255,0.08)'"
+     onmouseout="this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+    <span style="font-size:1.35rem">🐙</span>
+    在 GitHub 上查看完整原始碼與資料
+    <span style="color:var(--cyan)">→</span>
+  </a>
+
+  <h3 class="sub-header">資料夾檔案說明</h3>
+  <div class="event-cards">
+    <div class="event-card">
+      <div class="ename">📓 complete_final_project.ipynb</div>
+      <div class="elabel">主分析 Notebook——讀取 <code style="color:var(--cyan)">complete_data.csv</code>與熟識度問卷，用以檢驗主分析結論的穩健性，結果見第六節「時間切分比較」。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📓 final_project.ipynb</div>
+      <div class="elabel">補充分析 Notebook(原始的主分析)——讀取 <code style="color:var(--cyan)">train_data.csv</code> 與兩份熟識度問卷，執行 Event／Actor 雙視角完整分析流程，為本報告第一～五節的依據。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📊 train_data.csv</div>
+      <div class="elabel">活動參與資料（合併版）——45 人 × 8 項活動的 0/1 矩陣，系學會、迎新、探索營、系環等橫跨學年度的活動被合併為單一欄位。為主分析的輸入資料。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📊 complete_data.csv</div>
+      <div class="elabel">活動參與資料（時間切分版）——將系學會、迎新、探索營、系環依「實際舉辦學年度」拆分為 13 個欄位，並修正 1 筆參與資料誤植。為補充分析的輸入資料。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📋 familiarity_questionnaire.csv</div>
+      <div class="elabel">熟識度問卷（有向）——45 × 45 友誼網路，單方認定即算熟識，是中心性、結構洞、clique、雙層網路比對等分析的核心輸入。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📋 undirected_familiarity_questionnaire.csv</div>
+      <div class="elabel">熟識度問卷（無向）——將熟識度問卷轉為無向圖標準（雙方須互相認定才算熟識），用於 K-core 分析及更嚴格標準的對照比較。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">🌐 index.html</div>
+      <div class="elabel">本網頁——互動式分析報告，包含 3D 社會網路圖、Event／Actor 視角分析卡片、K-core 結構與時間切分比較等視覺化內容。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📄 README.md</div>
+      <div class="elabel">完整文字版分析報告（Markdown），整理自兩份 Notebook 的執行結果，內容與本網頁對應。</div>
+    </div>
+    <div class="event-card">
+      <div class="ename">📑 final_project_proposal.pdf</div>
+      <div class="elabel">期末專題研究計畫書——提案階段文件，說明研究動機、方法與預期成果。</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>社會網路分析與地理應用 期末專題 ｜ 2026 / 04 / 22</p>
+  <p style="margin-top:0.3rem">地理四 蔡家晨 ／ 吳侑謙 ／ 地理三 張庭瑜 ／ 資工三 吳佳泰</p>
+</footer>
+
+<script src="https://unpkg.com/3d-force-graph@1/dist/3d-force-graph.min.js"></script>
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────
+const graphData = {"nodes": [{"id": 0, "name": "成員01"}, {"id": 1, "name": "成員02"}, {"id": 2, "name": "成員03"}, {"id": 3, "name": "成員04"}, {"id": 4, "name": "成員05"}, {"id": 5, "name": "成員06"}, {"id": 6, "name": "成員07"}, {"id": 7, "name": "成員08"}, {"id": 8, "name": "成員09"}, {"id": 9, "name": "成員10"}, {"id": 10, "name": "成員11"}, {"id": 11, "name": "成員12"}, {"id": 12, "name": "成員13"}, {"id": 13, "name": "成員14"}, {"id": 14, "name": "成員15"}, {"id": 15, "name": "成員16"}, {"id": 16, "name": "成員17"}, {"id": 17, "name": "成員18"}, {"id": 18, "name": "成員19"}, {"id": 19, "name": "成員20"}, {"id": 20, "name": "成員21"}, {"id": 21, "name": "成員22"}, {"id": 22, "name": "成員23"}, {"id": 23, "name": "成員24"}, {"id": 24, "name": "成員25"}, {"id": 25, "name": "成員26"}, {"id": 26, "name": "成員27"}, {"id": 27, "name": "成員28"}, {"id": 28, "name": "成員29"}, {"id": 29, "name": "成員30"}, {"id": 30, "name": "成員31"}, {"id": 31, "name": "成員32"}, {"id": 32, "name": "成員33"}, {"id": 33, "name": "成員34"}, {"id": 34, "name": "成員35"}, {"id": 35, "name": "成員36"}, {"id": 36, "name": "成員37"}, {"id": 37, "name": "成員38"}, {"id": 38, "name": "成員39"}, {"id": 39, "name": "成員40"}, {"id": 40, "name": "成員41"}, {"id": 41, "name": "成員42"}, {"id": 42, "name": "成員43"}, {"id": 43, "name": "成員44"}, {"id": 44, "name": "成員45"}], "links": [{"source": 0, "target": 1}, {"source": 0, "target": 2}, {"source": 0, "target": 3}, {"source": 0, "target": 4}, {"source": 0, "target": 5}, {"source": 0, "target": 6}, {"source": 0, "target": 7}, {"source": 0, "target": 8}, {"source": 0, "target": 9}, {"source": 0, "target": 10}, {"source": 0, "target": 11}, {"source": 0, "target": 12}, {"source": 0, "target": 13}, {"source": 0, "target": 14}, {"source": 0, "target": 16}, {"source": 0, "target": 17}, {"source": 0, "target": 18}, {"source": 0, "target": 19}, {"source": 0, "target": 20}, {"source": 0, "target": 21}, {"source": 0, "target": 22}, {"source": 0, "target": 23}, {"source": 0, "target": 24}, {"source": 0, "target": 27}, {"source": 0, "target": 28}, {"source": 0, "target": 29}, {"source": 0, "target": 31}, {"source": 0, "target": 32}, {"source": 0, "target": 37}, {"source": 0, "target": 39}, {"source": 0, "target": 40}, {"source": 0, "target": 41}, {"source": 0, "target": 42}, {"source": 0, "target": 43}, {"source": 0, "target": 44}, {"source": 1, "target": 0}, {"source": 1, "target": 2}, {"source": 1, "target": 3}, {"source": 1, "target": 4}, {"source": 1, "target": 5}, {"source": 1, "target": 6}, {"source": 1, "target": 7}, {"source": 1, "target": 8}, {"source": 1, "target": 9}, {"source": 1, "target": 10}, {"source": 1, "target": 11}, {"source": 1, "target": 15}, {"source": 1, "target": 16}, {"source": 1, "target": 17}, {"source": 1, "target": 18}, {"source": 1, "target": 19}, {"source": 1, "target": 21}, {"source": 1, "target": 23}, {"source": 1, "target": 24}, {"source": 1, "target": 27}, {"source": 1, "target": 28}, {"source": 1, "target": 31}, {"source": 1, "target": 41}, {"source": 1, "target": 42}, {"source": 1, "target": 43}, {"source": 1, "target": 44}, {"source": 2, "target": 0}, {"source": 2, "target": 3}, {"source": 2, "target": 4}, {"source": 2, "target": 7}, {"source": 2, "target": 10}, {"source": 2, "target": 11}, {"source": 2, "target": 13}, {"source": 2, "target": 21}, {"source": 2, "target": 24}, {"source": 2, "target": 27}, {"source": 2, "target": 42}, {"source": 3, "target": 0}, {"source": 3, "target": 1}, {"source": 3, "target": 2}, {"source": 3, "target": 4}, {"source": 3, "target": 5}, {"source": 3, "target": 6}, {"source": 3, "target": 7}, {"source": 3, "target": 8}, {"source": 3, "target": 9}, {"source": 3, "target": 10}, {"source": 3, "target": 11}, {"source": 3, "target": 13}, {"source": 3, "target": 14}, {"source": 3, "target": 17}, {"source": 3, "target": 18}, {"source": 3, "target": 19}, {"source": 3, "target": 20}, {"source": 3, "target": 21}, {"source": 3, "target": 22}, {"source": 3, "target": 23}, {"source": 3, "target": 24}, {"source": 3, "target": 26}, {"source": 3, "target": 27}, {"source": 3, "target": 28}, {"source": 3, "target": 29}, {"source": 3, "target": 31}, {"source": 3, "target": 40}, {"source": 3, "target": 42}, {"source": 3, "target": 43}, {"source": 4, "target": 0}, {"source": 4, "target": 1}, {"source": 4, "target": 2}, {"source": 4, "target": 3}, {"source": 4, "target": 5}, {"source": 4, "target": 6}, {"source": 4, "target": 7}, {"source": 4, "target": 8}, {"source": 4, "target": 9}, {"source": 4, "target": 10}, {"source": 4, "target": 11}, {"source": 4, "target": 12}, {"source": 4, "target": 13}, {"source": 4, "target": 14}, {"source": 4, "target": 15}, {"source": 4, "target": 16}, {"source": 4, "target": 17}, {"source": 4, "target": 18}, {"source": 4, "target": 19}, {"source": 4, "target": 20}, {"source": 4, "target": 21}, {"source": 4, "target": 22}, {"source": 4, "target": 23}, {"source": 4, "target": 24}, {"source": 4, "target": 25}, {"source": 4, "target": 26}, {"source": 4, "target": 27}, {"source": 4, "target": 28}, {"source": 4, "target": 30}, {"source": 4, "target": 32}, {"source": 4, "target": 42}, {"source": 4, "target": 44}, {"source": 5, "target": 0}, {"source": 5, "target": 1}, {"source": 5, "target": 2}, {"source": 5, "target": 3}, {"source": 5, "target": 4}, {"source": 5, "target": 6}, {"source": 5, "target": 7}, {"source": 5, "target": 8}, {"source": 5, "target": 10}, {"source": 5, "target": 11}, {"source": 5, "target": 12}, {"source": 5, "target": 13}, {"source": 5, "target": 17}, {"source": 5, "target": 18}, {"source": 5, "target": 21}, {"source": 5, "target": 23}, {"source": 5, "target": 27}, {"source": 5, "target": 31}, {"source": 5, "target": 40}, {"source": 5, "target": 42}, {"source": 5, "target": 43}, {"source": 6, "target": 0}, {"source": 6, "target": 1}, {"source": 6, "target": 3}, {"source": 6, "target": 4}, {"source": 6, "target": 5}, {"source": 6, "target": 8}, {"source": 6, "target": 9}, {"source": 6, "target": 13}, {"source": 6, "target": 18}, {"source": 6, "target": 26}, {"source": 6, "target": 27}, {"source": 6, "target": 28}, {"source": 6, "target": 31}, {"source": 7, "target": 0}, {"source": 7, "target": 1}, {"source": 7, "target": 2}, {"source": 7, "target": 3}, {"source": 7, "target": 4}, {"source": 7, "target": 5}, {"source": 7, "target": 6}, {"source": 7, "target": 8}, {"source": 7, "target": 9}, {"source": 7, "target": 10}, {"source": 7, "target": 11}, {"source": 7, "target": 12}, {"source": 7, "target": 13}, {"source": 7, "target": 14}, {"source": 7, "target": 16}, {"source": 7, "target": 17}, {"source": 7, "target": 18}, {"source": 7, "target": 22}, {"source": 7, "target": 27}, {"source": 7, "target": 30}, {"source": 7, "target": 36}, {"source": 7, "target": 44}, {"source": 8, "target": 5}, {"source": 8, "target": 6}, {"source": 8, "target": 9}, {"source": 8, "target": 12}, {"source": 8, "target": 42}, {"source": 8, "target": 44}, {"source": 9, "target": 0}, {"source": 9, "target": 1}, {"source": 9, "target": 2}, {"source": 9, "target": 3}, {"source": 9, "target": 4}, {"source": 9, "target": 5}, {"source": 9, "target": 6}, {"source": 9, "target": 7}, {"source": 9, "target": 8}, {"source": 9, "target": 10}, {"source": 9, "target": 11}, {"source": 9, "target": 12}, {"source": 9, "target": 27}, {"source": 10, "target": 0}, {"source": 10, "target": 1}, {"source": 10, "target": 2}, {"source": 10, "target": 3}, {"source": 10, "target": 4}, {"source": 10, "target": 5}, {"source": 10, "target": 6}, {"source": 10, "target": 7}, {"source": 10, "target": 8}, {"source": 10, "target": 9}, {"source": 10, "target": 11}, {"source": 10, "target": 12}, {"source": 10, "target": 13}, {"source": 10, "target": 14}, {"source": 10, "target": 15}, {"source": 10, "target": 17}, {"source": 10, "target": 19}, {"source": 10, "target": 21}, {"source": 10, "target": 22}, {"source": 10, "target": 24}, {"source": 10, "target": 27}, {"source": 10, "target": 32}, {"source": 10, "target": 40}, {"source": 10, "target": 42}, {"source": 10, "target": 44}, {"source": 11, "target": 0}, {"source": 11, "target": 1}, {"source": 11, "target": 2}, {"source": 11, "target": 3}, {"source": 11, "target": 4}, {"source": 11, "target": 5}, {"source": 11, "target": 6}, {"source": 11, "target": 7}, {"source": 11, "target": 8}, {"source": 11, "target": 9}, {"source": 11, "target": 10}, {"source": 11, "target": 13}, {"source": 11, "target": 15}, {"source": 11, "target": 17}, {"source": 11, "target": 18}, {"source": 11, "target": 19}, {"source": 11, "target": 21}, {"source": 11, "target": 22}, {"source": 11, "target": 23}, {"source": 11, "target": 24}, {"source": 11, "target": 25}, {"source": 11, "target": 26}, {"source": 11, "target": 27}, {"source": 11, "target": 31}, {"source": 11, "target": 32}, {"source": 11, "target": 40}, {"source": 11, "target": 42}, {"source": 11, "target": 44}, {"source": 12, "target": 8}, {"source": 12, "target": 9}, {"source": 13, "target": 0}, {"source": 13, "target": 2}, {"source": 13, "target": 3}, {"source": 13, "target": 4}, {"source": 13, "target": 5}, {"source": 13, "target": 10}, {"source": 13, "target": 11}, {"source": 13, "target": 14}, {"source": 13, "target": 18}, {"source": 13, "target": 20}, {"source": 13, "target": 22}, {"source": 13, "target": 23}, {"source": 13, "target": 24}, {"source": 13, "target": 25}, {"source": 13, "target": 26}, {"source": 13, "target": 27}, {"source": 13, "target": 29}, {"source": 13, "target": 31}, {"source": 13, "target": 34}, {"source": 13, "target": 35}, {"source": 13, "target": 37}, {"source": 13, "target": 38}, {"source": 13, "target": 39}, {"source": 13, "target": 40}, {"source": 13, "target": 41}, {"source": 13, "target": 42}, {"source": 13, "target": 43}, {"source": 13, "target": 44}, {"source": 14, "target": 0}, {"source": 14, "target": 3}, {"source": 14, "target": 4}, {"source": 14, "target": 7}, {"source": 14, "target": 10}, {"source": 14, "target": 13}, {"source": 14, "target": 15}, {"source": 14, "target": 16}, {"source": 14, "target": 17}, {"source": 14, "target": 18}, {"source": 14, "target": 19}, {"source": 14, "target": 20}, {"source": 14, "target": 21}, {"source": 14, "target": 22}, {"source": 14, "target": 23}, {"source": 14, "target": 24}, {"source": 14, "target": 25}, {"source": 14, "target": 26}, {"source": 14, "target": 27}, {"source": 14, "target": 28}, {"source": 14, "target": 29}, {"source": 14, "target": 31}, {"source": 14, "target": 43}, {"source": 15, "target": 1}, {"source": 15, "target": 2}, {"source": 15, "target": 4}, {"source": 15, "target": 5}, {"source": 15, "target": 7}, {"source": 15, "target": 8}, {"source": 15, "target": 10}, {"source": 15, "target": 11}, {"source": 15, "target": 12}, {"source": 15, "target": 13}, {"source": 15, "target": 14}, {"source": 15, "target": 16}, {"source": 15, "target": 17}, {"source": 15, "target": 18}, {"source": 15, "target": 19}, {"source": 15, "target": 20}, {"source": 15, "target": 21}, {"source": 15, "target": 22}, {"source": 15, "target": 23}, {"source": 15, "target": 24}, {"source": 15, "target": 25}, {"source": 15, "target": 26}, {"source": 15, "target": 27}, {"source": 15, "target": 28}, {"source": 15, "target": 29}, {"source": 15, "target": 30}, {"source": 15, "target": 31}, {"source": 15, "target": 32}, {"source": 15, "target": 34}, {"source": 15, "target": 35}, {"source": 15, "target": 37}, {"source": 15, "target": 38}, {"source": 15, "target": 39}, {"source": 15, "target": 40}, {"source": 15, "target": 41}, {"source": 15, "target": 42}, {"source": 15, "target": 43}, {"source": 15, "target": 44}, {"source": 16, "target": 0}, {"source": 16, "target": 1}, {"source": 16, "target": 2}, {"source": 16, "target": 3}, {"source": 16, "target": 4}, {"source": 16, "target": 7}, {"source": 16, "target": 10}, {"source": 16, "target": 13}, {"source": 16, "target": 14}, {"source": 16, "target": 15}, {"source": 16, "target": 17}, {"source": 16, "target": 18}, {"source": 16, "target": 21}, {"source": 16, "target": 22}, {"source": 16, "target": 23}, {"source": 16, "target": 24}, {"source": 16, "target": 25}, {"source": 16, "target": 27}, {"source": 16, "target": 28}, {"source": 16, "target": 29}, {"source": 16, "target": 31}, {"source": 16, "target": 33}, {"source": 16, "target": 39}, {"source": 16, "target": 40}, {"source": 16, "target": 41}, {"source": 16, "target": 42}, {"source": 17, "target": 0}, {"source": 17, "target": 1}, {"source": 17, "target": 3}, {"source": 17, "target": 4}, {"source": 17, "target": 5}, {"source": 17, "target": 6}, {"source": 17, "target": 7}, {"source": 17, "target": 11}, {"source": 17, "target": 13}, {"source": 17, "target": 14}, {"source": 17, "target": 15}, {"source": 17, "target": 16}, {"source": 17, "target": 18}, {"source": 17, "target": 19}, {"source": 17, "target": 20}, {"source": 17, "target": 21}, {"source": 17, "target": 22}, {"source": 17, "target": 23}, {"source": 17, "target": 24}, {"source": 17, "target": 25}, {"source": 17, "target": 26}, {"source": 17, "target": 27}, {"source": 17, "target": 28}, {"source": 17, "target": 29}, {"source": 17, "target": 30}, {"source": 17, "target": 31}, {"source": 17, "target": 32}, {"source": 17, "target": 33}, {"source": 17, "target": 34}, {"source": 17, "target": 35}, {"source": 17, "target": 36}, {"source": 17, "target": 37}, {"source": 17, "target": 38}, {"source": 17, "target": 39}, {"source": 17, "target": 40}, {"source": 17, "target": 41}, {"source": 17, "target": 42}, {"source": 17, "target": 43}, {"source": 17, "target": 44}, {"source": 18, "target": 0}, {"source": 18, "target": 1}, {"source": 18, "target": 2}, {"source": 18, "target": 3}, {"source": 18, "target": 4}, {"source": 18, "target": 5}, {"source": 18, "target": 6}, {"source": 18, "target": 7}, {"source": 18, "target": 8}, {"source": 18, "target": 9}, {"source": 18, "target": 10}, {"source": 18, "target": 11}, {"source": 18, "target": 12}, {"source": 18, "target": 13}, {"source": 18, "target": 14}, {"source": 18, "target": 15}, {"source": 18, "target": 16}, {"source": 18, "target": 17}, {"source": 18, "target": 19}, {"source": 18, "target": 20}, {"source": 18, "target": 21}, {"source": 18, "target": 22}, {"source": 18, "target": 23}, {"source": 18, "target": 24}, {"source": 18, "target": 25}, {"source": 18, "target": 26}, {"source": 18, "target": 27}, {"source": 18, "target": 28}, {"source": 18, "target": 29}, {"source": 18, "target": 31}, {"source": 18, "target": 43}, {"source": 18, "target": 44}, {"source": 19, "target": 0}, {"source": 19, "target": 3}, {"source": 19, "target": 14}, {"source": 19, "target": 15}, {"source": 19, "target": 18}, {"source": 19, "target": 24}, {"source": 19, "target": 26}, {"source": 19, "target": 27}, {"source": 19, "target": 28}, {"source": 20, "target": 0}, {"source": 20, "target": 13}, {"source": 20, "target": 14}, {"source": 20, "target": 16}, {"source": 20, "target": 17}, {"source": 20, "target": 18}, {"source": 20, "target": 24}, {"source": 20, "target": 25}, {"source": 20, "target": 26}, {"source": 20, "target": 27}, {"source": 20, "target": 28}, {"source": 20, "target": 29}, {"source": 20, "target": 38}, {"source": 20, "target": 43}, {"source": 20, "target": 44}, {"source": 21, "target": 0}, {"source": 21, "target": 1}, {"source": 21, "target": 2}, {"source": 21, "target": 3}, {"source": 21, "target": 4}, {"source": 21, "target": 5}, {"source": 21, "target": 10}, {"source": 21, "target": 11}, {"source": 21, "target": 13}, {"source": 21, "target": 14}, {"source": 21, "target": 15}, {"source": 21, "target": 16}, {"source": 21, "target": 17}, {"source": 21, "target": 18}, {"source": 21, "target": 19}, {"source": 21, "target": 20}, {"source": 21, "target": 22}, {"source": 21, "target": 23}, {"source": 21, "target": 24}, {"source": 21, "target": 25}, {"source": 21, "target": 26}, {"source": 21, "target": 27}, {"source": 21, "target": 28}, {"source": 21, "target": 29}, {"source": 21, "target": 30}, {"source": 21, "target": 31}, {"source": 21, "target": 32}, {"source": 21, "target": 33}, {"source": 21, "target": 34}, {"source": 21, "target": 35}, {"source": 21, "target": 36}, {"source": 21, "target": 37}, {"source": 21, "target": 38}, {"source": 21, "target": 39}, {"source": 21, "target": 40}, {"source": 21, "target": 41}, {"source": 21, "target": 42}, {"source": 21, "target": 43}, {"source": 21, "target": 44}, {"source": 22, "target": 7}, {"source": 22, "target": 13}, {"source": 22, "target": 14}, {"source": 22, "target": 15}, {"source": 22, "target": 16}, {"source": 22, "target": 17}, {"source": 22, "target": 18}, {"source": 22, "target": 23}, {"source": 22, "target": 24}, {"source": 22, "target": 25}, {"source": 22, "target": 26}, {"source": 22, "target": 27}, {"source": 22, "target": 28}, {"source": 22, "target": 29}, {"source": 23, "target": 0}, {"source": 23, "target": 1}, {"source": 23, "target": 3}, {"source": 23, "target": 4}, {"source": 23, "target": 5}, {"source": 23, "target": 6}, {"source": 23, "target": 10}, {"source": 23, "target": 11}, {"source": 23, "target": 13}, {"source": 23, "target": 14}, {"source": 23, "target": 15}, {"source": 23, "target": 16}, {"source": 23, "target": 17}, {"source": 23, "target": 18}, {"source": 23, "target": 19}, {"source": 23, "target": 20}, {"source": 23, "target": 21}, {"source": 23, "target": 22}, {"source": 23, "target": 24}, {"source": 23, "target": 25}, {"source": 23, "target": 26}, {"source": 23, "target": 27}, {"source": 23, "target": 28}, {"source": 23, "target": 29}, {"source": 23, "target": 31}, {"source": 23, "target": 37}, {"source": 23, "target": 39}, {"source": 23, "target": 40}, {"source": 23, "target": 41}, {"source": 23, "target": 43}, {"source": 24, "target": 2}, {"source": 24, "target": 3}, {"source": 24, "target": 10}, {"source": 24, "target": 11}, {"source": 24, "target": 13}, {"source": 24, "target": 15}, {"source": 24, "target": 16}, {"source": 24, "target": 17}, {"source": 24, "target": 18}, {"source": 24, "target": 19}, {"source": 24, "target": 20}, {"source": 24, "target": 21}, {"source": 24, "target": 22}, {"source": 24, "target": 23}, {"source": 24, "target": 25}, {"source": 24, "target": 26}, {"source": 24, "target": 27}, {"source": 24, "target": 28}, {"source": 24, "target": 29}, {"source": 24, "target": 30}, {"source": 24, "target": 35}, {"source": 24, "target": 38}, {"source": 24, "target": 39}, {"source": 24, "target": 40}, {"source": 25, "target": 0}, {"source": 25, "target": 2}, {"source": 25, "target": 4}, {"source": 25, "target": 7}, {"source": 25, "target": 8}, {"source": 25, "target": 11}, {"source": 25, "target": 13}, {"source": 25, "target": 14}, {"source": 25, "target": 15}, {"source": 25, "target": 16}, {"source": 25, "target": 17}, {"source": 25, "target": 18}, {"source": 25, "target": 19}, {"source": 25, "target": 20}, {"source": 25, "target": 21}, {"source": 25, "target": 22}, {"source": 25, "target": 23}, {"source": 25, "target": 24}, {"source": 25, "target": 26}, {"source": 25, "target": 27}, {"source": 25, "target": 28}, {"source": 25, "target": 29}, {"source": 25, "target": 33}, {"source": 25, "target": 34}, {"source": 25, "target": 36}, {"source": 25, "target": 39}, {"source": 25, "target": 42}, {"source": 25, "target": 43}, {"source": 25, "target": 44}, {"source": 26, "target": 6}, {"source": 26, "target": 11}, {"source": 26, "target": 13}, {"source": 26, "target": 14}, {"source": 26, "target": 16}, {"source": 26, "target": 17}, {"source": 26, "target": 18}, {"source": 26, "target": 19}, {"source": 26, "target": 20}, {"source": 26, "target": 21}, {"source": 26, "target": 22}, {"source": 26, "target": 23}, {"source": 26, "target": 24}, {"source": 26, "target": 25}, {"source": 26, "target": 27}, {"source": 26, "target": 28}, {"source": 26, "target": 29}, {"source": 26, "target": 30}, {"source": 27, "target": 0}, {"source": 27, "target": 1}, {"source": 27, "target": 2}, {"source": 27, "target": 3}, {"source": 27, "target": 4}, {"source": 27, "target": 5}, {"source": 27, "target": 6}, {"source": 27, "target": 7}, {"source": 27, "target": 9}, {"source": 27, "target": 10}, {"source": 27, "target": 11}, {"source": 27, "target": 13}, {"source": 27, "target": 14}, {"source": 27, "target": 15}, {"source": 27, "target": 16}, {"source": 27, "target": 17}, {"source": 27, "target": 18}, {"source": 27, "target": 19}, {"source": 27, "target": 20}, {"source": 27, "target": 21}, {"source": 27, "target": 22}, {"source": 27, "target": 23}, {"source": 27, "target": 24}, {"source": 27, "target": 25}, {"source": 27, "target": 26}, {"source": 27, "target": 28}, {"source": 27, "target": 29}, {"source": 27, "target": 30}, {"source": 27, "target": 31}, {"source": 27, "target": 32}, {"source": 27, "target": 33}, {"source": 27, "target": 34}, {"source": 27, "target": 35}, {"source": 27, "target": 36}, {"source": 27, "target": 37}, {"source": 27, "target": 38}, {"source": 27, "target": 39}, {"source": 27, "target": 40}, {"source": 27, "target": 41}, {"source": 27, "target": 42}, {"source": 27, "target": 43}, {"source": 27, "target": 44}, {"source": 28, "target": 0}, {"source": 28, "target": 1}, {"source": 28, "target": 3}, {"source": 28, "target": 6}, {"source": 28, "target": 13}, {"source": 28, "target": 14}, {"source": 28, "target": 15}, {"source": 28, "target": 16}, {"source": 28, "target": 17}, {"source": 28, "target": 18}, {"source": 28, "target": 19}, {"source": 28, "target": 20}, {"source": 28, "target": 22}, {"source": 28, "target": 23}, {"source": 28, "target": 24}, {"source": 28, "target": 25}, {"source": 28, "target": 26}, {"source": 28, "target": 27}, {"source": 28, "target": 29}, {"source": 28, "target": 31}, {"source": 29, "target": 0}, {"source": 29, "target": 1}, {"source": 29, "target": 2}, {"source": 29, "target": 3}, {"source": 29, "target": 4}, {"source": 29, "target": 5}, {"source": 29, "target": 6}, {"source": 29, "target": 10}, {"source": 29, "target": 11}, {"source": 29, "target": 13}, {"source": 29, "target": 14}, {"source": 29, "target": 15}, {"source": 29, "target": 16}, {"source": 29, "target": 17}, {"source": 29, "target": 18}, {"source": 29, "target": 19}, {"source": 29, "target": 20}, {"source": 29, "target": 21}, {"source": 29, "target": 22}, {"source": 29, "target": 23}, {"source": 29, "target": 24}, {"source": 29, "target": 25}, {"source": 29, "target": 26}, {"source": 29, "target": 27}, {"source": 29, "target": 28}, {"source": 29, "target": 31}, {"source": 29, "target": 32}, {"source": 29, "target": 33}, {"source": 29, "target": 34}, {"source": 29, "target": 35}, {"source": 29, "target": 36}, {"source": 29, "target": 37}, {"source": 29, "target": 38}, {"source": 29, "target": 40}, {"source": 29, "target": 41}, {"source": 29, "target": 43}, {"source": 29, "target": 44}, {"source": 30, "target": 4}, {"source": 30, "target": 7}, {"source": 30, "target": 15}, {"source": 30, "target": 17}, {"source": 30, "target": 21}, {"source": 30, "target": 24}, {"source": 30, "target": 26}, {"source": 30, "target": 27}, {"source": 30, "target": 31}, {"source": 30, "target": 32}, {"source": 30, "target": 33}, {"source": 30, "target": 34}, {"source": 30, "target": 35}, {"source": 30, "target": 36}, {"source": 30, "target": 37}, {"source": 30, "target": 38}, {"source": 30, "target": 39}, {"source": 30, "target": 40}, {"source": 30, "target": 41}, {"source": 30, "target": 42}, {"source": 30, "target": 43}, {"source": 30, "target": 44}, {"source": 31, "target": 0}, {"source": 31, "target": 1}, {"source": 31, "target": 3}, {"source": 31, "target": 4}, {"source": 31, "target": 5}, {"source": 31, "target": 6}, {"source": 31, "target": 13}, {"source": 31, "target": 14}, {"source": 31, "target": 15}, {"source": 31, "target": 17}, {"source": 31, "target": 18}, {"source": 31, "target": 20}, {"source": 31, "target": 21}, {"source": 31, "target": 23}, {"source": 31, "target": 27}, {"source": 31, "target": 29}, {"source": 31, "target": 30}, {"source": 31, "target": 32}, {"source": 31, "target": 33}, {"source": 31, "target": 34}, {"source": 31, "target": 35}, {"source": 31, "target": 36}, {"source": 31, "target": 37}, {"source": 31, "target": 38}, {"source": 31, "target": 39}, {"source": 31, "target": 40}, {"source": 31, "target": 41}, {"source": 31, "target": 42}, {"source": 31, "target": 43}, {"source": 31, "target": 44}, {"source": 32, "target": 0}, {"source": 32, "target": 3}, {"source": 32, "target": 4}, {"source": 32, "target": 10}, {"source": 32, "target": 11}, {"source": 32, "target": 12}, {"source": 32, "target": 13}, {"source": 32, "target": 15}, {"source": 32, "target": 16}, {"source": 32, "target": 17}, {"source": 32, "target": 18}, {"source": 32, "target": 19}, {"source": 32, "target": 20}, {"source": 32, "target": 21}, {"source": 32, "target": 22}, {"source": 32, "target": 23}, {"source": 32, "target": 26}, {"source": 32, "target": 27}, {"source": 32, "target": 28}, {"source": 32, "target": 29}, {"source": 32, "target": 30}, {"source": 32, "target": 31}, {"source": 32, "target": 33}, {"source": 32, "target": 34}, {"source": 32, "target": 35}, {"source": 32, "target": 36}, {"source": 32, "target": 37}, {"source": 32, "target": 38}, {"source": 32, "target": 39}, {"source": 32, "target": 40}, {"source": 32, "target": 41}, {"source": 32, "target": 42}, {"source": 32, "target": 43}, {"source": 32, "target": 44}, {"source": 33, "target": 0}, {"source": 33, "target": 1}, {"source": 33, "target": 4}, {"source": 33, "target": 11}, {"source": 33, "target": 13}, {"source": 33, "target": 15}, {"source": 33, "target": 16}, {"source": 33, "target": 17}, {"source": 33, "target": 18}, {"source": 33, "target": 19}, {"source": 33, "target": 20}, {"source": 33, "target": 21}, {"source": 33, "target": 23}, {"source": 33, "target": 24}, {"source": 33, "target": 25}, {"source": 33, "target": 26}, {"source": 33, "target": 27}, {"source": 33, "target": 29}, {"source": 33, "target": 30}, {"source": 33, "target": 31}, {"source": 33, "target": 32}, {"source": 33, "target": 34}, {"source": 33, "target": 35}, {"source": 33, "target": 36}, {"source": 33, "target": 37}, {"source": 33, "target": 38}, {"source": 33, "target": 39}, {"source": 33, "target": 40}, {"source": 33, "target": 41}, {"source": 33, "target": 42}, {"source": 33, "target": 43}, {"source": 33, "target": 44}, {"source": 34, "target": 13}, {"source": 34, "target": 15}, {"source": 34, "target": 18}, {"source": 34, "target": 21}, {"source": 34, "target": 23}, {"source": 34, "target": 25}, {"source": 34, "target": 27}, {"source": 34, "target": 28}, {"source": 34, "target": 30}, {"source": 34, "target": 31}, {"source": 34, "target": 32}, {"source": 34, "target": 33}, {"source": 34, "target": 35}, {"source": 34, "target": 36}, {"source": 34, "target": 37}, {"source": 34, "target": 38}, {"source": 34, "target": 39}, {"source": 34, "target": 40}, {"source": 34, "target": 41}, {"source": 34, "target": 42}, {"source": 34, "target": 43}, {"source": 34, "target": 44}, {"source": 35, "target": 0}, {"source": 35, "target": 1}, {"source": 35, "target": 13}, {"source": 35, "target": 15}, {"source": 35, "target": 17}, {"source": 35, "target": 20}, {"source": 35, "target": 21}, {"source": 35, "target": 24}, {"source": 35, "target": 26}, {"source": 35, "target": 27}, {"source": 35, "target": 29}, {"source": 35, "target": 30}, {"source": 35, "target": 31}, {"source": 35, "target": 32}, {"source": 35, "target": 33}, {"source": 35, "target": 34}, {"source": 35, "target": 36}, {"source": 35, "target": 37}, {"source": 35, "target": 38}, {"source": 35, "target": 39}, {"source": 35, "target": 40}, {"source": 35, "target": 41}, {"source": 35, "target": 42}, {"source": 35, "target": 43}, {"source": 35, "target": 44}, {"source": 36, "target": 7}, {"source": 36, "target": 17}, {"source": 36, "target": 21}, {"source": 36, "target": 22}, {"source": 36, "target": 25}, {"source": 36, "target": 27}, {"source": 36, "target": 30}, {"source": 36, "target": 31}, {"source": 36, "target": 32}, {"source": 36, "target": 33}, {"source": 36, "target": 34}, {"source": 36, "target": 35}, {"source": 36, "target": 37}, {"source": 36, "target": 38}, {"source": 36, "target": 39}, {"source": 36, "target": 40}, {"source": 36, "target": 41}, {"source": 36, "target": 42}, {"source": 36, "target": 43}, {"source": 36, "target": 44}, {"source": 37, "target": 0}, {"source": 37, "target": 3}, {"source": 37, "target": 13}, {"source": 37, "target": 15}, {"source": 37, "target": 18}, {"source": 37, "target": 22}, {"source": 37, "target": 23}, {"source": 37, "target": 27}, {"source": 37, "target": 29}, {"source": 37, "target": 30}, {"source": 37, "target": 31}, {"source": 37, "target": 32}, {"source": 37, "target": 33}, {"source": 37, "target": 34}, {"source": 37, "target": 35}, {"source": 37, "target": 36}, {"source": 37, "target": 39}, {"source": 37, "target": 40}, {"source": 37, "target": 41}, {"source": 37, "target": 42}, {"source": 37, "target": 43}, {"source": 37, "target": 44}, {"source": 38, "target": 13}, {"source": 38, "target": 20}, {"source": 38, "target": 24}, {"source": 38, "target": 27}, {"source": 38, "target": 30}, {"source": 38, "target": 31}, {"source": 38, "target": 33}, {"source": 38, "target": 34}, {"source": 38, "target": 35}, {"source": 38, "target": 36}, {"source": 38, "target": 37}, {"source": 38, "target": 39}, {"source": 38, "target": 40}, {"source": 38, "target": 41}, {"source": 38, "target": 42}, {"source": 38, "target": 43}, {"source": 38, "target": 44}, {"source": 39, "target": 0}, {"source": 39, "target": 13}, {"source": 39, "target": 15}, {"source": 39, "target": 16}, {"source": 39, "target": 17}, {"source": 39, "target": 18}, {"source": 39, "target": 20}, {"source": 39, "target": 21}, {"source": 39, "target": 23}, {"source": 39, "target": 24}, {"source": 39, "target": 27}, {"source": 39, "target": 31}, {"source": 39, "target": 32}, {"source": 39, "target": 37}, {"source": 39, "target": 38}, {"source": 39, "target": 40}, {"source": 39, "target": 41}, {"source": 39, "target": 42}, {"source": 39, "target": 43}, {"source": 39, "target": 44}, {"source": 40, "target": 0}, {"source": 40, "target": 3}, {"source": 40, "target": 5}, {"source": 40, "target": 13}, {"source": 40, "target": 15}, {"source": 40, "target": 17}, {"source": 40, "target": 20}, {"source": 40, "target": 21}, {"source": 40, "target": 23}, {"source": 40, "target": 24}, {"source": 40, "target": 27}, {"source": 40, "target": 30}, {"source": 40, "target": 31}, {"source": 40, "target": 32}, {"source": 40, "target": 33}, {"source": 40, "target": 34}, {"source": 40, "target": 35}, {"source": 40, "target": 36}, {"source": 40, "target": 37}, {"source": 40, "target": 38}, {"source": 40, "target": 39}, {"source": 40, "target": 41}, {"source": 40, "target": 42}, {"source": 40, "target": 43}, {"source": 40, "target": 44}, {"source": 41, "target": 0}, {"source": 41, "target": 1}, {"source": 41, "target": 2}, {"source": 41, "target": 13}, {"source": 41, "target": 15}, {"source": 41, "target": 17}, {"source": 41, "target": 21}, {"source": 41, "target": 23}, {"source": 41, "target": 27}, {"source": 41, "target": 30}, {"source": 41, "target": 31}, {"source": 41, "target": 32}, {"source": 41, "target": 33}, {"source": 41, "target": 34}, {"source": 41, "target": 35}, {"source": 41, "target": 36}, {"source": 41, "target": 37}, {"source": 41, "target": 38}, {"source": 41, "target": 39}, {"source": 41, "target": 40}, {"source": 41, "target": 42}, {"source": 41, "target": 43}, {"source": 41, "target": 44}, {"source": 42, "target": 0}, {"source": 42, "target": 2}, {"source": 42, "target": 3}, {"source": 42, "target": 5}, {"source": 42, "target": 8}, {"source": 42, "target": 10}, {"source": 42, "target": 11}, {"source": 42, "target": 13}, {"source": 42, "target": 15}, {"source": 42, "target": 16}, {"source": 42, "target": 27}, {"source": 42, "target": 31}, {"source": 42, "target": 34}, {"source": 42, "target": 37}, {"source": 42, "target": 38}, {"source": 42, "target": 39}, {"source": 42, "target": 40}, {"source": 42, "target": 41}, {"source": 42, "target": 43}, {"source": 42, "target": 44}, {"source": 43, "target": 0}, {"source": 43, "target": 1}, {"source": 43, "target": 3}, {"source": 43, "target": 5}, {"source": 43, "target": 6}, {"source": 43, "target": 13}, {"source": 43, "target": 14}, {"source": 43, "target": 18}, {"source": 43, "target": 20}, {"source": 43, "target": 21}, {"source": 43, "target": 23}, {"source": 43, "target": 27}, {"source": 43, "target": 29}, {"source": 43, "target": 30}, {"source": 43, "target": 31}, {"source": 43, "target": 32}, {"source": 43, "target": 33}, {"source": 43, "target": 34}, {"source": 43, "target": 35}, {"source": 43, "target": 37}, {"source": 43, "target": 38}, {"source": 43, "target": 39}, {"source": 43, "target": 40}, {"source": 43, "target": 41}, {"source": 43, "target": 42}, {"source": 43, "target": 44}, {"source": 44, "target": 0}, {"source": 44, "target": 1}, {"source": 44, "target": 2}, {"source": 44, "target": 3}, {"source": 44, "target": 4}, {"source": 44, "target": 7}, {"source": 44, "target": 8}, {"source": 44, "target": 10}, {"source": 44, "target": 11}, {"source": 44, "target": 13}, {"source": 44, "target": 15}, {"source": 44, "target": 17}, {"source": 44, "target": 18}, {"source": 44, "target": 20}, {"source": 44, "target": 21}, {"source": 44, "target": 22}, {"source": 44, "target": 24}, {"source": 44, "target": 25}, {"source": 44, "target": 26}, {"source": 44, "target": 27}, {"source": 44, "target": 29}, {"source": 44, "target": 30}, {"source": 44, "target": 31}, {"source": 44, "target": 32}, {"source": 44, "target": 33}, {"source": 44, "target": 34}, {"source": 44, "target": 35}, {"source": 44, "target": 36}, {"source": 44, "target": 37}, {"source": 44, "target": 38}, {"source": 44, "target": 39}, {"source": 44, "target": 40}, {"source": 44, "target": 41}, {"source": 44, "target": 42}, {"source": 44, "target": 43}]};
+
+// ── Centrality data ────────────────────────────────────────────────────────
+const centralityData = {
+  0:  {name:"成員01",  deg:1.614, cls:0.815, btw:0.0290, eig:0.196},
+  1:  {name:"成員02",  deg:1.182, cls:0.688, btw:0.0096, eig:0.141},
+  2:  {name:"成員03",  deg:0.773, cls:0.657, btw:0.0014, eig:0.128},
+  3:  {name:"成員04",  deg:1.364, cls:0.746, btw:0.0158, eig:0.173},
+  4:  {name:"成員05",  deg:1.364, cls:0.710, btw:0.0153, eig:0.152},
+  5:  {name:"成員06",  deg:1.023, cls:0.667, btw:0.0092, eig:0.135},
+  6:  {name:"成員07",  deg:0.773, cls:0.638, btw:0.0051, eig:0.112},
+  7:  {name:"成員08",  deg:1.000, cls:0.647, btw:0.0102, eig:0.115},
+  8:  {name:"成員09",  deg:0.545, cls:0.611, btw:0.0075, eig:0.087},
+  9:  {name:"成員10",  deg:0.614, cls:0.579, btw:0.0181, eig:0.067},
+  10: {name:"成員11",  deg:1.114, cls:0.667, btw:0.0085, eig:0.134},
+  11: {name:"成員12",  deg:1.227, cls:0.688, btw:0.0100, eig:0.145},
+  12: {name:"成員13",  deg:0.318, cls:0.557, btw:0.0002, eig:0.053},
+  13: {name:"成員14",  deg:1.523, cls:0.846, btw:0.0187, eig:0.216},
+  14: {name:"成員15",  deg:1.068, cls:0.647, btw:0.0050, eig:0.138},
+  15: {name:"成員16",  deg:1.568, cls:0.733, btw:0.0226, eig:0.168},
+  16: {name:"成員17",  deg:1.159, cls:0.657, btw:0.0074, eig:0.133},
+  17: {name:"成員18",  deg:1.659, cls:0.772, btw:0.0213, eig:0.186},
+  18: {name:"成員19",  deg:1.500, cls:0.772, btw:0.0204, eig:0.189},
+  19: {name:"成員20",  deg:0.705, cls:0.629, btw:0.0007, eig:0.122},
+  20: {name:"成員21",  deg:0.977, cls:0.698, btw:0.0033, eig:0.161},
+  21: {name:"成員22",  deg:1.636, cls:0.759, btw:0.0193, eig:0.181},
+  22: {name:"成員23",  deg:0.909, cls:0.677, btw:0.0025, eig:0.146},
+  23: {name:"成員24",  deg:1.386, cls:0.733, btw:0.0105, eig:0.176},
+  24: {name:"成員25",  deg:1.273, cls:0.746, btw:0.0123, eig:0.178},
+  25: {name:"成員26",  deg:1.182, cls:0.647, btw:0.0088, eig:0.128},
+  26: {name:"成員27",  deg:1.000, cls:0.677, btw:0.0052, eig:0.143},
+  27: {name:"成員28",  deg:1.955, cls:0.957, btw:0.0511, eig:0.236},
+  28: {name:"成員29",  deg:1.000, cls:0.657, btw:0.0042, eig:0.133},
+  29: {name:"成員30",  deg:1.432, cls:0.677, btw:0.0126, eig:0.150},
+  30: {name:"成員31",  deg:1.000, cls:0.638, btw:0.0051, eig:0.116},
+  31: {name:"成員32",  deg:1.432, cls:0.759, btw:0.0147, eig:0.182},
+  32: {name:"成員33",  deg:1.295, cls:0.647, btw:0.0097, eig:0.124},
+  33: {name:"成員34",  deg:1.182, cls:0.620, btw:0.0056, eig:0.103},
+  34: {name:"成員35",  deg:1.000, cls:0.638, btw:0.0029, eig:0.119},
+  35: {name:"成員36",  deg:1.045, cls:0.629, btw:0.0028, eig:0.114},
+  36: {name:"成員37",  deg:0.886, cls:0.611, btw:0.0028, eig:0.096},
+  37: {name:"成員38",  deg:1.045, cls:0.657, btw:0.0034, eig:0.133},
+  38: {name:"成員39",  deg:0.909, cls:0.647, btw:0.0023, eig:0.127},
+  39: {name:"成員40",  deg:1.045, cls:0.677, btw:0.0031, eig:0.144},
+  40: {name:"成員41",  deg:1.250, cls:0.721, btw:0.0073, eig:0.167},
+  41: {name:"成員42",  deg:1.114, cls:0.677, btw:0.0044, eig:0.144},
+  42: {name:"成員43",  deg:1.182, cls:0.759, btw:0.0136, eig:0.172},
+  43: {name:"成員44",  deg:1.295, cls:0.733, btw:0.0101, eig:0.173},
+  44: {name:"成員45",  deg:1.523, cls:0.759, btw:0.0287, eig:0.173}
+};
+
+const kCoreIds = new Set([0,1,3,4,10,11,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,29,31,32,33,34,35,37,39,40,41,42,43,44]);
+const topBridgeIds = new Set([27,0,17,13,18]);
+
+// ── Node colour & size ─────────────────────────────────────────────────────
+function nodeColor(node) {
+  if (topBridgeIds.has(node.id)) return '#fbbf24';
+  if (kCoreIds.has(node.id)) return '#10b981';
+  return '#ef4444';
+}
+function nodeSize(node) {
+  const d = centralityData[node.id].deg;
+  return 2 + d * 4;
+}
+
+// ── 3D Graph ───────────────────────────────────────────────────────────────
+// ── Raw data (saved before 3d-force-graph mutates objects) ────────────────
+const rawNodes = graphData.nodes.map(n => ({id: n.id, name: n.name}));
+const rawLinks = graphData.links.map(l => ({source: l.source, target: l.target}));
+
+// ── Activity member sets (0-indexed node IDs) ──────────────────────────────
+const activitySets = {
+  all:  null,
+  s115: new Set([0,2,3,4,10,11,15,16,17,18,21,22,23,24,25,27,29]),
+  geo:  new Set([0,1,2,3,4,7,8,10,11,13,15,16,17,18,19,21,22,25,26,27,31,32,34,36,40,42,44]),
+  w115: new Set([0,1,2,3,4,7,8,9,10,11,12,16,17,18,20,21,22,23,24,27,29]),
+  s116: new Set([3,4,11,15,17,18,21,22,23,24,25,30,31,32,33,34,35,36,37,38,39,40,41,43]),
+  w116: new Set([13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,32,33,34,35,36,38,40,42,43])
+};
+const activityMeta = {
+  all:  '全體 45 位學生熟識網路 ｜ Max K-Core: 21 ｜ 點擊節點查看中心性',
+  s115: '115 系學會 ｜ 17 人 ｜ Global Clustering: 1.0000 ｜ Max K-Core: 16',
+  geo:  '地理營 ｜ 27 人 ｜ Global Clustering: 1.0000 ｜ Max K-Core: 26',
+  w115: '115 迎新 ｜ 21 人 ｜ Global Clustering: 1.0000 ｜ Max K-Core: 20',
+  s116: '116 系學會 ｜ 24 人 ｜ Global Clustering: 1.0000 ｜ Max K-Core: 23',
+  w116: '116 迎新 ｜ 27 人 ｜ Global Clustering: 1.0000 ｜ Max K-Core: 26'
+};
+
+const highlighted = new Set();
+const Graph = ForceGraph3D()(document.getElementById('graph'))
+  .width(document.getElementById('graph-wrap').clientWidth)
+  .height(document.getElementById('graph-wrap').clientHeight)
+  .graphData(graphData)
+  .nodeLabel(node => `${node.name}<br>度: ${centralityData[node.id].deg.toFixed(3)}`)
+  .nodeVal(node => nodeSize(node))
+  .nodeColor(node => nodeColor(node))
+  .nodeOpacity(0.92)
+  .linkWidth(link => highlighted.has(link) ? 3 : 0.3)
+  .linkColor(link => highlighted.has(link) ? '#ff4444' : 'rgba(255,255,255,0.15)')
+  .linkOpacity(1)
+  .linkDirectionalArrowLength(3)
+  .linkDirectionalArrowRelPos(1)
+  .onLinkClick(link => {
+    highlighted.has(link) ? highlighted.delete(link) : highlighted.add(link);
+    Graph.linkWidth(Graph.linkWidth()).linkColor(Graph.linkColor());
+  })
+  .onNodeClick(node => {
+    const d = centralityData[node.id];
+    document.getElementById('ni-name').textContent = node.name;
+    document.getElementById('ni-deg').textContent = d.deg.toFixed(4);
+    document.getElementById('ni-cls').textContent = d.cls.toFixed(4);
+    document.getElementById('ni-btw').textContent = d.btw.toFixed(4);
+    document.getElementById('ni-eig').textContent = d.eig.toFixed(4);
+    document.getElementById('ni-kcore').textContent = kCoreIds.has(node.id) ? '✅ 在核心內' : '❌ 邊緣節點';
+    document.getElementById('nodeInfo').classList.add('active');
+    Graph.centerAt(node.x, node.y, 1000);
+    Graph.zoom(4, 2000);
+  });
+
+// 拉開節點間距：加大彼此排斥力、加長連結距離
+Graph.d3Force('charge').strength(-180);
+Graph.d3Force('link').distance(80);
+
+window.addEventListener('resize', () => {
+  const wrap = document.getElementById('graph-wrap');
+  Graph.width(wrap.clientWidth).height(wrap.clientHeight);
+});
+
+// ── Graph tab switching ────────────────────────────────────────────────────
+function switchGraph(key, btn) {
+  document.querySelectorAll('.gtab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('nodeInfo').classList.remove('active');
+  document.getElementById('graphMeta').textContent = activityMeta[key];
+  highlighted.clear();
+
+  const memberSet = activitySets[key];
+  let newNodes, newLinks;
+
+  if (!memberSet) {
+    newNodes = rawNodes.map(n => ({...n}));
+    newLinks = rawLinks.map(l => ({...l}));
+  } else {
+    newNodes = rawNodes.filter(n => memberSet.has(n.id)).map(n => ({...n}));
+    const nodeIds = new Set(newNodes.map(n => n.id));
+    newLinks = rawLinks
+      .filter(l => nodeIds.has(l.source) && nodeIds.has(l.target))
+      .map(l => ({...l}));
+  }
+
+  Graph.graphData({nodes: newNodes, links: newLinks});
+}
+
+// ── Jaccard Heatmap ────────────────────────────────────────────────────────
+const jaccardDatasets = {
+  merged: {
+    events: ['系學會','地理營','探索營','迎新','系環','系羽','男排','女排'],
+    matrix: [
+      [1.00, 0.40, 0.16, 0.59, 0.16, 0.36, 0.09, 0.11],
+      [0.40, 1.00, 0.29, 0.46, 0.23, 0.30, 0.09, 0.13],
+      [0.16, 0.29, 1.00, 0.20, 0.22, 0.17, 0.11, 0.12],
+      [0.59, 0.46, 0.20, 1.00, 0.24, 0.42, 0.13, 0.13],
+      [0.16, 0.23, 0.22, 0.24, 1.00, 0.20, 0.22, 0.07],
+      [0.36, 0.30, 0.17, 0.42, 0.20, 1.00, 0.08, 0.03],
+      [0.09, 0.09, 0.11, 0.13, 0.22, 0.08, 1.00, 0.00],
+      [0.11, 0.13, 0.12, 0.13, 0.07, 0.03, 0.00, 1.00]
+    ]
+  },
+  split: {
+    events: ['115系學會','地理營','探索營2','115迎新','系環6','系羽','男排','女排','116系學會','探索營3','116迎新','系環7'],
+    matrix: [
+      [1.00, 0.40, 0.26, 0.52, 0.12, 0.25, 0.11, 0.20, 0.27, 0.13, 0.31, 0.08],
+      [0.40, 1.00, 0.24, 0.40, 0.10, 0.29, 0.09, 0.13, 0.29, 0.17, 0.31, 0.19],
+      [0.26, 0.24, 1.00, 0.22, 0.05, 0.18, 0.00, 0.09, 0.05, 0.18, 0.09, 0.14],
+      [0.52, 0.40, 0.22, 1.00, 0.09, 0.21, 0.12, 0.16, 0.18, 0.14, 0.24, 0.12],
+      [0.12, 0.10, 0.05, 0.09, 1.00, 0.05, 0.19, 0.06, 0.08, 0.19, 0.10, 0.13],
+      [0.25, 0.29, 0.18, 0.21, 0.05, 1.00, 0.08, 0.03, 0.31, 0.10, 0.44, 0.18],
+      [0.11, 0.09, 0.00, 0.12, 0.19, 0.08, 1.00, 0.00, 0.12, 0.14, 0.13, 0.24],
+      [0.20, 0.13, 0.09, 0.16, 0.06, 0.03, 0.00, 1.00, 0.10, 0.10, 0.13, 0.03],
+      [0.27, 0.29, 0.05, 0.18, 0.08, 0.31, 0.12, 0.10, 1.00, 0.12, 0.47, 0.16],
+      [0.13, 0.17, 0.18, 0.14, 0.19, 0.10, 0.14, 0.10, 0.12, 1.00, 0.17, 0.29],
+      [0.31, 0.31, 0.09, 0.24, 0.10, 0.44, 0.13, 0.13, 0.47, 0.17, 1.00, 0.21],
+      [0.08, 0.19, 0.14, 0.12, 0.13, 0.18, 0.24, 0.03, 0.16, 0.29, 0.21, 1.00]
+    ]
+  }
+};
+function jaccardColor(v) {
+  if (v === 1.00) return { bg: 'rgba(0,212,255,0.7)', fg: '#000' };
+  if (v >= 0.5)  return { bg: `rgba(0,212,255,${0.15 + v * 0.55})`, fg: '#fff' };
+  if (v >= 0.3)  return { bg: `rgba(16,185,129,${0.1 + v * 0.6})`, fg: '#fff' };
+  if (v > 0)     return { bg: `rgba(255,255,255,${0.03 + v * 0.25})`, fg: '#94a3b8' };
+  return { bg: 'rgba(239,68,68,0.2)', fg: '#ef4444' };
+}
+function renderJaccardTable(key) {
+  const { events, matrix } = jaccardDatasets[key];
+  const tbl = document.getElementById('jaccard-table');
+  tbl.innerHTML = '';
+  const hdr = document.createElement('tr');
+  hdr.innerHTML = '<th></th>' + events.map(e => `<th>${e}</th>`).join('');
+  tbl.appendChild(hdr);
+  matrix.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="row-label">${events[i]}</td>` + row.map((v, j) => {
+      const c = jaccardColor(v);
+      return `<td style="background:${c.bg};color:${c.fg}" title="${events[i]} × ${events[j]}: ${v}">${v.toFixed(2)}</td>`;
+    }).join('');
+    tbl.appendChild(tr);
+  });
+}
+function switchJaccard(key, btn) {
+  document.querySelectorAll('.jtab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderJaccardTable(key);
+}
+renderJaccardTable('merged');
+
+// ── Centrality rank lists ──────────────────────────────────────────────────
+function buildRankList(containerId, key, maxVal) {
+  const sorted = Object.entries(centralityData)
+    .sort((a,b) => b[1][key] - a[1][key])
+    .slice(0, 10);
+  const container = document.getElementById(containerId);
+  sorted.forEach(([id, d], idx) => {
+    const pct = (d[key] / maxVal * 100).toFixed(1);
+    const numCls = idx === 0 ? 'rank-top1' : idx < 3 ? 'rank-top3' : idx < 5 ? 'rank-top5' : 'rank-other';
+    const item = document.createElement('div');
+    item.className = 'rank-item';
+    item.innerHTML = `
+      <div class="rank-num ${numCls}">${idx+1}</div>
+      <div class="rank-name">${d.name}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${pct}%"></div></div>
+      <div class="rank-val">${d[key].toFixed(4)}</div>`;
+    container.appendChild(item);
+  });
+}
+buildRankList('rank-degree',      'deg', 1.955);
+buildRankList('rank-closeness',   'cls', 0.957);
+buildRankList('rank-betweenness', 'btw', 0.0511);
+buildRankList('rank-eigenvector', 'eig', 0.236);
+
+function showRank(key) {
+  document.querySelectorAll('.rank-list').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.rank-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('rank-'+key).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── Nav toggle ─────────────────────────────────────────────────────────────
+function toggleNav() {
+  const links = document.getElementById('navLinks');
+  const btn = document.getElementById('navToggle');
+  links.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeNav() {
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('navToggle').classList.remove('open');
+}
+// Close nav on outside click
+document.addEventListener('click', e => {
+  const nav = document.getElementById('mainNav');
+  if (!nav.contains(e.target)) closeNav();
+});
+
+// ── K-Core member chips ────────────────────────────────────────────────────
+const coreEl = document.getElementById('core-members');
+const outerEl = document.getElementById('outer-members');
+Object.entries(centralityData).forEach(([id, d]) => {
+  const chip = document.createElement('span');
+  chip.className = 'member-chip ' + (topBridgeIds.has(+id) ? 'member-bridge' : 'member-core');
+  chip.textContent = d.name;
+  if (kCoreIds.has(+id)) coreEl.appendChild(chip);
+  else {
+    const c2 = document.createElement('span');
+    c2.className = 'member-chip member-outer';
+    c2.textContent = d.name;
+    outerEl.appendChild(c2);
+  }
+});
+</script>
+</body>
+</html>
