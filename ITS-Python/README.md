@@ -8,5 +8,5 @@
 5. 檔案類型：`.ipynb` 
 
 ## 檔案內容
-1. `ITS-Python_MarkDown.ipynb`
-2. `ITS-Python_Note.ipynb`
+1. MarkDown 相關語法：[ITS-Python_MarkDown.ipynb](ITS-Python_MarkDown.ipynb)
+2. Python 基礎知識：[ITS-Python_Notes.ipynb ](ITS-Python_Notes.ipynb )
