@@ -1,4 +1,4 @@
-#  人工智慧導論(Introduction to Artificial Intelligence)
+#  [人工智慧導論](Introduction_to_Artifical_Intelligence)(Introduction to Artificial Intelligence)
 > TAICA 臺灣大專院校人工智慧學程聯盟
 
 1. 授課老師 : 朱威達
@@ -10,7 +10,7 @@
 
 ---
 
-# 機器學習(Machine Learning)
+# [機器學習](Machine_Learning)(Machine Learning)
 1. 授課老師 : 施明毅
 2. 修課時間 : 114學年度第一學期
 3. 上課用書 : 教授自編
