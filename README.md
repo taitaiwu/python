@@ -55,6 +55,16 @@
 
 ---
 
+### 網路安全 (Network Security)
+1. 授課老師：丁德榮
+2. 修課時間：114 學年度第二學期
+3. 上課用書：[Cryptography and Network Security: Principles and Practice, 8th edition](https://www.pearson.com/en-us/subject-catalog/p/cryptography-and-network-security-principles-and-practice/P200000003477/9780135764213?srsltid=AfmBOorNa9x23Ew5MtHfvzGKgoBKvq04an3H1TPXXm2OECOYWsER4Ruc)
+4. 主要內容：課堂作業
+5. 檔案介紹：平時四次練習
+6. 檔案類型：.py
+
+---
+
 ### [社會網絡分析與地理應用](Social_Network_Analysis_and_Geographic_Applications)(Social Network Analysis & Geographic Applications)
 1. 授課老師 : 郭飛鷹
 2. 修課時間 : 114學年度第二學期
