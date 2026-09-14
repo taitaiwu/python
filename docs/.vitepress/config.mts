@@ -5,6 +5,7 @@ export default defineConfig({
   title: "Python 程式存檔",
   description: "課堂習題與作業存檔",
   cleanUrls: true,
+  base: "/python",
 
   themeConfig: {
     nav: [
