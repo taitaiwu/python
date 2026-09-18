@@ -67,8 +67,18 @@
 
 ### [社會網絡分析與地理應用](Social_Network_Analysis_and_Geographic_Applications)(Social Network Analysis & Geographic Applications)
 1. 授課老師 : 郭飛鷹
-2. 修課時間 : 114學年度第二學期
+2. 修課時間 : 114 學年度第二學期
 3. 上課用書 : [Python for Graph and Network Analysis](https://link.springer.com/book/10.1007/978-3-319-53004-8)
 4. 主要內容 : 課堂作業、期末專案
 5. 檔案介紹 : 平時作業練習與期末專案
+6. 檔案類型 : .ipynb
+
+---
+
+### [地理資訊系統運用程式](GIS_Programming)(GIS Programming)
+1. 授課老師 : 陳清目
+2. 修課時間 : 115 學年度第一學期
+3. 上課用書 : 教授自編
+4. 主要內容 : 課堂成果
+5. 檔案介紹 : 平時課堂作業與專案
 6. 檔案類型 : .ipynb
