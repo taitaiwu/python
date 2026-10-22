@@ -6,28 +6,28 @@
 | 週次 | 第二週 |
 | 使用工具 | Claude Code CLI |
 | 模型與權限模式 | auto |
-| 成果連結 | [Google Colab](https://drive.google.com/file/d/1A8wmZ0a4N8Q-gJMmniWRchTEc70NUm8O/view?usp=sharing)、[GitHub](https://github.com/taitaiwu/python/blob/main/GIS_Programming/notebooks/02_youbike_json.ipynb) |
+| 成果連結 | [Google Colab](https://drive.google.com/file/d/1A8wmZ0a4N8Q-gJMmniWRchTEc70NUm8O/view?usp=sharing)、[GitHub](https://github.com/taitaiwu/python/blob/main/GIS_Programming/notebooks/02_youbike_json.ipynb)、[Notion](https://app.notion.com/p/HW2-JSON-YouBike-3e57553c0e898069ad3ad24ac255a010?v=78f7553c0e89823db22008fb904e62d6&source=copy_link) |
 | 花費時間 | 約  1.5 小時 |
 
 # 1. Before AI
 
 **本週引導題的回答：**
 
-- 1. JSON 和 Python 的 dict、list 是什麼關係？請先用自己的話寫。
+1. **JSON 和 Python 的 dict、list 是什麼關係？請先用自己的話寫。**
     
-    `dict` 是字典，內含 `key` 和 `value`；`list` 是串列，內含 `element` 而已
+    > `dict` 是字典，內含 `key` 和 `value`；`list` 是串列，內含 `element` 而已
     
-- 2. 你猜臺北市有多少個 YouBike 站？哪一區最多？
+2. **你猜臺北市有多少個 YouBike 站？哪一區最多？**
     
-    1000 多個，信義區
+    > 1000 多個，信義區
     
-- 3. 「可借車數＋可還空位＝總車柱數」一定成立嗎？請先寫下你的猜測。
+3. **「可借車數＋可還空位＝總車柱數」一定成立嗎？請先寫下你的猜測。**
     
-    不一定，可能有壞掉的車子或車柱，因此可能會有「可借車數＋可還空位< 總車柱數」的情形
+    > 不一定，可能有壞掉的車子或車柱，因此可能會有「可借車數＋可還空位< 總車柱數」的情形
     
-- 4. 我不知道的是……（至少寫 2 點）
-    1. 台北市的 YouBike 數量
-    2. assert  使用
+4. **我不知道的是……（至少寫 2 點）**
+    > * 台北市的 YouBike 數量
+    > * assert  使用
 
 ---
 
@@ -53,28 +53,25 @@
 
 # 4. 最終產出與個人結論
 
-- 最終產出
-    1. `notebooks/02_youbike_json.ipynb`（主要作業檔案）
+* 最終產出
+    > * `notebooks/02_youbike_json.ipynb`（主要作業檔案）
         - 第 1 節：路徑設定（沿用 00 範本）
         - 第 2 節：抓取即時 JSON，印出型態／總筆數／第一筆各欄位型態
         - 第 3 節：fetch_youbike(timeout=30)，逾時／HTTP 錯誤／連線失敗／非 JSON 都轉成有說明的 RuntimeError
         - 第 4 節：summarize_by_area(records)，用 for+dict 統計各行政區站數／營運中站數／可借車總數，加一格檢查暫停營運站的可借車數
         - 第 5 節：5 筆手造測試資料＋assert 測試（涵蓋暫停營運站），加一段故意寫錯的版本，確認同一組 assert 會真的失敗
         - 第 6 節：save_youbike_snapshot()，把抓到的資料存成 youbike_YYYYMMDD_HHMM.json
-    2. 程式碼產出的 `json` 檔案
-- 個人結論
+    > * 程式碼產出的 `json` 檔案
+* 個人結論
     
-    在這一次的實作中，我覺得 AI agent 沒辦法一次達成我的需求，因此我把作業拆分成數個小題來讓他作業，每當一個小題弄好了才會進到下一個小題，這樣可以加速我的作業也不會耗費太多 token。
+    > 在這一次的實作中，我覺得 AI agent 沒辦法一次達成我的需求，因此我把作業拆分成數個小題來讓他作業，每當一個小題弄好了才會進到下一個小題，這樣可以加速我的作業也不會耗費太多 token。
     
 
 ---
 
 # 5. 附件
 
-[對話紀錄：02_youbike_json.ipynb 建立與資料判讀](https://app.notion.com/p/02_youbike_json-ipynb-3e57553c0e8980aeb11bf22c60cff0a9?pvs=21)
-
-[youbike_20260924_1120.json](youbike_20260924_1120.json)
-
-[youbike_20260924_1547.json](youbike_20260924_1547.json)
-
-[youbike_20260930_1700.json](youbike_20260930_1700.json)
+* [對話紀錄：02_youbike_json.ipynb 建立與資料判讀](../conversation/02_youbike_json_對話紀錄.md)
+* [youbike_20260924_1120.json](../data/processed/youbike_20260924_1120.json)
+* [youbike_20260924_1547.json](../data/processed/youbike_20260924_1547.json)
+* [youbike_20260930_1700.json](../data/processed/youbike_20260930_1700.json)

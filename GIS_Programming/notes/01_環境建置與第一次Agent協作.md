@@ -7,7 +7,7 @@
 | 週次 | 第一週 |
 | 使用工具 | Claude Code CLI |
 | 模型與權限模式 | auto |
-| 成果連結 | [Google Colab](https://drive.google.com/file/d/1uQqeGe7BP_UgzhpqDf8k_fNR3EIiS57o/view?usp=sharing)、[GitHub](https://github.com/taitaiwu/python/blob/main/GIS_Programming/notebooks/01_first_look.ipynb) |
+| 成果連結 | [Google Colab](https://drive.google.com/file/d/1uQqeGe7BP_UgzhpqDf8k_fNR3EIiS57o/view?usp=sharing)、[GitHub](https://github.com/taitaiwu/python/blob/main/GIS_Programming/notebooks/01_first_look.ipynb)、[Notion](https://app.notion.com/p/HW1-Agent-3de7553c0e89801aa352f4dad83cf394?v=78f7553c0e89823db22008fb904e62d6&source=copy_link) |
 | 花費時間 | 約  1 小時 |
 
 ---
