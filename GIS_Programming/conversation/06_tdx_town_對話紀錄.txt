@@ -1,0 +1,669 @@
+ ▐▛███▛█   Claude Code v2.1.304
+▝▜██████▀  Opus 5.5 · Claude Pro
+ ▝▝   ▝▝   C:\作業資料夾
+                                                                
+
+❯ 如果有站點實際定位不在該縣市 該怎麼處理                                       
+
+  Read 1 file (ctrl+o to expand)
+
+● 你目前的臺中市資料其實沒有縣市外的站點。location["站點數"].sum()
+  只計算臺中市的 29 區，加總剛好等於
+  1842，代表每個站點都落在臺中市內。不過作業要求把檢查的程式和結果留在 notebook
+  裡，而目前的 cell 3 少了這一步。
+
+  處理方式
+
+  1. 先找出來，看是什麼原因
+
+  """檢查：不在所選縣市的站點"""
+  outside = connect[connect["COUNTYNAME"] != CITY_DICT.get(CITY)]
+  print("不在", CITY_DICT.get(CITY), "的站點：", len(outside))
+  outside[["StationName.Zh_tw", "COUNTYNAME", "TOWNNAME",
+           "StationPosition.PositionLon", "StationPosition.PositionLat"]]
+
+  COUNTYNAME 是 NaN 的站點，也就是沒配對到任何鄉鎮的站點，也會被篩進來。這是刻意
+  的設計，因為這些站點同樣需要你做判斷。
+
+  2. 依原因決定要不要算進去
+
+  情況: 站點真的設在鄰近縣市（例如臺中的 YouBike 設在彰化交界）
+  怎麼判斷: explore() 看位置合理，站名也對得上
+  建議做法: 排除。面量圖只畫本縣市的鄉鎮，算進去也沒有地方放
+  ────────────────────────────────────────
+  情況: 座標有誤（經緯度對調、(0,0)、落在海上）
+  怎麼判斷: 經度不在 119–122、緯度不在 21–26 之間，或位置明顯不合理
+  建議做法: 排除，在決策表註明是資料錯誤
+  ────────────────────────────────────────
+  情況: 剛好落在界線外幾公尺（海岸線、河界的精度問題）
+  怎麼判斷: TOWNNAME 是 NaN，但點就在縣界旁
+  建議做法: 可以用 gpd.sjoin_nearest 補配到最近的鄉鎮，或直接排除，兩種都要說明
+
+  3. 排除後重新驗證加總
+
+  included = connect[connect["COUNTYNAME"] == CITY_DICT.get(CITY)]
+  print("納入：", len(included), "／排除：", len(connect) - len(included))
+
+  location["站點數"] = location["TOWNCODE"].map(included["TOWNCODE"].value_count
+  s()).fillna(0).astype(int)
+  assert location["站點數"].sum() == len(included)
+
+  這樣驗證的就是「加總等於決定納入的站點數」，符合作業的寫法。存 GPKG 的
+  stations 圖層也建議改用 included。如果排除數是 0，也要在決策表寫「檢查後 0
+  筆，無需處理」。
+
+  其他兩個問題
+
+  - cell 3 的區界 bounds 印錯了：print("鄉鎮區界：", town.crs, 
+    station.total_bounds) 應該改成 town.total_bounds。目前兩行輸出一模一樣，而
+    EPSG:3826 的數值應該是幾十萬的公尺座標。這一點正好是學習目標
+    2「用數值範圍判斷 CRS」要你注意的地方。
+  - 不要用 TOWNNAME 計數：connect["TOWNNAME"].value_counts() 會把不同縣市的同名
+    區合併，例如臺南、嘉義、新竹也都有東區、西區、北區。你後面用 TOWNCODE
+    計數的做法才是正確的，cell 3 的 township 也建議改用
+    TOWNCODE，或先篩縣市再計數。
+
+  需要的話，我可以直接把這些修改寫進 notebook。
+
+✻ Churned for 22s · done 下午4:14
+
+❯ 幫我把這些修改寫進 notebook                                                   
+  ⎿  Updated cell 6249a751:
+         1 """印出兩個圖層的 CRS 與 total_bounds"""
+         2 print("站點：", station.crs, station.total_bounds)
+         3 
+         4 town = gpd.read_file(TOWN_SHP)
+         5 print("鄉鎮區界：", town.crs, town.total_bounds)
+         6 
+         7 """sjoin"""
+         8 station_3826 = station.to_crs(town.crs)     # 統一 CRS
+         9 connect = gpd.sjoin(
+        10     station_3826,
+        11     town[["TOWNCODE", "COUNTYNAME", "TOWNNAME", "geometry"]],
+        12     how="left",
+        13     predicate="within",
+        14 )
+        15 
+        16 print("站點數：", len(station_3826), "→ 連接後：", len(connect
+           ))
+        17 print("沒有配對到鄉鎮的站點：", connect["TOWNNAME"].isna().sum
+           ())
+        18 
+        19 """檢查：不在所選縣市的站點（含沒配對到鄉鎮的 NaN）"""
+        20 outside = connect[connect["COUNTYNAME"] != CITY_DICT.get(CITY)
+           ]
+        21 print("不在", CITY_DICT.get(CITY), "的站點：", len(outside))
+        22 
+        23 """只納入所選縣市內的站點"""
+        24 included = connect[connect["COUNTYNAME"] == CITY_DICT.get(CITY
+           )]
+        25 print("納入：", len(included), "／排除：", len(connect) - len(
+           included))
+        26 
+        27 """計算每個鄉鎮市區的站點數（用 TOWNCODE，避免不同縣市同名的區
+           被合併）"""
+        28 township = included.groupby(["TOWNCODE", "TOWNNAME"]).size().s
+           ort_values(ascending=False)
+        29 print("有站點的鄉鎮：", len(township))
+        30 print(str(CITY_DICT.get(CITY)) + "的鄉鎮市：", (town["COUNTYNA
+           ME"] == CITY_DICT.get(CITY)).sum())
+        31 
+        32 outside[["StationName.Zh_tw", "COUNTYNAME", "TOWNNAME",
+        33          "StationPosition.PositionLon", "StationPosition.Posit
+           ionLat"]]
+
+● Edit Notebook(112-1~115-1 程式設計相關課程\課堂習題或回家作業\python\python\GI
+               S_Programming\notebooks\06_tdx_town.ipynb@6249a751)
+  ⎿  Updated cell 99fdd3ff:
+        1 townsh
+          ip
+  ⎿  Updated cell 627440fc:
+        1 """沒站點鄉鎮補 0"""
+        2 location = town[town["COUNTYNAME"] == CITY_DICT.get(CITY)].copy
+          ()
+        3 location["站點數"] = location["TOWNCODE"].map(included["TOWNCOD
+          E"].value_counts()).fillna(0).astype(int)
+        4 
+        5 print("站點數加總：", location["站點數"].sum(), "（應該等於納入
+          的站點數", len(included), "）")
+        6 assert location["站點數"].sum() == len(included)
+        7 location.loc[location["站點數"] == 0, ["TOWNNAME", "站點數"]]
+
+  ⎿  Updated cell c1bc19c3:
+         1 """存檔"""
+         2 import pyogrio
+         3 
+         4 PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+         5 FILNAME = "w6_" + str(CITY) + "_station.gpkg"
+         6 GPKG = PROCESSED_DIR / FILNAME
+         7 
+         8 location.to_file(GPKG, layer="town_density", driver="GPKG")
+         9 included.drop(columns="index_right").to_file(GPKG, layer="stat
+           ions", driver="GPKG")
+        10 
+        11 print("儲存於", GPKG)
+        12 print(pyogrio.list_layers(GPKG))
+        13 read = gpd.read_file(GPKG, layer="town_density")
+        14 print(read.crs, len(read), read.columns.tolist()[-3:])
+
+
+● Map cell still plots all stations; switch it to included too.
+  ⎿  Updated cell 53a63941:
+         1 """面量圖"""
+         2 fig, ax = plt.subplots(figsize=(7, 7))
+         3 location.plot(column="每平方公里站點數", cmap="viridis", legen
+           d=True, ax=ax,
+         4           edgecolor="white", linewidth=0.5,
+         5           legend_kwds={"label": "每平方公里站點數", "shrink": 
+           0.6})
+         6 included.plot(ax=ax, color="black", markersize=2)
+         7 ax.set_title(str(CITY_DICT.get(CITY)) + "各鄉鎮市公共自行車站
+           點密度")
+         8 ax.set_axis_off()
+         9 plt.show()
+        10 
+        11 """explore"""
+        12 # 臺灣通用電子地圖（內政部國土測繪中心 WMTS）；注意網址是 {z}/
+           {y}/{x}
+        13 map_web = "https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMa
+           psCompatible/{z}/{y}/{x}"
+        14 map_from = "臺灣通用電子地圖 © 內政部國土測繪中心"
+        15 
+        16 m = location.explore(
+        17     column="每平方公里站點數", cmap="viridis",
+        18     tooltip=["TOWNNAME", "站點數", "每平方公里站點數"],
+        19     style_kwds={"fillOpacity": 0.5},
+        20     tiles=map_web, attr=map_from)
+        21 
+        22 included.explore(m=m, color="red", marker_kwds={"radius": 3}, 
+           tooltip=["StationName.Zh_tw", "StationUID", "TOWNNAME"])
+
+● 修改已經寫進 notebook，但我還沒有執行。請從頭重新跑一次，讓輸出更新。
+
+  cell 3（空間連接）
+  - 鄉鎮區界改印 town.total_bounds。正確的話會看到 EPSG:3826
+    的公尺座標，數值是幾十萬，跟站點的經緯度明顯不同。
+  - 新增 outside：列出不在所選縣市、或沒配對到鄉鎮的站點，cell
+    最後會把這些站點顯示成表格。
+  - 新增 included：只保留所選縣市內的站點，並印出納入幾筆、排除幾筆。
+  - township 改用 TOWNCODE 和 TOWNNAME
+    一起分組計數，不同縣市同名的區就不會被合併。原本的 township
+    輸出另外放進一個新 cell 顯示。
+
+  後面三個用到站點的 cell，全部從 connect／station_3826 改成 included
+  - 補 0 的 cell：計數改用 included，並加上 assert，確認加總等於納入的站點數。
+  - 地圖的 cell：面量圖和 explore() 都只疊 included，explore 的 tooltip 多加了
+    TOWNNAME，目視檢查時比較方便。
+  - 存檔的 cell：GPKG 的 stations 圖層改存 included。
+
+  依先前的結果，臺中市的排除數應該是 0、outside
+  是空表。如果跑完真的是這樣，記得在決策表寫上「檢查後縣市外站點 0
+  筆，無需處理」。
+
+✻ Cogitated for 26s · done 下午4:16
+
+※ recap: 你在做 06_tdx_town 作業，要處理不在所選縣市的站點，相關修改已經寫進 notebook，但還沒執行。下一步請從頭重跑 notebook，確認排除數是 0 後寫進決策表。 (disable recaps in /config)
+
+❯ 那附近縣市有的定位到的要列進來嗎                                              
+  ⎿  ⧉ Selected 2 lines from 112-1~115-1 程式設計相關課程\課堂習題或回家作業\pyt
+     hon\python\GIS_Programming\notebooks\06_GeoPandas與TDX.ipynb in Visual 
+     Studio Code
+
+● 不需要，作業也沒有要求。 但要在決策表寫清楚你的資料範圍是怎麼定義的。
+
+  為什麼不用列進來
+
+  你呼叫的是
+  /v2/Bike/Station/City/Taichung，拿到的是臺中市系統的站點。作業要你檢查的是這批
+  資料裡有沒有站點跑出臺中市，不是要你把臺中市境內所有系統的站點都找齊。
+
+  如果要算「臺中市境內所有站點」，就得另外抓鄰近縣市的資料，包括彰化縣、苗栗縣、
+  新竹縣（南投、花蓮、宜蘭不在 TDX 的 15 個縣市裡）。這樣會多出好幾次 API
+  呼叫，而且不同營運商的站點混在一起，密度地圖反而不好解讀。
+
+  決策表可以這樣寫
+
+  決策: 站點範圍
+  選擇: 只用 TDX City/Taichung 回傳的站點
+  理由: 分析對象是臺中市公共自行車系統的站點配置；鄰近縣市系統的站點即使設在臺中
+  境內，也不列入
+  ────────────────────────────────────────
+  決策: 縣市外站點
+  選擇: 檢查後 0 筆
+  理由: 沒有需要排除的站點
+
+  想確認影響有多大的話
+
+  老師的備援快照應該有其他縣市的檔案。可以直接讀這些檔案來檢查，不會消耗 API 
+  次數：
+
+  """參考：鄰近縣市的站點有沒有落在所選縣市內（只讀備援快照，不呼叫 API）"""
+  for nb in ["ChanghuaCounty", "MiaoliCounty", "HsinchuCounty"]:
+      f = BACKUP_DIR / f"station_{nb}.json"
+      if not f.exists():
+          continue
+      df = pd.json_normalize(json.loads(f.read_text(encoding="utf-8")))
+      g = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(
+              df["StationPosition.PositionLon"],
+  df["StationPosition.PositionLat"]),
+              crs="EPSG:4326").to_crs(town.crs)
+      j = gpd.sjoin(g, location[["TOWNNAME", "geometry"]], predicate="within")
+      print(nb, "落在", CITY_DICT[CITY], "境內：", len(j))
+
+  如果結果是 0 或只有個位數，就可以在決策表補一句「已檢查鄰近縣市快照，境內僅 N
+  站，不影響結果」，這個決策會更有說服力。需要的話，我可以把這段加進 notebook。
+
+✻ Worked for 14s · done 下午4:20
+
+❯ API 呼叫每次都是 0 可以有辦法新增更精確的值嗎                                 
+
+● 數字一直是 0 其實是正確的：今天的快照已經存在，程式就直接讀檔，完全沒有呼叫
+  API。問題在於紀錄有三個缺口，所以看不出完整情形：
+
+  1. 讀快照的時候沒有記錄，看不出「這次有跑，只是讀了檔」。
+  2. 換 token 也會呼叫 TDX，但沒有算進去。
+  3. call_record 只存在記憶體裡，重開 kernel 就歸零，沒辦法和 TDX
+     會員中心的累計統計比對。
+
+  我會把紀錄改成三種類型（api、token、cache），每一筆加上時間，真正連到 TDX
+  的呼叫另外寫進 data/raw/tdx/call_log.csv 永久累計。
+  ⎿  Updated cell fcda0c45:
+          1 import os
+          2 import json
+          3 import time
+          4 import requests
+          5 import pandas as pd
+          6 import geopandas as gpd
+          7 
+          8 from datetime import datetime
+          9 from zoneinfo import ZoneInfo
+         10 from dotenv import load_dotenv
+         11 
+         12 
+         13 """讀取環境變數"""
+         14 if IN_COLAB:
+         15     from google.colab import userdata
+         16     for k in ["TDX_CLIENT_ID", "TDX_CLIENT_SECRET"]:
+         17         try:
+         18             os.environ[k] = userdata.get(k)
+         19         except Exception as e:  # 沒設定密鑰，或沒打開 Notebo
+            ok access
+         20             print(f"讀不到 {k}：{type(e).__name__}")
+         21 
+         22     HAS_KEY = all(os.environ.get(k) for k in ["TDX_CLIENT_ID"
+            , "TDX_CLIENT_SECRET"])
+         23 
+         24 else:
+         25     HAS_KEY = load_dotenv()
+         26 
+         27 print("TDX 金鑰已載入" if HAS_KEY else "沒有 TDX 金鑰，Part C
+             將改讀老師的備援快照")
+         28 
+         29 
+         30 AUTH_URL = "https://tdx.transportdata.tw/auth/realms/TDXConne
+            ct/protocol/openid-connect/token"
+         31 API_BASE = "https://tdx.transportdata.tw/api/basic"
+         32 
+         33 _token = {"value": None, "expires": 0}
+         34 call_record = []   # 本次執行的紀錄：api（呼叫 API）、token（
+            換 token）、cache（讀快照，沒連 TDX）
+         35 CALL_LOG = TDX_DIR / "call_log.csv"   # 真的連到 TDX 的呼叫會
+            累計寫入，重開 kernel 也不會歸零
+         36 
+         37 
+         38 """記一筆紀錄；真的連到 TDX 的（api、token）另外附加到 call_l
+            og.csv"""
+         39 def log_call(kind, path, status=None):
+         40     rec = {"time": datetime.now(ZoneInfo("Asia/Taipei")).strf
+            time("%Y-%m-%d %H:%M:%S"),
+         41            "type": kind, "path": path, "status": status}
+         42     call_record.append(rec)
+         43     if kind != "cache":
+         44         TDX_DIR.mkdir(parents=True, exist_ok=True)
+         45         pd.DataFrame([rec]).to_csv(CALL_LOG, mode="a", header
+            =not CALL_LOG.exists(),
+         46                                    index=False, encoding="utf
+            -8-sig")
+         47 
+         48 
+         49 """回傳 access token；還沒過期就沿用（token 快取）。"""
+         50 def get_token():
+         51     if _token["value"] and time.time() < _token["expires"] - 
+            60:
+         52         return _token["value"]
+         53     r = requests.post(AUTH_URL, data={
+         54         "grant_type": "client_credentials",
+         55         "client_id": os.environ["TDX_CLIENT_ID"],
+         56         "client_secret": os.environ["TDX_CLIENT_SECRET"],
+         57     }, timeout=30)
+         58     log_call("token", "/auth/token", r.status_code)
+         59     r.raise_for_status()
+         60     data = r.json()
+         61     _token["value"] = data["access_token"]
+         62     _token["expires"] = time.time() + data["expires_in"]
+         63     return _token["value"]
+         64 
+         65 
+         66 """呼叫 TDX 基礎服務，回傳解析後的 JSON。"""
+         67 def get_json(path, params=None):
+         68     headers = {"authorization": f"Bearer {get_token()}", "Acc
+            ept-Encoding": "gzip"}
+         69     r = requests.get(API_BASE + path, headers=headers,
+         70                      params={"$format": "JSON", **(params or 
+            {})}, timeout=30)
+         71     log_call("api", path, r.status_code)
+         72     r.raise_for_status()
+         73     return r.json()
+         74 
+         75 """取得縣市站點快照"""
+         76 TODAY = datetime.now(ZoneInfo("Asia/Taipei")).strftime("%Y%m%
+            d")
+         77 SNAP = TDX_DIR / f"station_{CITY}_{TODAY}.json"
+         78 
+         79 if SNAP.exists():
+         80     print("讀取今天已存的快照：", SNAP.name)
+         81     data = json.loads(SNAP.read_text(encoding="utf-8"))
+         82     log_call("cache", str(SNAP.name))
+         83 elif HAS_KEY:
+         84     data = get_json(f"/v2/Bike/Station/City/{CITY}")
+         85     TDX_DIR.mkdir(parents=True, exist_ok=True)
+         86     SNAP.write_text(json.dumps(data, ensure_ascii=False), enc
+            oding="utf-8")
+         87     print("已從 TDX 取得並存檔：", SNAP.name)
+         88 else:
+         89     SNAP = BACKUP_DIR / f"station_{CITY}.json"
+         90     print("改讀老師的備援快照：", SNAP.name)
+         91     data = json.loads(SNAP.read_text(encoding="utf-8"))
+         92     log_call("cache", str(SNAP.name))
+         93 
+         94 print("站點數：", len(data))
+         95 
+         96 """轉成 4326"""
+         97 station = pd.json_normalize(data)
+         98 station = gpd.GeoDataFrame(pd.json_normalize(data),
+         99     geometry=gpd.points_from_xy(station["StationPosition.Posi
+            tionLon"], station["StationPosition.PositionLat"]),
+        100     crs="EPSG:4326",
+        101 )
+        102 print(station.crs)
+  ⎿  Updated cell bb812d6c:
+         1 """本次執行"""
+         2 rec = pd.DataFrame(call_record, columns=["time", "type", "path
+           ", "status"])
+         3 n = rec["type"].value_counts()
+         4 print("本次執行：呼叫 API", n.get("api", 0), "次、換 token", n
+           .get("token", 0), "次、讀快照", n.get("cache", 0), "次")
+         5 
+         6 """累計（可和 TDX 會員中心的使用統計比對）"""
+         7 if CALL_LOG.exists():
+         8     log = pd.read_csv(CALL_LOG, encoding="utf-8-sig")
+         9     log["date"] = log["time"].str[:10]
+        10     print("累計紀錄：", CALL_LOG.name)
+        11     display(log.pivot_table(index="date", columns="type", valu
+           es="path", aggfunc="count", fill_value=0))
+        12 else:
+        13     print("尚無累計紀錄（還沒真的連過 TDX）")
+        14 
+        15 rec
+
+
+
+❯ 我剛剛沒存到檔案 你可能要再重新編輯一次                                       
+
+  Read 1 file (ctrl+o to expand)
+
+● 其他 cell 都還在，只有 cell 2（fcda0c45）被蓋回舊版本。我重新寫進去：
+  ⎿  Updated cell fcda0c45:
+          1 import os
+          2 import json
+          3 import time
+          4 import requests
+          5 import pandas as pd
+          6 import geopandas as gpd
+          7 
+          8 from datetime import datetime
+          9 from zoneinfo import ZoneInfo
+         10 from dotenv import load_dotenv
+         11 
+         12 
+         13 """讀取環境變數"""
+         14 if IN_COLAB:
+         15     from google.colab import userdata
+         16     for k in ["TDX_CLIENT_ID", "TDX_CLIENT_SECRET"]:
+         17         try:
+         18             os.environ[k] = userdata.get(k)
+         19         except Exception as e:  # 沒設定密鑰，或沒打開 Notebo
+            ok access
+         20             print(f"讀不到 {k}：{type(e).__name__}")
+         21 
+         22     HAS_KEY = all(os.environ.get(k) for k in ["TDX_CLIENT_ID"
+            , "TDX_CLIENT_SECRET"])
+         23 
+         24 else:
+         25     HAS_KEY = load_dotenv()
+         26 
+         27 print("TDX 金鑰已載入" if HAS_KEY else "沒有 TDX 金鑰，Part C
+             將改讀老師的備援快照")
+         28 
+         29 
+         30 AUTH_URL = "https://tdx.transportdata.tw/auth/realms/TDXConne
+            ct/protocol/openid-connect/token"
+         31 API_BASE = "https://tdx.transportdata.tw/api/basic"
+         32 
+         33 _token = {"value": None, "expires": 0}
+         34 call_record = []   # 本次執行的紀錄：api（呼叫 API）、token（
+            換 token）、cache（讀快照，沒連 TDX）
+         35 CALL_LOG = TDX_DIR / "call_log.csv"   # 真的連到 TDX 的呼叫會
+            累計寫入，重開 kernel 也不會歸零
+         36 
+         37 
+         38 """記一筆紀錄；真的連到 TDX 的（api、token）另外附加到 call_l
+            og.csv"""
+         39 def log_call(kind, path, status=None):
+         40     rec = {"time": datetime.now(ZoneInfo("Asia/Taipei")).strf
+            time("%Y-%m-%d %H:%M:%S"),
+         41            "type": kind, "path": path, "status": status}
+         42     call_record.append(rec)
+         43     if kind != "cache":
+         44         TDX_DIR.mkdir(parents=True, exist_ok=True)
+         45         pd.DataFrame([rec]).to_csv(CALL_LOG, mode="a", header
+            =not CALL_LOG.exists(),
+         46                                    index=False, encoding="utf
+            -8-sig")
+         47 
+         48 
+         49 """回傳 access token；還沒過期就沿用（token 快取）。"""
+         50 def get_token():
+         51     if _token["value"] and time.time() < _token["expires"] - 
+            60:
+         52         return _token["value"]
+         53     r = requests.post(AUTH_URL, data={
+         54         "grant_type": "client_credentials",
+         55         "client_id": os.environ["TDX_CLIENT_ID"],
+         56         "client_secret": os.environ["TDX_CLIENT_SECRET"],
+         57     }, timeout=30)
+         58     log_call("token", "/auth/token", r.status_code)
+         59     r.raise_for_status()
+         60     data = r.json()
+         61     _token["value"] = data["access_token"]
+         62     _token["expires"] = time.time() + data["expires_in"]
+         63     return _token["value"]
+         64 
+         65 
+         66 """呼叫 TDX 基礎服務，回傳解析後的 JSON。"""
+         67 def get_json(path, params=None):
+         68     headers = {"authorization": f"Bearer {get_token()}", "Acc
+            ept-Encoding": "gzip"}
+         69     r = requests.get(API_BASE + path, headers=headers,
+         70                      params={"$format": "JSON", **(params or 
+            {})}, timeout=30)
+         71     log_call("api", path, r.status_code)
+         72     r.raise_for_status()
+         73     return r.json()
+         74 
+         75 """取得縣市站點快照"""
+         76 TODAY = datetime.now(ZoneInfo("Asia/Taipei")).strftime("%Y%m%
+            d")
+         77 SNAP = TDX_DIR / f"station_{CITY}_{TODAY}.json"
+         78 
+         79 if SNAP.exists():
+         80     print("讀取今天已存的快照：", SNAP.name)
+         81     data = json.loads(SNAP.read_text(encoding="utf-8"))
+         82     log_call("cache", str(SNAP.name))
+         83 elif HAS_KEY:
+         84     data = get_json(f"/v2/Bike/Station/City/{CITY}")
+         85     TDX_DIR.mkdir(parents=True, exist_ok=True)
+         86     SNAP.write_text(json.dumps(data, ensure_ascii=False), enc
+            oding="utf-8")
+         87     print("已從 TDX 取得並存檔：", SNAP.name)
+         88 else:
+         89     SNAP = BACKUP_DIR / f"station_{CITY}.json"
+         90     print("改讀老師的備援快照：", SNAP.name)
+         91     data = json.loads(SNAP.read_text(encoding="utf-8"))
+         92     log_call("cache", str(SNAP.name))
+         93 
+         94 print("站點數：", len(data))
+         95 
+         96 """轉成 4326"""
+         97 station = pd.json_normalize(data)
+         98 station = gpd.GeoDataFrame(pd.json_normalize(data),
+         99     geometry=gpd.points_from_xy(station["StationPosition.Posi
+            tionLon"], station["StationPosition.PositionLat"]),
+        100     crs="EPSG:4326",
+        101 )
+        102 print(station.crs)
+
+● 我已經把 cell 2（fcda0c45）的 API 紀錄修改重新寫進去了，但還沒執行。我重新讀了
+  整份檔案確認過，其他修改都還在，不用重做：縣市外站點檢查、included、TOWNCODE
+  計數、地圖、存檔，以及 cell 6 的紀錄摘要。只有 cell 2 被舊版本蓋掉。
+
+  要避免再被蓋掉： 編輯器裡開著的可能還是舊內容。請先關掉這個
+  notebook、選「不儲存」，再重新開啟，載入硬碟上的新版本。如果直接在舊畫面按儲存
+  ，又會把修改蓋回去。
+
+  重新開啟後，重啟 kernel 再從頭跑。cell 6 現在的紀錄摘要要用到 cell 2 新定義的
+  CALL_LOG，不重跑 cell 2，cell 6 會出錯。
+
+  照目前的情況，今天的快照已經存在，cell 6 應該會顯示「呼叫 API 0 次、換 token 0
+  次、讀快照 1 次」。這是正確的，代表資料是從快取讀的，沒有連到
+  TDX。接著會顯示「尚無累計紀錄」，因為 call_log.csv 要等到真的連過一次 TDX
+  才會建立。之後只要有實際呼叫，每一筆就會累計寫進
+  data/raw/tdx/call_log.csv，按日期統計，可以和 TDX 會員中心的使用統計比對。
+✻ Crunched for 45s · done 下午4:24
+
+❯ 但我在 tdx 看到的 2026-10-22    2    165    0.003                             
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● TDX 這筆紀錄和你的 notebook 對不上，是兩邊統計的時間範圍不同，不是 notebook
+  算錯。
+
+  對照硬碟上的快照檔
+
+  data/raw/tdx/ 裡每個 JSON 檔都對應一次成功的 API 呼叫：
+
+  ┌──────┬───────────────────────────────────────────────┬───────┬─────────┐
+  │      │                                               │ 推算  │         │
+  │ 日期 │                    快照檔                     │  的   │ TDX 會  │
+  │      │                                               │ API   │ 員中心  │
+  │      │                                               │ 次數  │         │
+  ├──────┼───────────────────────────────────────────────┼───────┼─────────┤
+  │ 10-2 │ station_Taichung_20261022.json（11:51）       │ 1     │ 2       │
+  │ 2    │                                               │       │         │
+  ├──────┼───────────────────────────────────────────────┼───────┼─────────┤
+  │ 10-2 │ station_Taichung、ChanghuaCounty、PingtungCou │ 3     │ 還沒出  │
+  │ 8    │ nty                                           │       │ 現      │
+  └──────┴───────────────────────────────────────────────┴───────┴─────────┘
+
+  - 10-22 少了 1 次：可能是在其他 notebook 呼叫過（例如課堂的 06_GeoPandas與TDX.
+    ipynb），也可能有一次呼叫失敗或重跑，但沒有存檔。這一天還沒有
+    call_log.csv，沒辦法回頭查。
+  - 10-28 的 3 次還沒顯示：會員中心的統計通常要隔天才更新，明天再看應該會出現。
+  - cell 6 一直是 0：今天的快照都已經存在，這次執行只有讀檔。call_log.csv
+    是剛加上去的，要等到下次真的連到 TDX 才會開始記錄。
+
+  165 和 0.003 這兩欄的意思我不能確定。165 有可能是傳輸量（KB），因為 API
+  回傳時有 gzip 壓縮，會比存下來的 JSON
+  小很多。實際意思請看會員中心表格的欄位標題。
+
+  讓兩邊對得上的做法
+
+  1. 之後：新的 call_log.csv 每次真的呼叫都會記錄。隔天把它的每日 api
+     次數和會員中心比對，就能精確對上。
+  2. 之前：可以手動補一份歷史紀錄，在 cell 6
+     的累計表下面加一句說明。例如：「10-22 會員中心 2 次，notebook 可追溯 1
+     次（快照檔），另 1 次推測為課堂範例呼叫；10-28 共 3
+     次（臺中、彰化、屏東快照），會員中心尚未更新。」
+
+  需要的話，我可以在 cell 6 加一段程式：掃描 data/raw/tdx/
+  的快照檔，用檔名的日期自動推算歷史 API 次數，和 call_log.csv 合併成同一張表。
+
+✻ Baked for 23s · done 下午4:25
+
+❯ 好，幫我加掃描快照檔的程式                                                    
+  ⎿  Updated cell bb812d6c:
+         1 """本次執行"""
+         2 rec = pd.DataFrame(call_record, columns=["time", "type", "path
+           ", "status"])
+         3 n = rec["type"].value_counts()
+         4 print("本次執行：呼叫 API", n.get("api", 0), "次、換 token", n
+           .get("token", 0), "次、讀快照", n.get("cache", 0), "次")
+         5 
+         6 """歷史：掃描 data/raw/tdx/ 的快照檔，每個檔 = 一次成功的 API 
+           呼叫（檔名格式 station_{縣市}_{YYYYMMDD}.json）"""
+         7 snap = pd.DataFrame(
+         8     [{"date": f.stem.split("_")[-1], "city": f.stem.split("_")
+           [1], "file": f.name}
+         9      for f in TDX_DIR.glob("station_*_*.json")],
+        10     columns=["date", "city", "file"],
+        11 )
+        12 snap["date"] = pd.to_datetime(snap["date"], format="%Y%m%d").d
+           t.strftime("%Y-%m-%d")
+        13 summary = snap.groupby("date").agg(快照檔推算=("file", "size")
+           , 縣市=("city", ", ".join))
+        14 
+        15 """累計：call_log.csv（加入紀錄功能之後才有）"""
+        16 if CALL_LOG.exists():
+        17     log = pd.read_csv(CALL_LOG, encoding="utf-8-sig")
+        18     log["date"] = log["time"].str[:10]
+        19     counts = log.pivot_table(index="date", columns="type", val
+           ues="path", aggfunc="count", fill_value=0)
+        20     summary = summary.join(counts.rename(columns={"api": "call
+           _log_api", "token": "call_log_token"}), how="outer")
+        21 else:
+        22     print("尚無 call_log.csv（還沒真的連過 TDX），下表只有快照
+           檔推算")
+        23 
+        24 print("每日 API 呼叫次數（請和 TDX 會員中心的使用統計比對；會
+           員中心通常隔天才更新）")
+        25 display(summary.fillna(0))
+        26 
+        27 rec
+
+● 我把掃描快照檔的程式加進 API 呼叫紀錄的 cell（cell
+  6，bb812d6c）了，還沒有執行。新程式會掃描 data/raw/tdx/ 裡的
+  station_{縣市}_{YYYYMMDD}.json，每個檔算一次成功的 API 呼叫，再依日期和
+  call_log.csv 合併成一張表。
+
+  依目前資料夾裡的檔案，表格應該會長這樣：
+
+  ┌────────────┬────────────┬──────────────────────────────────────────┐
+  │    date    │ 快照檔推算 │                   縣市                   │
+  ├────────────┼────────────┼──────────────────────────────────────────┤
+  │ 2026-10-22 │ 1          │ Taichung                                 │
+  ├────────────┼────────────┼──────────────────────────────────────────┤
+  │ 2026-10-28 │ 3          │ ChanghuaCounty, PingtungCounty, Taichung │
+  └────────────┴────────────┴──────────────────────────────────────────┘
+
+  等 call_log.csv 有資料後，表格會多出 call_log_api、call_log_token
+  兩欄。之後如果有某天呼叫成功但快照檔沒存下來，就看得出兩欄的差異。
+
+  兩點要注意：
+  - 這只能算出有存成快照檔的呼叫，所以 10-22 還是會是 1 次，和會員中心的 2 次差
+    1 次。這個差距需要你在 notebook 裡用文字說明，程式找不回來。
+  - 和上次一樣，請先在編輯器關掉 notebook、選「不儲存」，再重新開啟，然後從頭執
+    行。否則舊內容可能又把這次的修改蓋掉。
+
+✻ Brewed for 15s · done 下午4:28
+
+※ recap: 你在完成臺中市 TDX 站點對應鄉鎮市區的作業，我剛在 API 呼叫紀錄加了掃描快照檔、統計每日呼叫次數的程式。下一步：在編輯器關掉 notebook、選不儲存，重新開啟後從頭執行。 (disable recaps in /config)
