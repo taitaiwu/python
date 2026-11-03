@@ -1,0 +1,25 @@
+﻿time,type,path,status
+2026-11-02 00:08:42,token,/auth/token,200
+2026-11-02 00:08:42,api,/v3/Rail/TRA/Station,200
+2026-11-02 00:08:43,api,/v2/Rail/THSR/Station,200
+2026-11-02 00:08:43,api,/v2/Rail/Metro/Station/TMRT,200
+2026-11-02 00:40:30,token,/auth/token,200
+2026-11-02 00:40:30,api,/v2/Rail/Metro/Station/TRTC,200
+2026-11-02 00:40:30,api,/v2/Rail/Metro/Station/NTMC,200
+2026-11-02 00:40:30,api,/v2/Rail/Metro/Station/NTDLRT,200
+2026-11-02 00:40:30,api,/v2/Rail/Metro/Station/NTALRT,200
+2026-11-02 00:40:31,api,/v2/Rail/Metro/Station/TYMC,200
+2026-11-02 00:56:56,token,/auth/token,200
+2026-11-02 00:56:56,api,/v2/Bike/Station/City/{CITY},400
+2026-11-02 00:57:39,api,/v2/Bike/Station/City/NewTaipei,200
+2026-11-03 00:07:49,token,/auth/token,200
+2026-11-03 00:07:49,api,/v3/Rail/TRA/Station,200
+2026-11-03 00:07:49,api,/v2/Rail/THSR/Station,200
+2026-11-03 00:07:49,api,/v2/Rail/Metro/Station/TRTC,200
+2026-11-03 00:07:49,api,/v2/Rail/Metro/Station/NTMC,200
+2026-11-03 00:07:50,api,/v2/Rail/Metro/Station/NTDLRT,200
+2026-11-03 00:07:50,api,/v2/Rail/Metro/Station/NTALRT,429
+2026-11-03 00:10:00,token,/auth/token,200
+2026-11-03 00:10:00,api,/v2/Rail/Metro/Station/NTALRT,200
+2026-11-03 00:10:16,api,/v2/Rail/Metro/Station/TYMC,200
+2026-11-03 00:11:04,api,/v2/Bike/Station/City/NewTaipei,200
